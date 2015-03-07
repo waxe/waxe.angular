@@ -24,5 +24,13 @@ angular.module('waxeApp')
                     UserProfile.destroy();
                 });
         };
+
+        this.profile = function() {
+            return $http
+                .get(APIUrl.getUrl('profile'))
+                .then(function (res) {
+                    UserProfile.create(res.data);
+                });
+        };
         return this;
     });

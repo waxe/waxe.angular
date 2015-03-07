@@ -1,6 +1,5 @@
 <span ng-if="UserProfile.login">
   You are logged in: {{UserProfile.login}}.
-  <a href="" ng-click="logout()">Logout</a>
 </span>
 
 <form ng-if="!UserProfile.login" name="loginForm" ng-submit="login(credentials)" novalidate>
