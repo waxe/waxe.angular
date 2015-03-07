@@ -81,3 +81,16 @@ body {
     border-bottom: 0;
   }
 }
+
+.alert-message {
+  position: fixed;
+  top: 0px;
+  max-width: 100%;
+  z-index: 2000;
+  left: 451px;
+  opacity: 1;
+}
+
+.alert-message .close {
+  margin-left: 10px;
+}

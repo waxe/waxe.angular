@@ -8,7 +8,7 @@
  * Controller of the waxeApp
  */
 angular.module('waxeApp')
-    .controller('LoginCtrl', function ($scope, AuthService, UserProfile) {
+    .controller('LoginCtrl', function ($scope, AuthService, UserProfile, MessageService) {
 
         $scope.UserProfile = UserProfile;
 
@@ -19,13 +19,13 @@ angular.module('waxeApp')
 
         $scope.login = function (credentials) {
             AuthService.login(credentials).catch(function(res) {
-                alert(res.data);
+                MessageService.set('danger', res.data);
             });
         };
 
         $scope.logout = function() {
             AuthService.logout().catch(function(res) {
-                alert(res.data);
+                MessageService.set('danger', res.data);
             });
         };
     });
