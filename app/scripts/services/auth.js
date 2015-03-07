@@ -8,10 +8,10 @@
  * Service in the waxeApp.
  */
 angular.module('waxeApp')
-    .service('AuthService', function ($http, $q, UserProfile) {
+    .service('AuthService', function ($http, $q, UserProfile, APIUrl) {
         this.login = function (credentials) {
             return $http
-                .post('/api/1/login.json', credentials)
+                .post(APIUrl.getUrl('login'), credentials)
                 .then(function (res) {
                     UserProfile.create(res.data);
                 });
@@ -19,7 +19,7 @@ angular.module('waxeApp')
 
         this.logout = function (credentials) {
             return $http
-                .post('/api/1/logout.json', credentials)
+                .post(APIUrl.getUrl('logout'), credentials)
                 .then(function () {
                     UserProfile.destroy();
                 });
