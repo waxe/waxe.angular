@@ -17,7 +17,8 @@ angular
         'ngResource',
         'ngRoute',
         'ngSanitize',
-        'ngTouch'
+        'ngTouch',
+        'ui.layout'
     ])
     .config(function ($routeProvider, $httpProvider) {
         $routeProvider
@@ -28,6 +29,14 @@ angular
           .when('/login', {
                 templateUrl: 'views/login.html',
                 controller: 'LoginCtrl'
+            })
+          .when('/account/:user', {
+                templateUrl: 'views/filemanager.html',
+                controller: 'FileManagerCtrl'
+            })
+          .when('/account/:user/:type/edit', {
+                templateUrl: 'views/edit.html',
+                controller: 'EditCtrl'
             })
           .otherwise({
                 redirectTo: '/'

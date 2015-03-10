@@ -8,8 +8,22 @@
  * Service in the waxeApp.
  */
 angular.module('waxeApp')
-    .service('APIUrl', function () {
-        this.getUrl = function(key) {
-            return '/api/1/' + key + '.json';
+    .factory('UrlFactory', function () {
+
+        return {
+            getAPIUrl: function(key) {
+                return '/api/1/' + key + '.json';
+            },
+
+            urlFor: function (user, name, params) {
+                var u = '/account/' + user + '/' + name + '?path=' + params.path;
+                return u;
+            },
+            urlForUser: function(user) {
+                var that = this;
+                return function(name, params) {
+                    return that.urlFor(user, name, params);
+                };
+            }
         };
     });

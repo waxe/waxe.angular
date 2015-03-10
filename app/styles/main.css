@@ -61,10 +61,6 @@ body {
 
 /* Responsive: Portrait tablets and up */
 @media screen and (min-width: 768px) {
-  .container {
-    max-width: 730px;
-  }
-
   /* Remove the padding we set earlier */
   .header,
   .marketing,
@@ -93,4 +89,13 @@ body {
 
 .alert-message .close {
   margin-left: 10px;
+}
+
+/* The layout is absolute on the top. Instead of rewriting the css just hack the top position */
+.ui-layout-column {
+  top: 100px;
+}
+
+.ui-splitbar {
+  background: grey;
 }
