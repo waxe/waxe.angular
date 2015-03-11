@@ -16,7 +16,10 @@ angular.module('waxeApp')
             },
 
             urlFor: function (user, name, params) {
-                var u = '/account/' + user + '/' + name + '?path=' + params.path;
+                var u = '/account/' + user + '/' + name;
+                if (typeof params !== 'undefined') {
+                    u += '?path=' + params.path;
+                }
                 return u;
             },
             urlForUser: function(user) {

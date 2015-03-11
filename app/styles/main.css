@@ -99,3 +99,7 @@ body {
 .ui-splitbar {
   background: grey;
 }
+
+.container {
+  width: 100%;
+}
