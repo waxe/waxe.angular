@@ -103,3 +103,6 @@ body {
 .container {
   width: 100%;
 }
+
+/* From ui.bootstrap since we can't add empty href */
+.nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
