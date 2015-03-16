@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col-md-6" ng-repeat="file in files">
-    <a ng-if="file.type === 'folder'" href="#{{ urlFor('', {path: file.link}) }}"><i  class="fa fa-folder-o"></i> {{file.name}}</a>
-    <a ng-if="file.type === 'file'" href="#{{ urlFor('xml/edit', {path: file.link}) }}"><i class="fa fa-file-excel-o"></i> {{file.name}}</a>
+    <a ng-if="file.type === 'folder'" href="#{{ UrlFactory.userUrl('', {path: file.link}) }}"><i  class="fa fa-folder-o"></i> {{file.name}}</a>
+    <a ng-if="file.type === 'file'" href="#{{ UrlFactory.userUrl('xml/edit', {path: file.link}) }}"><i class="fa fa-file-excel-o"></i> {{file.name}}</a>
   </div>
 </div>

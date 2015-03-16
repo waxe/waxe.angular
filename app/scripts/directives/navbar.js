@@ -15,6 +15,7 @@ angular.module('waxeApp')
             link: function postLink(scope) {
                 scope.NavbarService = NavbarService;
                 scope.UserProfile = UserProfile;
+                scope.UrlFactory = UrlFactory;
                 scope.logout = function() {
                     AuthService.logout().then(function() {
                         $location.path('/login');

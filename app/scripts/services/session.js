@@ -9,9 +9,14 @@
  */
 angular.module('waxeApp')
     .service('Session', function () {
-        this.currentFile = null;
-        this.user = null;
-        this.breadcrumbFiles = [];
+
+        this.init = function() {
+            this.currentFile = null;
+            this.user = null;
+            this.breadcrumbFiles = [];
+        };
+
+        this.init();
 
         this.updateFromRouteParams = function(routeParams) {
             this.user = routeParams.user;

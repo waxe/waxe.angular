@@ -68,6 +68,9 @@
             <b class="caret"></b>
           </a>
           <ul class="dropdown-menu dropdown-menu-icons">
+            <li ng-repeat="login in UserProfile.logins">
+              <a href="#{{UrlFactory.urlFor(login)}}">{{login}}</a>
+            </li>
             <li>
               <a href="" ng-click="logout()">
                 <i class="fa fa-sign-out"></i>Logout

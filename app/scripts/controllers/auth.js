@@ -19,7 +19,13 @@ angular.module('waxeApp')
 
         $scope.login = function (credentials) {
             AuthService.login(credentials).then(function() {
-                $location.path('/');
+                var next = $location.search().next;
+                if (typeof next !== 'undefined') {
+                    $location.url(next);
+                }
+                else {
+                    $location.url('/');
+                }
             }, function(res) {
                 MessageService.set('danger', res.data);
             });

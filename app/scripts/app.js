@@ -49,6 +49,6 @@ angular
 
         $httpProvider.interceptors.push('HttpInterceptor');
     })
-    .run(['$rootScope', '$location', 'AuthService', function($rootScope, $location, AuthService) {
+    .run(['AuthService', function(AuthService) {
         AuthService.profile();
     }]);

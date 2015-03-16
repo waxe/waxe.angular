@@ -16,5 +16,5 @@ angular.module('waxeApp')
           .then(function(res) {
             $scope.files = res.data;
         });
-        $scope.urlFor = UrlFactory.urlForUser($routeParams.user);
+        $scope.UrlFactory = UrlFactory;
     });

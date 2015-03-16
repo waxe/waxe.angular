@@ -13,7 +13,7 @@ angular.module('waxeApp')
         return {
             responseError: function(rejection) {
                 if (rejection.status === 401) {
-                    $location.path('/login');
+                    $location.url('/login?next=' + encodeURIComponent($location.url()));
                 }
                 // TODO: Put the error message in Message
                 return $q.reject(rejection);
