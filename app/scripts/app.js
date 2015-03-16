@@ -39,6 +39,10 @@ angular
                 templateUrl: 'views/edit.html',
                 controller: 'EditCtrl'
             })
+          .when('/account/:user/:type/new', {
+                templateUrl: 'views/edit.html',
+                controller: 'EditCtrl'
+            })
           .otherwise({
                 redirectTo: '/'
             });

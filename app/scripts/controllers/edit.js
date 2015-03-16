@@ -8,9 +8,14 @@
  * Controller of the waxeApp
  */
 angular.module('waxeApp')
-    .controller('EditCtrl', function ($scope, $http, $sce, $routeParams) {
+    .controller('EditCtrl', function ($scope, $http, $sce, $routeParams, $route, $location, UrlFactory, Session) {
+
+        Session.updateFromRouteParams($routeParams);
+
+        var action = UrlFactory.getActionFromUrl($location.path());
+        var url = UrlFactory.getUserAPIUrl($routeParams.type+'/'+action);
         $http
-            .get('/account/contributor/xml/edit.json', {params: $routeParams})
+            .get(url, {params: $routeParams})
             .then(function(res) {
                 $scope.html = $sce.trustAsHtml(res.data.content);
                 $scope.treeData = res.data.jstree_data;

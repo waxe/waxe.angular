@@ -8,9 +8,11 @@
  * Controller of the waxeApp
  */
 angular.module('waxeApp')
-    .controller('FileManagerCtrl', function ($scope, $http, $routeParams, UrlFactory) {
+    .controller('FileManagerCtrl', function ($scope, $http, $routeParams, UrlFactory, Session) {
+        Session.updateFromRouteParams($routeParams);
+        var url = UrlFactory.getUserAPIUrl('ng-explore');
         $http
-          .get('/account/contributor/ng-explore.json', {params: $routeParams})
+          .get(url, {params: $routeParams})
           .then(function(res) {
             $scope.files = res.data;
         });

@@ -8,18 +8,14 @@
  * Factory in the waxeApp.
  */
 angular.module('waxeApp')
-    .factory('HttpInterceptor', function ($location, $q, Session) {
+    .factory('HttpInterceptor', function ($location, $q) {
 
         return {
-            response: function(response) {
-                // Put the params in the Session
-                Session.update(response);
-                return response;
-            },
             responseError: function(rejection) {
                 if (rejection.status === 401) {
                     $location.path('/login');
                 }
+                // TODO: Put the error message in Message
                 return $q.reject(rejection);
             }
         };

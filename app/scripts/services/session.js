@@ -8,10 +8,16 @@
  * Factory in the waxeangularApp.
  */
 angular.module('waxeApp')
-    .service('Session', function (UrlFactory) {
+    .service('Session', function () {
         this.currentFile = null;
         this.user = null;
         this.breadcrumbFiles = [];
+
+        this.updateFromRouteParams = function(routeParams) {
+            this.user = routeParams.user;
+            // TODO: handle correctly when routeParams is undefined
+            this.setBreadcrumbFiles(routeParams.path);
+        };
 
         this.update = function(response) {
             var params = response.config.params || {};
@@ -26,13 +32,13 @@ angular.module('waxeApp')
             }
             this.currentFile = file;
             this.breadcrumbFiles = [];
-            if (typeof this.currentFile === 'undefined') {
+            if (typeof this.currentFile === 'undefined' || this.currentFile === '') {
                 this.breadcrumbFiles = [{name: 'root'}];
                 return;
             }
             this.breadcrumbFiles = [{
                 'name': 'root',
-                'link': UrlFactory.urlFor(this.user, '')
+                'path': ''
             }];
             var lis = this.currentFile.split('/');
             var path = '';
@@ -42,10 +48,10 @@ angular.module('waxeApp')
                 }
                 path += lis[i];
                 var o = {
-                    'name': lis[i],
+                    'name': lis[i]
                 };
                 if (i < len -1) {
-                    o.link = UrlFactory.urlFor(this.user, '', {'path': path});
+                    o.path = path;
                 }
                 this.breadcrumbFiles.push(o);
             }
