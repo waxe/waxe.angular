@@ -8,6 +8,17 @@
  *
  * Main module of the application.
  */
+
+
+// We want to be sure the profile is loaded before displaying a page.
+// If the user is not logged he will be redirect to the login page since in
+// this case the profile page returns a 401.
+var resolve = {
+    profileLoaded: function(AuthService) {
+        return AuthService.profileLoaded();
+    }
+};
+
 angular
     .module('waxeApp', [
         'ngAnimate',
@@ -25,7 +36,8 @@ angular
         $routeProvider
           .when('/', {
                 templateUrl: 'views/main.html',
-                controller: 'MainCtrl'
+                controller: 'MainCtrl',
+                resolve: resolve
             })
           .when('/login', {
                 templateUrl: 'views/login.html',
@@ -33,22 +45,22 @@ angular
             })
           .when('/account/:user', {
                 templateUrl: 'views/filemanager.html',
-                controller: 'FileManagerCtrl'
+                controller: 'FileManagerCtrl',
+                resolve: resolve
             })
           .when('/account/:user/:type/edit', {
                 templateUrl: 'views/edit.html',
-                controller: 'EditCtrl'
+                controller: 'EditCtrl',
+                resolve: resolve
             })
           .when('/account/:user/:type/new', {
                 templateUrl: 'views/edit.html',
-                controller: 'EditCtrl'
+                controller: 'EditCtrl',
+                resolve: resolve
             })
           .otherwise({
                 redirectTo: '/'
             });
 
         $httpProvider.interceptors.push('HttpInterceptor');
-    })
-    .run(['AuthService', function(AuthService) {
-        AuthService.profile();
-    }]);
+    });
