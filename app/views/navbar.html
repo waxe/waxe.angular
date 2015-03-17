@@ -30,8 +30,8 @@
             <li ng-if="UserProfile.root_template_path"><a href="#"><i class="fa fa-file-o"></i>XML <small>(from template)</small></a></li>
             <li class="divider"></li>
             <li><a ng-click="openModal()"><i class="fa fa-folder-open-o"></i>Open</a></li>
-            <li class="disabled"><a href="#"><i class="fa fa-save"></i>Save</a></li>
-            <li><a ng-click="saveasModal()"><i class="fa fa-save"></i>Save as</a></li>
+            <li ng-class="{disabled: !Session.form}"><a ng-click="save()"><i class="fa fa-save"></i>Save</a></li>
+            <li ng-class="{disabled: !Session.form}"><a ng-click="saveasModal()"><i class="fa fa-save"></i>Save as</a></li>
           </ul>
         </li>
         <li dropdown ng-if="UserProfile.versioning">

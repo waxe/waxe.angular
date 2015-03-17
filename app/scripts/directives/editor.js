@@ -7,14 +7,30 @@
  * # editor
  */
 angular.module('waxeApp')
-    .directive('editor', function () {
+    .directive('editor', function (Session, $interval) {
         return {
             template: '<div></div>',
             restrict: 'E',
             link: function postLink(scope, element, attrs) {
-                scope.$watch(function(){
+                var listener = scope.$watch(function(){
                     if(element.text()) {
+                        // Remove the watch since the form is fully loaded
+                        listener();
                         waxe.form = new waxe.Form(scope.treeData);
+                        Session.form = waxe.form;
+                    }
+                });
+
+                var inter = $interval(function() {
+                    if (Session.form && Session.form.filename && Session.form.status === 'updated'){
+                        scope.save();
+                    }
+                }, 1000 * 60);
+
+                scope.$on('$destroy', function() {
+                    Session.form = null;
+                    if (angular.isDefined(inter)) {
+                        $interval.cancel(inter);
                     }
                 });
             }

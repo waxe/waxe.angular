@@ -10,6 +10,9 @@
 angular.module('waxeApp')
     .service('Session', function (Utils) {
 
+        // Will be updated when editing a form
+        this.form = null;
+
         this.init = function() {
             this.currentFile = null;
             this.user = null;
@@ -19,6 +22,7 @@ angular.module('waxeApp')
         this.init();
 
         this.updateFromRouteParams = function(routeParams) {
+            this.form = false;
             this.user = routeParams.user;
             // TODO: handle correctly when routeParams is undefined
             this.setBreadcrumbFiles(routeParams.path);

@@ -7,7 +7,7 @@
  * # navbar
  */
 angular.module('waxeApp')
-    .directive('navbar', function ($location, $modal, $http, NavbarService, UserProfile, AuthService, MessageService, XmlUtils, Utils, UrlFactory) {
+    .directive('navbar', function ($location, $modal, $http, NavbarService, UserProfile, AuthService, MessageService, XmlUtils, Utils, UrlFactory, Session) {
         return {
             templateUrl: 'views/navbar.html',
             restrict: 'E',
@@ -16,6 +16,7 @@ angular.module('waxeApp')
                 scope.NavbarService = NavbarService;
                 scope.UserProfile = UserProfile;
                 scope.UrlFactory = UrlFactory;
+                scope.Session = Session;
                 scope.logout = function() {
                     AuthService.logout().then(function() {
                         $location.path('/login');
@@ -102,6 +103,26 @@ angular.module('waxeApp')
 
                 };
 
+                scope.save = function() {
+                    if (!Session.form.filename) {
+                        scope.saveasModal();
+                        return;
+                    }
+                    var url = Session.form.$element.data('action');
+                    var lis = Session.form.$element.serializeArray();
+                    var data = {};
+                    for (var i=0, len=lis.length; i < len; i++) {
+                        var d = lis[i];
+                        data[d.name] = d.value;
+                    }
+                    $http
+                        .post(url, data)
+                        .then(function() {
+                            Session.form.status = null;
+                            MessageService.set('success', 'Saved!');
+                        });
+                };
+
                 scope.saveasModal = function() {
                     var modalInstance = $modal.open({
                         templateUrl: 'navbar-saveas.html',
@@ -123,8 +144,17 @@ angular.module('waxeApp')
 
                             $scope.saveAs = function(filename) {
                                 filename = filename || $scope.filename;
+                                if (! filename) {
+                                    return;
+                                }
                                 $scope.cancel();
-                                alert('Save file as ' + filename);
+                                var path = [];
+                                if (parentScope.currentPath) {
+                                    path.push(parentScope.currentPath);
+                                }
+                                path.push(filename);
+                                Session.form.setFilename(path.join('/'));
+                                $scope.save();
                             };
 
                             $scope.open = function(path) {
