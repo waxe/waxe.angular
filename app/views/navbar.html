@@ -31,9 +31,7 @@
             <li class="divider"></li>
             <li><a ng-click="openModal()"><i class="fa fa-folder-open-o"></i>Open</a></li>
             <li class="disabled"><a href="#"><i class="fa fa-save"></i>Save</a></li>
-            <li><a href="#"><i class="fa fa-save"></i>Save as</a></li>
-            <li class="divider"></li>
-            <li><a href="#"><i class="fa fa-minus"></i>Split view</a></li>
+            <li><a ng-click="saveasModal()"><i class="fa fa-save"></i>Save as</a></li>
           </ul>
         </li>
         <li dropdown ng-if="UserProfile.versioning">
@@ -130,6 +128,46 @@
       </div>
     </div>
   </div>
+  <div class="modal-footer">
+      <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+  </div>
+</script>
+
+
+<script type="text/ng-template" id="navbar-saveas.html">
+  <div class="modal-header">
+      <h3 class="modal-title">Save as</h3>
+  </div>
+  <div class="modal-body">
+    <div class="breadcrumb" ng-if="breadcrumbFiles.length">
+      <li ng-repeat="file in breadcrumbFiles">
+        <a ng-if="isDefined(file.path)" href="" ng-click="open(file.path)">{{file.name}}</a>
+        <span ng-if="!isDefined(file.path)">{{file.name}}</span>
+      </li>
+    </div>
+    <div class="row">
+      <div class="col-md-6" ng-repeat="file in files">
+        <a ng-if="file.type === 'folder'" href="" ng-click="open(file.link)"><i class="fa fa-folder-o"></i> {{file.name}}</a>
+        <a ng-if="file.type === 'file'" ng-click="saveAs(file.name)"><i class="fa fa-file-excel-o"></i> {{file.name}}</a>
+      </div>
+    </div>
+  </div>
+
+  <form ng-submit="saveAs()">
+    <div class="form-group">
+      <label>Filename:</label>
+      <input ng-model="filename" required="required" />
+      <button type="submit">Save as</button>
+    </div>
+  </form>
+
+  <form ng-submit="createFolder()">
+    <div class="form-group">
+      <label>Create a new folder:</label>
+      <input ng-model="folder" required="required" />
+      <button type="submit">Create</button>
+    </div>
+  </form>
   <div class="modal-footer">
       <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
   </div>

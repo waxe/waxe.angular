@@ -101,6 +101,64 @@ angular.module('waxeApp')
                     });
 
                 };
+
+                scope.saveasModal = function() {
+                    var modalInstance = $modal.open({
+                        templateUrl: 'navbar-saveas.html',
+                        controller: function($scope, $modalInstance, parentScope) {
+
+                            $scope.folder = '';
+                            $scope.filename = '';
+
+                            $scope.createFolder = function() {
+                                var url = UrlFactory.getUserAPIUrl('create-folder');
+                                $http
+                                  .post(url, {path: parentScope.currentPath,
+                                                      name: $scope.folder})
+                                  .then(function(res) {
+                                    $scope.open(res.data.link);
+                                    $scope.folder = '';
+                                });
+                            };
+
+                            $scope.saveAs = function(filename) {
+                                filename = filename || $scope.filename;
+                                $scope.cancel();
+                                alert('Save file as ' + filename);
+                            };
+
+                            $scope.open = function(path) {
+                                parentScope.currentPath = path;
+
+                                $scope.breadcrumbFiles = Utils.getBreadcrumbFiles(path);
+
+                                var url = UrlFactory.getUserAPIUrl('ng-explore');
+                                $http
+                                  .get(url, {params: {path: path}})
+                                  .then(function(res) {
+                                    $scope.files = res.data;
+                                });
+                            };
+
+                            $scope.open(parentScope.currentPath);
+
+                            $scope.cancel = function () {
+                                $modalInstance.dismiss('cancel');
+                            };
+                        },
+                        resolve: {
+                            parentScope: function() {
+                                return scope;
+                            }
+                        }
+                    });
+
+                    modalInstance.result.then(function(data) {
+                        var url = UrlFactory.userUrl('xml/new');
+                        $location.path(url).search(data);
+                    });
+
+                };
             }
         };
     });
