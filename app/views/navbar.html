@@ -29,7 +29,7 @@
             </li>
             <li ng-if="UserProfile.root_template_path"><a href="#"><i class="fa fa-file-o"></i>XML <small>(from template)</small></a></li>
             <li class="divider"></li>
-            <li><a href="#"><i class="fa fa-folder-open-o"></i>Open</a></li>
+            <li><a ng-click="openModal()"><i class="fa fa-folder-open-o"></i>Open</a></li>
             <li class="disabled"><a href="#"><i class="fa fa-save"></i>Save</a></li>
             <li><a href="#"><i class="fa fa-save"></i>Save as</a></li>
             <li class="divider"></li>
@@ -107,6 +107,30 @@
   </div>
   <div class="modal-footer">
       <button class="btn btn-primary" ng-click="ok()">OK</button>
+      <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+  </div>
+</script>
+
+
+<script type="text/ng-template" id="navbar-open.html">
+  <div class="modal-header">
+      <h3 class="modal-title">Open file</h3>
+  </div>
+  <div class="modal-body">
+    <div class="breadcrumb" ng-if="breadcrumbFiles.length">
+      <li ng-repeat="file in breadcrumbFiles">
+        <a ng-if="isDefined(file.path)" href="" ng-click="open(file.path)">{{file.name}}</a>
+        <span ng-if="!isDefined(file.path)">{{file.name}}</span>
+      </li>
+    </div>
+    <div class="row">
+      <div class="col-md-6" ng-repeat="file in files">
+        <a ng-if="file.type === 'folder'" href="" ng-click="open(file.link)"><i class="fa fa-folder-o"></i> {{file.name}}</a>
+        <a ng-if="file.type === 'file'" ng-click="cancel()" href="#{{ UrlFactory.userUrl('xml/edit', {path: file.link}) }}"><i class="fa fa-file-excel-o"></i> {{file.name}}</a>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
       <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
   </div>
 </script>

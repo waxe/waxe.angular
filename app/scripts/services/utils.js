@@ -8,7 +8,7 @@
  * Service in the waxeApp.
  */
 angular.module('waxeApp')
-    .service('Utils', function ($http, $q, UrlFactory) {
+    .service('XmlUtils', function ($http, $q, UrlFactory) {
         this._dtdTags = {};
         this.getDtdTags = function(url) {
             if (url in this._dtdTags) {
@@ -25,5 +25,33 @@ angular.module('waxeApp')
                     that._dtdTags[url] = res.data;
                     return res.data;
                 });
+        };
+
+    }).service('Utils', function () {
+        this.getBreadcrumbFiles = function(file) {
+            if (typeof file === 'undefined' || file === '' || file === null) {
+                return [{name: 'root'}];
+            }
+
+            var breadcrumbFiles = [{
+                'name': 'root',
+                'path': ''
+            }];
+            var lis = file.split('/');
+            var path = '';
+            for (var i=0, len=lis.length; i < len; i++) {
+                if (i > 0) {
+                    path += '/';
+                }
+                path += lis[i];
+                var o = {
+                    'name': lis[i]
+                };
+                if (i < len -1) {
+                    o.path = path;
+                }
+                breadcrumbFiles.push(o);
+            }
+            return breadcrumbFiles;
         };
     });

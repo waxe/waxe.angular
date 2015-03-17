@@ -8,7 +8,7 @@
  * Factory in the waxeangularApp.
  */
 angular.module('waxeApp')
-    .service('Session', function () {
+    .service('Session', function (Utils) {
 
         this.init = function() {
             this.currentFile = null;
@@ -36,29 +36,6 @@ angular.module('waxeApp')
                 return;
             }
             this.currentFile = file;
-            this.breadcrumbFiles = [];
-            if (typeof this.currentFile === 'undefined' || this.currentFile === '') {
-                this.breadcrumbFiles = [{name: 'root'}];
-                return;
-            }
-            this.breadcrumbFiles = [{
-                'name': 'root',
-                'path': ''
-            }];
-            var lis = this.currentFile.split('/');
-            var path = '';
-            for (var i=0, len=lis.length; i < len; i++) {
-                if (i > 0) {
-                    path += '/';
-                }
-                path += lis[i];
-                var o = {
-                    'name': lis[i]
-                };
-                if (i < len -1) {
-                    o.path = path;
-                }
-                this.breadcrumbFiles.push(o);
-            }
+            this.breadcrumbFiles = Utils.getBreadcrumbFiles(this.currentFile);
         };
     });
