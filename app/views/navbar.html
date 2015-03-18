@@ -62,12 +62,12 @@
         <li ng-if="!UserProfile.login" class="active"><a ng-href="#/login">Login</a></li>
         <li dropdown ng-if="UserProfile.login">
           <a dropdown-toggle>
-            <span>{{UserProfile.login}}</span>
+            <span>{{Session.user}}</span>
             <b class="caret"></b>
           </a>
           <ul class="dropdown-menu dropdown-menu-icons">
             <li ng-repeat="login in UserProfile.logins">
-              <a href="#{{UrlFactory.urlFor(login)}}">{{login}}</a>
+              <a ng-if="login!=Session.user" href="#{{UrlFactory.urlFor(login)}}">{{login}}</a>
             </li>
             <li>
               <a href="" ng-click="logout()">
