@@ -63,4 +63,21 @@ angular
             });
 
         $httpProvider.interceptors.push('HttpInterceptor');
+    })
+    .run(function($rootScope, Session) {
+
+        // Be sure the user save before closing window
+        window.onbeforeunload = function(event) {
+            if(Session.form && Session.form.status){
+
+                event = event || window.event;
+                var confirmClose = 'The file has been updated, are you sure you want to exit?';
+                if (event) {
+                    event.returnValue = confirmClose;
+                }
+                // For safari
+                return confirmClose;
+            }
+        };
+
     });

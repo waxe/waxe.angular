@@ -118,7 +118,11 @@ angular.module('waxeApp')
                     $http
                         .post(url, data)
                         .then(function() {
-                            Session.form.status = null;
+                            if (Session.form) {
+                                // When we save before destroying the form
+                                // Session.form can be already deleted
+                                Session.form.status = null;
+                            }
                             MessageService.set('success', 'Saved!');
                         });
                 };

@@ -28,6 +28,14 @@ angular.module('waxeApp')
                 }, 1000 * 60);
 
                 scope.$on('$destroy', function() {
+                    if (Session.form && Session.form.status) {
+                        // TODO: use a modal
+                        var res = window.confirm('Do you want to save the file before moving?');
+                        if (res) {
+                            scope.save();
+                        }
+                    }
+
                     Session.form = null;
                     if (angular.isDefined(inter)) {
                         $interval.cancel(inter);
