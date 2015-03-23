@@ -1,0 +1,50 @@
+<form ng-submit="newSearch()">
+  <div class="form-group">
+    <input type="text" class="form-control" id="search" name="search" placeholder="Search" ng-model="search.search" />
+    <input type="text" class="form-control" id="path" name="path" placeholder="Path" ng-model="search.path" />
+    <button type="button" ng-click="folderModal()">Select a folder</button>
+  </div>
+
+
+  <button type="submit" class="btn btn-default">Search</button>
+
+</form>
+
+<br />
+<br />
+<br />
+
+
+<div ng-repeat="result in results">
+  <i class="fa fa-file-excel-o"></i>
+  <a href="{{'#' + UrlFactory.userUrl('xml/edit', {path: result[0] }) }}">{{result[0]}}</a>
+  <p ng-bind-html="result[1]"></p>
+</div>
+
+
+<pagination ng-if="totalItems > itemsPerPage" boundary-links="true" total-items="totalItems" ng-model="search.page" max-size="maxSize" items-per-page="itemsPerPage" rotate="false" ng-change="pageChanged()" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
+
+
+
+<script type="text/ng-template" id="search-folder.html">
+  <div class="modal-header">
+      <h3 class="modal-title">Select a folder</h3>
+  </div>
+  <div class="modal-body">
+    <div class="breadcrumb" ng-if="breadcrumbFiles.length">
+      <li ng-repeat="file in breadcrumbFiles">
+        <a ng-if="isDefined(file.path)" href="" ng-click="selectFolder(file.path)">{{file.name}}</a>
+        <span ng-if="!isDefined(file.path)">{{file.name}}</span>
+      </li>
+    </div>
+    <div class="row">
+      <div class="col-md-6" ng-repeat="file in files">
+        <a ng-if="file.type === 'folder'" href="" ng-click="selectFolder(file.link)"><i class="fa fa-folder-o"></i> {{file.name}}</a>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+      <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+      <button class="btn btn-success" ng-click="select()">Select</button>
+  </div>
+</script>

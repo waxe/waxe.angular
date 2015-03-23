@@ -24,6 +24,14 @@ angular.module('waxeApp')
                         MessageService.set('danger', res.data);
                     });
                 };
+
+                // We need to have an object to make ng-model working
+                scope.search = {text: ''};
+                scope.doSearch = function() {
+                    $location.url(UrlFactory.userUrl('search')).search({search: scope.search.text});
+                    scope.search.text = '';
+                };
+
                 // We need this variable to keep the last selected choice
                 scope.dtdUrl = null;
                 scope.dtdTag =  null;

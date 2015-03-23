@@ -48,6 +48,12 @@ angular
                 controller: 'FileManagerCtrl',
                 resolve: resolve
             })
+          .when('/account/:user/search', {
+                templateUrl: 'views/search.html',
+                controller: 'SearchCtrl',
+                resolve: resolve,
+                reloadOnSearch: false
+            })
           .when('/account/:user/:type/edit', {
                 templateUrl: 'views/edit.html',
                 controller: 'EditCtrl',

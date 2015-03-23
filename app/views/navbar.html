@@ -53,9 +53,10 @@
 
       <ul class="nav navbar-nav navbar-right">
         <li ng-if="UserProfile.search">
-          <form class="navbar-form navbar-left" role="search" method="POST">
+        <form class="navbar-form navbar-left" role="search" ng-submit="doSearch()">
             <div class="form-group">
-              <input type="text" name="search" class="form-control" placeholder="Search">
+              <input type="text" name="search" class="form-control" placeholder="Search" ng-model="search.text"/>
+              <button type="submit">Search</button>
             </div>
           </form>
         </li>
