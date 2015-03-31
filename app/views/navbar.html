@@ -13,7 +13,6 @@
     </div>
 
     <div class="collapse navbar-collapse" id="js-navbar-collapse">
-
       <ul class="nav navbar-nav">
         <li dropdown>
           <a dropdown-toggle>
@@ -79,6 +78,11 @@
         </li>
       </ul>
     </div>
+    <ul class="nav navbar-nav navbar-icons">
+      <li><a class="fa fa-file-o" title="New" ng-click="newXmlModal()" href=""></a></li>
+      <li><a class="fa fa-folder-open-o" title="Open" ng-click="openModal()" href=""></a></li>
+      <li ng-class="{disabled: !Session.hasForm}"><a class="save fa fa-save" title="Save" ng-click="save()" href=""></a></li>
+    </ul>
   </div>
 </div>
 
