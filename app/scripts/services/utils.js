@@ -28,6 +28,20 @@ angular.module('waxeApp')
         };
 
     }).service('Utils', function () {
+        this.getFormDataForSubmit = function($form) {
+            var dic = {
+                url: $form.data('action')
+            };
+            var lis = $form.serializeArray();
+            var data = {};
+            for (var i=0, len=lis.length; i < len; i++) {
+                var d = lis[i];
+                // TODO: support to have many values for one key.
+                data[d.name] = d.value;
+            }
+            dic.data = data;
+            return dic;
+        };
         this.getBreadcrumbFiles = function(file) {
             if (typeof file === 'undefined' || file === '' || file === null) {
                 return [{name: 'root'}];

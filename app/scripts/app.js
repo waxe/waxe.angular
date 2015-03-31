@@ -54,6 +54,16 @@ angular
                 resolve: resolve,
                 reloadOnSearch: false
             })
+          .when('/account/:user/versioning', {
+                templateUrl: 'views/versioning.html',
+                controller: 'VersioningCtrl',
+                resolve: resolve,
+            })
+          .when('/account/:user/versioning/diff', {
+                templateUrl: 'views/versioningdiff.html',
+                controller: 'VersioningDiffCtrl',
+                resolve: resolve,
+            })
           .when('/account/:user/:type/edit', {
                 templateUrl: 'views/edit.html',
                 controller: 'EditCtrl',

@@ -112,19 +112,21 @@ angular.module('waxeApp')
                 };
 
                 scope.save = function() {
+                    console.log('save');
+                    var dic;
+                    // TODO: if we keep this logic we should refactor this function.
+                    if (Session.submitForm) {
+                        Session.submitForm();
+                        return;
+                    }
+                    // TODO: move this logic in edit controller
                     if (!Session.form.filename) {
                         scope.saveasModal();
                         return;
                     }
-                    var url = Session.form.$element.data('action');
-                    var lis = Session.form.$element.serializeArray();
-                    var data = {};
-                    for (var i=0, len=lis.length; i < len; i++) {
-                        var d = lis[i];
-                        data[d.name] = d.value;
-                    }
+                    dic = Utils.getFormDataForSubmit(Session.form.$element);
                     $http
-                        .post(url, data)
+                        .post(dic.url, dic.data)
                         .then(function() {
                             if (Session.form) {
                                 // When we save before destroying the form
