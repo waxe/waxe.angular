@@ -93,7 +93,7 @@ body {
 
 /* The layout is absolute on the top. Instead of rewriting the css just hack the top position */
 .ui-layout-column {
-  top: 100px;
+  top: 30px;
 }
 
 .ui-splitbar {
@@ -106,3 +106,22 @@ body {
 
 /* From ui.bootstrap since we can't add empty href */
 .nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
+
+.navbar {
+  margin-bottom: 0;
+}
+
+.container-autoscroll {
+  overflow: auto;
+  position: absolute;
+  bottom: 0;
+  top: 100px;
+}
+
+.breadcrumb {
+  top: 65px;
+  border-bottom: 1px solid #e7e7e7;
+  margin-bottom: 0;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}

@@ -23,6 +23,7 @@ angular.module('waxeApp')
 
                 var inter = $interval(function() {
                     if (Session.form && Session.form.filename && Session.form.status === 'updated'){
+                        // TODO: is it really working
                         scope.save();
                     }
                 }, 1000 * 60);

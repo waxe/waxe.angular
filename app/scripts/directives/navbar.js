@@ -12,6 +12,7 @@ angular.module('waxeApp')
             templateUrl: 'views/navbar.html',
             restrict: 'E',
             transclude: true,
+            replace: true,
             link: function postLink(scope) {
                 scope.NavbarService = NavbarService;
                 scope.UserProfile = UserProfile;
