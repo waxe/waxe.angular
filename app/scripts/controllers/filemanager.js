@@ -11,7 +11,7 @@ angular.module('waxeApp')
     .controller('FileManagerCtrl', function ($scope, $http, $routeParams, UrlFactory, Session, UserProfile) {
         Session.updateFromRouteParams($routeParams);
 
-        var url = UrlFactory.getUserAPIUrl('ng-explore');
+        var url = UrlFactory.getUserAPIUrl('explore');
         $http
           .get(url, {params: $routeParams})
           .then(function(res) {

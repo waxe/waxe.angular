@@ -84,7 +84,7 @@ angular.module('waxeApp')
                             $scope.open = function(path) {
                                 parentScope.currentPath = path;
                                 $scope.breadcrumbFiles = Utils.getBreadcrumbFiles(path);
-                                var url = UrlFactory.getUserAPIUrl('ng-explore');
+                                var url = UrlFactory.getUserAPIUrl('explore');
                                 $http
                                   .get(url, {params: {path: path}})
                                   .then(function(res) {
@@ -177,7 +177,7 @@ angular.module('waxeApp')
 
                                 $scope.breadcrumbFiles = Utils.getBreadcrumbFiles(path);
 
-                                var url = UrlFactory.getUserAPIUrl('ng-explore');
+                                var url = UrlFactory.getUserAPIUrl('explore');
                                 $http
                                   .get(url, {params: {path: path}})
                                   .then(function(res) {
