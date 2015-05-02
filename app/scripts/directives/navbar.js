@@ -76,11 +76,46 @@ angular.module('waxeApp')
 
                 };
 
+                scope.currentXmlTemplatePath = null;
+                scope.newXmlTemplateModal = function() {
+                    var modalInstance = $modal.open({
+                        templateUrl: 'navbar-open.html',
+                        controller: function($scope, $modalInstance, parentScope) {
+
+                            $scope.url = 'xml/new';
+
+                            $scope.open = function(path) {
+                                parentScope.currentXmlTemplatePath = path;
+                                $scope.breadcrumbFiles = Utils.getBreadcrumbFiles(path, AccountProfile.templates_path);
+                                var url = UrlFactory.getUserAPIUrl('explore');
+                                $http
+                                  .get(url, {params: {path: path}})
+                                  .then(function(res) {
+                                    $scope.files = res.data;
+                                });
+                            };
+
+                            $scope.open(parentScope.currentXmlTemplatePath || AccountProfile.templates_path);
+
+                            $scope.cancel = function () {
+                                $modalInstance.dismiss('cancel');
+                            };
+                        },
+                        resolve: {
+                            parentScope: function() {
+                                return scope;
+                            }
+                        }
+                    });
+                };
+
                 scope.currentPath = null;
                 scope.openModal = function() {
                     var modalInstance = $modal.open({
                         templateUrl: 'navbar-open.html',
                         controller: function($scope, $modalInstance, parentScope) {
+
+                            $scope.url = 'xml/edit';
 
                             $scope.open = function(path) {
                                 parentScope.currentPath = path;
@@ -105,12 +140,6 @@ angular.module('waxeApp')
                             }
                         }
                     });
-
-                    modalInstance.result.then(function(data) {
-                        var url = UrlFactory.userUrl('xml/new');
-                        $location.path(url).search(data);
-                    });
-
                 };
 
                 scope.save = function() {

@@ -14,8 +14,8 @@
 
     <div class="collapse navbar-collapse" id="js-navbar-collapse">
       <ul class="nav navbar-nav">
-        <li dropdown>
-          <a dropdown-toggle>
+        <li dropdown ng-class="{disabled: !Session.accountUsable}">
+          <a dropdown-toggle ng-class="{disabled: !Session.accountUsable}">
             File
             <b class="caret"></b>
           </a>
@@ -26,14 +26,14 @@
                 <i class="fa fa-file-o"></i>XML
               </a>
             </li>
-            <li ng-if="UserProfile.root_template_path"><a href="#"><i class="fa fa-file-o"></i>XML <small>(from template)</small></a></li>
+            <li ng-if="AccountProfile.has_template_files"><a ng-click="newXmlTemplateModal()"><i class="fa fa-file-o"></i>XML <small>(from template)</small></a></li>
             <li class="divider"></li>
             <li><a ng-click="openModal()"><i class="fa fa-folder-open-o"></i>Open</a></li>
             <li ng-class="{disabled: !Session.hasForm}"><a ng-click="save()"><i class="fa fa-save"></i>Save</a></li>
             <li ng-class="{disabled: !Session.form}"><a ng-click="saveasModal()"><i class="fa fa-save"></i>Save as</a></li>
           </ul>
         </li>
-        <li dropdown ng-if="UserProfile.versioning">
+        <li dropdown ng-if="Session.accountUsable && AccountProfile.has_versioning">
           <a dropdown-toggle>
           Versioning
               <b class="caret"></b>
@@ -47,19 +47,19 @@
               </li>
           </ul>
         </li>
-        <li ng-if="UserProfile.xml_renderer"><a href="#">Rendering</a></li>
+        <li ng-if="Session.accountUsable && AccountProfile.has_xml_renderer"><a href="#">Rendering</a></li>
       </ul>
 
       <ul class="nav navbar-nav navbar-right">
-        <li ng-if="UserProfile.search">
+        <li ng-if="Session.accountUsable && AccountProfile.has_search">
         <form class="navbar-form navbar-left" role="search" ng-submit="doSearch()">
             <div class="form-group">
               <input type="text" name="search" class="form-control" placeholder="Search" ng-model="search.text"/>
             </div>
           </form>
         </li>
-        <li ng-if="!UserProfile.login" class="active"><a ng-href="#/login">Login</a></li>
-        <li dropdown ng-if="UserProfile.login">
+        <li ng-if="!Session.login" class="active"><a ng-href="#/login">Login</a></li>
+        <li dropdown ng-if="Session.login">
           <a dropdown-toggle>
             <span>{{Session.login}}</span>
             <b class="caret"></b>
@@ -78,8 +78,8 @@
       </ul>
     </div>
     <ul class="nav navbar-nav navbar-icons">
-      <li><a class="fa fa-file-o" title="New" ng-click="newXmlModal()" href=""></a></li>
-      <li><a class="fa fa-folder-open-o" title="Open" ng-click="openModal()" href=""></a></li>
+      <li ng-class="{disabled: !Session.accountUsable}"><a class="fa fa-file-o" title="New" ng-click="newXmlModal()" href=""></a></li>
+      <li ng-class="{disabled: !Session.accountUsable}"><a class="fa fa-folder-open-o" title="Open" ng-click="openModal()" href=""></a></li>
       <li ng-class="{disabled: !Session.hasForm}"><a class="save fa fa-save" title="Save" ng-click="save()" href=""></a></li>
     </ul>
   </div>
@@ -96,12 +96,12 @@
           </li>
       </ul>
       Selected: <b>{{ selected.item }}</b>
-      <select ng-change="updateDtdTags()" ng-model="dtdUrl">
-        <option ng-repeat="dtd in UserProfile.dtd_urls">{{dtd}}</option>
+      <select ng-change="updateDtdTags()" ng-model="dtd_url">
+        <option ng-repeat="dtd in AccountProfile.dtd_urls">{{dtd}}</option>
       </select>
 
 
-      <select ng-model="dtdTag">
+      <select ng-model="dtd_tag">
         <option ng-repeat="tag in dtdTags">{{tag}}</option>
       </select>
 
@@ -127,7 +127,7 @@
     <div class="row">
       <div class="col-md-6" ng-repeat="file in files">
         <a ng-if="file.type === 'folder'" href="" ng-click="open(file.link)"><i class="fa fa-folder-o"></i> {{file.name}}</a>
-        <a ng-if="file.type === 'file'" ng-click="cancel()" href="#{{ UrlFactory.userUrl('xml/edit', {path: file.link}) }}"><i class="fa fa-file-excel-o"></i> {{file.name}}</a>
+        <a ng-if="file.type === 'file'" ng-click="cancel()" href="#{{ UrlFactory.userUrl(url, {path: file.link}) }}"><i class="fa fa-file-excel-o"></i> {{file.name}}</a>
       </div>
     </div>
   </div>

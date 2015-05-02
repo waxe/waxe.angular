@@ -24,7 +24,11 @@ angular.module('waxeApp')
             this.hasForm = null;
 
             if (this.accountUsable) {
-                this.setBreadcrumbFiles($route.current.params.path);
+                var path = '(new file)';
+                if (typeof $route.current.$$route.noAutoBreadcrumb === 'undefined') {
+                    path = $route.current.params.path;
+                }
+                this.setBreadcrumbFiles(path);
             }
         };
 

@@ -42,14 +42,26 @@ angular.module('waxeApp')
             dic.data = data;
             return dic;
         };
-        this.getBreadcrumbFiles = function(file) {
+        this.getBreadcrumbFiles = function(file, rootpath) {
+
+            rootpath = typeof rootpath !== 'undefined'? rootpath: '';
             if (typeof file === 'undefined' || file === '' || file === null) {
+                return [{name: 'root'}];
+            }
+
+            if (rootpath !== '' && file.indexOf(rootpath) === 0) {
+                file = file.slice(rootpath.length);
+                if (file.indexOf('/') === 0) {
+                    file = file.slice(1);
+                }
+            }
+            if (file === '') {
                 return [{name: 'root'}];
             }
 
             var breadcrumbFiles = [{
                 'name': 'root',
-                'path': ''
+                'path': rootpath
             }];
             var lis = file.split('/');
             var path = '';

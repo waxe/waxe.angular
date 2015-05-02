@@ -72,7 +72,8 @@ angular
           .when('/account/:user/:type/new', {
                 templateUrl: 'views/edit.html',
                 controller: 'EditCtrl',
-                resolve: resolve
+                resolve: resolve,
+                noAutoBreadcrumb: true
             })
           .otherwise({
                 redirectTo: '/'
