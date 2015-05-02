@@ -59,6 +59,11 @@ angular
                 controller: 'VersioningCtrl',
                 resolve: resolve,
             })
+          .when('/account/:user/versioning/update', {
+                templateUrl: 'views/versioningupdate.html',
+                controller: 'VersioningUpdateCtrl',
+                resolve: resolve,
+            })
           .when('/account/:user/versioning/diff', {
                 templateUrl: 'views/versioningdiff.html',
                 controller: 'VersioningDiffCtrl',
