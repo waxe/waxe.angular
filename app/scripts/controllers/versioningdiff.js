@@ -14,7 +14,7 @@ angular.module('waxeApp')
         $http
           .get(url, {params: $routeParams})
           .then(function(res) {
-                $scope.html = $compile(res.data.content)($scope);
+                $scope.html = $compile(res.data)($scope);
                 Session.submitForm = $scope.submitForm;
                 Session.hasForm = true;
             });
@@ -36,8 +36,8 @@ angular.module('waxeApp')
             var dic = Utils.getFormDataForSubmit($form);
             $http
                 .post(dic.url, dic.data)
-                .then(function() {
-                    MessageService.set('success', 'Saved!');
+                .then(function(res) {
+                    MessageService.set('success', res.data);
                 });
             return;
         };

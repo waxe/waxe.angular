@@ -30,7 +30,7 @@
             <li class="divider"></li>
             <li><a ng-click="openModal()"><i class="fa fa-folder-open-o"></i>Open</a></li>
             <li ng-class="{disabled: !Session.hasForm}"><a ng-click="save()"><i class="fa fa-save"></i>Save</a></li>
-            <li ng-class="{disabled: !Session.hasForm}"><a ng-click="saveasModal()"><i class="fa fa-save"></i>Save as</a></li>
+            <li ng-class="{disabled: !Session.form}"><a ng-click="saveasModal()"><i class="fa fa-save"></i>Save as</a></li>
           </ul>
         </li>
         <li dropdown ng-if="Session.accountUsable && AccountProfile.has_versioning">

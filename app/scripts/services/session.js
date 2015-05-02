@@ -10,9 +10,6 @@
 angular.module('waxeApp')
     .service('Session', function ($http, $q, $route, Utils, UserProfile, AccountProfile) {
 
-        // Will be updated when editing a form
-        this.form = null;
-
         this.init = function(login, accountUsable) {
             this.login = login;
             // Should be true when we can use the account data
@@ -20,8 +17,14 @@ angular.module('waxeApp')
             this.currentFile = null;
             this.user = null;
             this.breadcrumbFiles = [];
+
+            // Special handler when we click on the save button
             this.submitForm = null;
+            // We have a form, we should enable the save button
             this.hasForm = null;
+            // XML form
+            // NOTE: it enables the 'save as' button
+            this.form = null;
 
             if (this.accountUsable) {
                 var path = '(new file)';
