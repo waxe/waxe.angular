@@ -143,20 +143,20 @@ angular.module('waxeApp')
                 };
 
                 scope.save = function() {
-                    console.log('save');
                     var dic;
                     // TODO: if we keep this logic we should refactor this function.
                     if (Session.submitForm) {
                         Session.submitForm();
                         return;
                     }
+
                     // TODO: move this logic in edit controller
                     if (!Session.form.filename) {
                         scope.saveasModal();
                         return;
                     }
                     dic = Utils.getFormDataForSubmit(Session.form.$element);
-                    $http
+                    return $http
                         .post(dic.url, dic.data)
                         .then(function() {
                             if (Session.form) {
@@ -198,8 +198,11 @@ angular.module('waxeApp')
                                     path.push(parentScope.currentPath);
                                 }
                                 path.push(filename);
-                                Session.form.setFilename(path.join('/'));
-                                $scope.save();
+                                var relpath = path.join('/');
+                                Session.form.setFilename(relpath);
+                                $scope.save().then(function() {
+                                    Session.setBreadcrumbFiles(relpath);
+                                });
                             };
 
                             $scope.open = function(path) {

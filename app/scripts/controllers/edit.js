@@ -8,7 +8,7 @@
  * Controller of the waxeApp
  */
 angular.module('waxeApp')
-    .controller('EditCtrl', function ($scope, $http, $sce, $routeParams, $route, $location, UrlFactory) {
+    .controller('EditCtrl', function ($scope, $http, $sce, $routeParams, $route, $location, UrlFactory, Session) {
 
         var action = UrlFactory.getActionFromUrl($location.path());
         var url = UrlFactory.getUserAPIUrl($routeParams.type+'/'+action);
@@ -17,5 +17,6 @@ angular.module('waxeApp')
             .then(function(res) {
                 $scope.html = $sce.trustAsHtml(res.data.content);
                 $scope.treeData = res.data.jstree_data;
+                Session.hasForm = true;
             });
     });
