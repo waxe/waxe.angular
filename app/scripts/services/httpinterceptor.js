@@ -8,14 +8,19 @@
  * Factory in the waxeApp.
  */
 angular.module('waxeApp')
-    .factory('HttpInterceptor', function ($location, $q) {
+    .factory('HttpInterceptor', function ($location, $q, MessageService) {
 
         return {
             responseError: function(rejection) {
+
                 if (rejection.status === 401) {
-                    $location.url('/login?next=' + encodeURIComponent($location.url()));
+                    if ($location.$$path !== '/login') {
+                        $location.url('/login?next=' + encodeURIComponent($location.url()));
+                        return $q.reject(rejection);
+                    }
                 }
-                // TODO: Put the error message in Message
+
+                MessageService.set('danger', rejection.data);
                 return $q.reject(rejection);
             }
         };

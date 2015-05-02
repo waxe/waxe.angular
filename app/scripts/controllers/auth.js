@@ -8,7 +8,7 @@
  * Controller of the waxeApp
  */
 angular.module('waxeApp')
-    .controller('LoginCtrl', function ($scope, $location, AuthService, UserProfile, MessageService) {
+    .controller('LoginCtrl', function ($scope, $location, AuthService, UserProfile) {
 
         $scope.UserProfile = UserProfile;
 
@@ -19,15 +19,16 @@ angular.module('waxeApp')
 
         $scope.login = function (credentials) {
             AuthService.login(credentials).then(function() {
-                var next = $location.search().next;
-                if (typeof next !== 'undefined') {
-                    $location.url(next);
-                }
-                else {
-                    $location.url('/');
-                }
-            }, function(res) {
-                MessageService.set('danger', res.data);
+                // In waiting we update the API, we make 2 requests
+                AuthService.profile().then(function() {
+                    var next = $location.search().next;
+                    if (typeof next !== 'undefined') {
+                        $location.url(next);
+                    }
+                    else {
+                        $location.url('/');
+                    }
+                });
             });
         };
     });
