@@ -8,7 +8,7 @@
  * Controller of the waxeApp
  */
 angular.module('waxeApp')
-    .controller('VersioningCtrl', function ($scope, $http, $routeParams, $location,  AccountProfile, UrlFactory) {
+    .controller('VersioningCtrl', function ($scope, $http, $routeParams, $location,  $modal, AccountProfile, UrlFactory, MessageService) {
 
         if (!AccountProfile.has_versioning) {
             // TODO: error message
@@ -47,7 +47,7 @@ angular.module('waxeApp')
             }
             var url = UrlFactory.getUserAPIUrl('versioning/revert');
             $http
-                .post(url, {filenames: files})
+                .post(url, {paths: files})
                 .then(function() {
                     angular.forEach(reals, function(filename) {
                         var index = filenames.indexOf(filename);
@@ -56,25 +56,42 @@ angular.module('waxeApp')
                 });
         };
 
-        $scope.doRemove = function(filenames) {
-            var files = [],
-                reals = [];
-            for (var i=0, len=filenames.length; i < len; i++) {
-                var filename = filenames[i];
-                if (filename.selected === true) {
-                    files.push(filename.relpath);
-                    reals.push(filename);
+        $scope.doCommit = function(filenames) {
+            var modalInstance = $modal.open({
+                templateUrl: 'commit.html',
+                controller: function($scope, $modalInstance) {
+
+                    $scope.ok = function () {
+                        $modalInstance.close({'message': $scope.message});
+                    };
+
+                    $scope.cancel = function () {
+                        $modalInstance.dismiss('cancel');
+                    };
                 }
-            }
-            var url = UrlFactory.getUserAPIUrl('remove');
-            $http
-                .post(url, {paths: files})
-                .then(function() {
-                    angular.forEach(reals, function(filename) {
-                        var index = filenames.indexOf(filename);
-                        filenames.splice(index, 1);
+            });
+
+            modalInstance.result.then(function(data) {
+                var files = [],
+                    reals = [];
+                for (var i=0, len=filenames.length; i < len; i++) {
+                    var filename = filenames[i];
+                    if (filename.selected === true) {
+                        files.push(filename.relpath);
+                        reals.push(filename);
+                    }
+                }
+                var url = UrlFactory.getUserAPIUrl('versioning/commit');
+                $http
+                    .post(url, {paths: files, msg: data.message})
+                    .then(function(res) {
+                        angular.forEach(reals, function(filename) {
+                            var index = filenames.indexOf(filename);
+                            filenames.splice(index, 1);
+                        });
+                        MessageService.set('success', res.data);
                     });
-                });
+            });
         };
 
         $scope.doDiff = function(filenames) {
@@ -88,4 +105,6 @@ angular.module('waxeApp')
             var url = UrlFactory.userUrl('versioning/diff');
             $location.path(url).search({paths: files});
         };
+
+        // TODO: support commit
     });

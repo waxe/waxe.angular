@@ -63,10 +63,24 @@
           <a href="#{{UrlFactory.userUrl('xml/edit', {path: other.relpath})}}">{{other.relpath}}</a>
         </li>
       </ul>
-      <button class="btn btn-danger" type="button" ng-click="doRevert(versioning.others)">Revert</button>
-      <button class="btn btn-danger" type="submit" ng-click="doRemove(versioning.others)" data-confirm="Are you sure you want to delete the selected files?">Remove</button>
+      <button class="btn btn-danger" type="submit" ng-click="doRevert(versioning.others)" data-confirm="Are you sure you want to revert the selected files? All your modifications will be deleted!">Revert</button>
       <button class="btn btn-primary" type="submit" ng-click="doDiff(versioning.others)">Diff</button>
-      <input class="btn btn-success" type="submit" value="Commit" name="submit" />
+      <button class="btn btn-success" type="submit" ng-click="doCommit(versioning.others)">Commit</button>
     </form>
   </div>
 </div>
+
+
+<script type="text/ng-template" id="commit.html">
+  <div class="modal-header">
+      <h3 class="modal-title">Commit message</h3>
+  </div>
+  <div class="modal-body">
+    <textarea class="form-control" ng-model="message"></textarea>
+  </div>
+
+  <div class="modal-footer">
+      <button class="btn btn-primary" ng-click="ok()">OK</button>
+      <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+  </div>
+</script>
