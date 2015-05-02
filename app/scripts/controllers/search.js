@@ -28,7 +28,7 @@ angular.module('waxeApp')
               .get(url, {params: $scope.search})
               .then(function(res) {
                 $anchorScroll();
-                $scope.results = res.data.data;
+                $scope.results = res.data.results;
                 $scope.totalItems = res.data.nb_items;
                 $scope.itemsPerPage = res.data.items_per_page;
             });
