@@ -8,8 +8,7 @@
  * Controller of the waxeApp
  */
 angular.module('waxeApp')
-    .controller('FileManagerCtrl', function ($scope, $http, $routeParams, UrlFactory, Session, UserProfile) {
-        Session.updateFromRouteParams($routeParams);
+    .controller('FileManagerCtrl', function ($scope, $http, $routeParams, UrlFactory, UserProfile) {
 
         var url = UrlFactory.getUserAPIUrl('explore');
         $http

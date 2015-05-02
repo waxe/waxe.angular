@@ -8,36 +8,33 @@
  * Factory in the waxeangularApp.
  */
 angular.module('waxeApp')
-    .service('Session', function (Utils) {
+    .service('Session', function ($http, $q, $route, Utils, UserProfile, AccountProfile) {
 
         // Will be updated when editing a form
         this.form = null;
 
-        this.init = function() {
+        this.init = function(login, accountUsable) {
+            this.login = login;
+            // Should be true when we can use the account data
+            this.accountUsable = accountUsable;
             this.currentFile = null;
             this.user = null;
             this.breadcrumbFiles = [];
             this.submitForm = null;
             this.hasForm = null;
+
+            if (this.accountUsable) {
+                this.setBreadcrumbFiles($route.current.params.path);
+            }
         };
 
-        this.init();
-
-        this.updateFromRouteParams = function(routeParams) {
-            // TODO: review the logic. We should call the init here to be sure
-            // all the attributes are well reset
-            this.form = null;
-            this.hasForm = null;
-            this.submitForm = null;
-            this.user = routeParams.user;
-            // TODO: handle correctly when routeParams is undefined
-            this.setBreadcrumbFiles(routeParams.path);
-        };
-
-        this.update = function(response) {
-            var params = response.config.params || {};
-            this.user = params.user;
-            this.setBreadcrumbFiles(params.path);
+        this.load = function() {
+            if(angular.isDefined(AccountProfile.login)) {
+                this.init(AccountProfile.login, true);
+            }
+            else{
+                this.init(UserProfile.login, false);
+            }
         };
 
         this.setBreadcrumbFiles = function(file) {

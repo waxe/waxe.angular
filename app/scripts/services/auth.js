@@ -8,9 +8,7 @@
  * Service in the waxeApp.
  */
 angular.module('waxeApp')
-    .service('AuthService', function ($http, $q, UserProfile, UrlFactory, Session) {
-
-        var init = false;
+    .service('AuthService', function ($http, $q, UserProfile, AccountProfile, UrlFactory, Session) {
 
         this.login = function (credentials) {
             return $http
@@ -18,26 +16,17 @@ angular.module('waxeApp')
                 .then(function (res) {
                     UserProfile.create(res.data);
                     Session.init();
-                    init = true;
                 });
         };
 
-        this.logout = function (credentials) {
+        this.logout = function () {
             return $http
-                .post(UrlFactory.getAPIUrl('logout'), credentials)
+                .get(UrlFactory.getAPIUrl('logout'))
                 .then(function () {
                     UserProfile.destroy();
+                    AccountProfile.destroy();
                     Session.init();
-                    init = false;
                 });
-        };
-
-        this.profileLoaded = function() {
-            if (init) {
-                return $q.when(true);
-            }
-            init = true;
-            return this.profile();
         };
 
         this.profile = function() {

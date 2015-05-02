@@ -35,7 +35,7 @@ angular.module('waxeApp')
                 return u;
             },
             userUrl: function(name, params) {
-                return this.urlFor(Session.user, name, params);
+                return this.urlFor(Session.login, name, params);
             }
         };
     });

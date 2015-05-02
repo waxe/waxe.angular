@@ -10,13 +10,7 @@
 angular.module('waxeApp')
     .controller('MainCtrl', function ($scope, $location, UrlFactory, UserProfile, Session) {
 
-        Session.init();
-
-        if(UserProfile.root_path !== null) {
-            Session.user = UserProfile.login;
-        }
-
-        if (Session.user !== null) {
+        if (UserProfile.has_file === true) {
             $location.url(UrlFactory.userUrl());
             return;
         }

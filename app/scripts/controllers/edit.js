@@ -8,9 +8,7 @@
  * Controller of the waxeApp
  */
 angular.module('waxeApp')
-    .controller('EditCtrl', function ($scope, $http, $sce, $routeParams, $route, $location, UrlFactory, Session) {
-
-        Session.updateFromRouteParams($routeParams);
+    .controller('EditCtrl', function ($scope, $http, $sce, $routeParams, $route, $location, UrlFactory) {
 
         var action = UrlFactory.getActionFromUrl($location.path());
         var url = UrlFactory.getUserAPIUrl($routeParams.type+'/'+action);

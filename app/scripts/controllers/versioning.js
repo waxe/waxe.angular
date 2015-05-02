@@ -8,8 +8,7 @@
  * Controller of the waxeApp
  */
 angular.module('waxeApp')
-    .controller('VersioningCtrl', function ($scope, $http, $routeParams, $location, Session, UserProfile, UrlFactory) {
-        Session.updateFromRouteParams($routeParams);
+    .controller('VersioningCtrl', function ($scope, $http, $routeParams, $location,  UserProfile, UrlFactory) {
 
         if (!UserProfile.versioning) {
             // TODO: error message

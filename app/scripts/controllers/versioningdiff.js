@@ -9,7 +9,7 @@
  */
 angular.module('waxeApp')
     .controller('VersioningDiffCtrl', function ($scope, $http, $routeParams, $sce, $compile, UrlFactory, Session, Utils, MessageService) {
-        Session.updateFromRouteParams($routeParams);
+
         var url = UrlFactory.getUserAPIUrl('versioning/full-diff');
         $http
           .get(url, {params: $routeParams})

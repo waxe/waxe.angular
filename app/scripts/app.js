@@ -14,8 +14,8 @@
 // If the user is not logged he will be redirect to the login page since in
 // this case the profile page returns a 401.
 var resolve = {
-    profileLoaded: function(AuthService) {
-        return AuthService.profileLoaded();
+    loadProfile: function($route, ProfileManager) {
+        return ProfileManager.load($route.current.params.user);
     }
 };
 
