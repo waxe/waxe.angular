@@ -39,11 +39,12 @@
               <b class="caret"></b>
           </a>
           <ul class="dropdown-menu dropdown-versioning">
+              <!-- HACK: we put a slash at the end of the url to let angular making a redirect and reload the page if already loaded -->
               <li>
-                <a href="#{{UrlFactory.userUrl('versioning')}}">Status</a>
+                <a href="#{{UrlFactory.userUrl('versioning/')}}">Status</a>
               </i>
               <li>
-                <a href="#{{UrlFactory.userUrl('versioning/update')}}">Update</a>
+                <a href="#{{UrlFactory.userUrl('versioning/update/')}}">Update</a>
               </li>
           </ul>
         </li>
