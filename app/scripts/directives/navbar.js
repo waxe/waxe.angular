@@ -7,7 +7,7 @@
  * # navbar
  */
 angular.module('waxeApp')
-    .directive('navbar', function ($location, $modal, $http, NavbarService, UserProfile, AuthService, MessageService, XmlUtils, Utils, UrlFactory, Session) {
+    .directive('navbar', function ($location, $modal, $http, NavbarService, UserProfile, AccountProfile, AuthService, MessageService, XmlUtils, Utils, UrlFactory, Session) {
         return {
             templateUrl: 'views/navbar.html',
             restrict: 'E',
@@ -16,6 +16,7 @@ angular.module('waxeApp')
             link: function postLink(scope) {
                 scope.NavbarService = NavbarService;
                 scope.UserProfile = UserProfile;
+                scope.AccountProfile = AccountProfile;
                 scope.UrlFactory = UrlFactory;
                 scope.Session = Session;
                 scope.logout = function() {
@@ -34,27 +35,27 @@ angular.module('waxeApp')
                 };
 
                 // We need this variable to keep the last selected choice
-                scope.dtdUrl = null;
-                scope.dtdTag =  null;
+                scope.dtd_url = null;
+                scope.dtd_tag =  null;
                 scope.newXmlModal = function() {
                     var modalInstance = $modal.open({
                         templateUrl: 'navbar-new.html',
                         controller: function($scope, $modalInstance, parentScope) {
 
-                            $scope.dtdUrl = parentScope.dtdUrl || UserProfile.dtd_urls[0];
+                            $scope.dtd_url = parentScope.dtd_url || AccountProfile.dtd_urls[0];
                             $scope.updateDtdTags = function(defaultTag) {
                                 $scope.dtdTags = [];
-                                XmlUtils.getDtdTags($scope.dtdUrl).then(function(tags) {
+                                XmlUtils.getDtdTags($scope.dtd_url).then(function(tags) {
                                     $scope.dtdTags = tags;
-                                    $scope.dtdTag = defaultTag || $scope.dtdTags[0];
+                                    $scope.dtd_tag = defaultTag || $scope.dtdTags[0];
                                 });
                             };
-                            $scope.updateDtdTags(parentScope.dtdTag);
+                            $scope.updateDtdTags(parentScope.dtd_tag);
 
                             $scope.ok = function () {
-                                $modalInstance.close({'dtdUrl': $scope.dtdUrl, 'dtdTag': $scope.dtdTag});
-                                parentScope.dtdUrl = $scope.dtdUrl;
-                                parentScope.dtdTag = $scope.dtdTag;
+                                $modalInstance.close({'dtd_url': $scope.dtd_url, 'dtd_tag': $scope.dtd_tag});
+                                parentScope.dtd_url = $scope.dtd_url;
+                                parentScope.dtd_tag = $scope.dtd_tag;
                             };
 
                             $scope.cancel = function () {

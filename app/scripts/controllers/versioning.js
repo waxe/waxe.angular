@@ -8,9 +8,9 @@
  * Controller of the waxeApp
  */
 angular.module('waxeApp')
-    .controller('VersioningCtrl', function ($scope, $http, $routeParams, $location,  UserProfile, UrlFactory) {
+    .controller('VersioningCtrl', function ($scope, $http, $routeParams, $location,  AccountProfile, UrlFactory) {
 
-        if (!UserProfile.versioning) {
+        if (!AccountProfile.has_versioning) {
             // TODO: error message
             // NOTE: the api should failed but make sure it's nicely handled.
         }

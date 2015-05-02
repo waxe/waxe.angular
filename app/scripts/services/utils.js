@@ -20,7 +20,7 @@ angular.module('waxeApp')
             this._dtdTags[url] = [];
             var that = this;
             return $http
-                .get(UrlFactory.getAPIUrl('xml/get-tags'), {params: {url: url}})
+                .get(UrlFactory.getUserAPIUrl('xml/get-tags'), {params: {dtd_url: url}})
                 .then(function (res) {
                     that._dtdTags[url] = res.data;
                     return res.data;
