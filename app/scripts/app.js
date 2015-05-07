@@ -30,7 +30,8 @@ angular
         'ngSanitize',
         'ngTouch',
         'ui.layout',
-        'ui.bootstrap'
+        'ui.bootstrap',
+        'diff-match-patch'
     ])
     .config(function ($routeProvider, $httpProvider) {
         $routeProvider
