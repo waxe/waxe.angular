@@ -7,7 +7,7 @@
  * # navbar
  */
 angular.module('waxeApp')
-    .directive('navbar', function ($location, $modal, $http, NavbarService, UserProfile, AccountProfile, AuthService, MessageService, XmlUtils, Utils, UrlFactory, Session) {
+    .directive('navbar', function ($location, $modal, $http, NavbarService, UserProfile, AccountProfile, AuthService, MessageService, XmlUtils, Utils, UrlFactory, Session, $routeParams) {
         return {
             templateUrl: 'views/navbar.html',
             restrict: 'E',
@@ -236,6 +236,25 @@ angular.module('waxeApp')
                         $location.path(url).search(data);
                     });
 
+                };
+
+                scope.sourceToggle = function() {
+                    var source = $routeParams.source;
+                    var type = UrlFactory.getTypeFromUrl($location.path());
+                    if (typeof source === 'undefined') {
+                        if (type !== 'txt') {
+                            var action = UrlFactory.getActionFromUrl($location.path());
+                            var redirect = UrlFactory.userUrl('txt/'+action);
+                            var params = {
+                                path: $routeParams.path,
+                                source: $location.path(),
+                            };
+                            $location.path(redirect).search(params);
+                        }
+                    }
+                    else {
+                        $location.path(source).search({path: $routeParams.path});
+                    }
                 };
             }
         };

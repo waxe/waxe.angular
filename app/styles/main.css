@@ -149,3 +149,13 @@ body {
   -ms-user-select: none;
   user-select: none;
 }
+
+.CodeMirror {
+  border: 1px solid #eee;
+  height: auto !important;
+}
+
+.btn-enabled {
+  color: #555;
+  background-color: #e7e7e7;
+}

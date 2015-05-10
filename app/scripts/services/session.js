@@ -26,6 +26,16 @@ angular.module('waxeApp')
             // NOTE: it enables the 'save as' button
             this.form = null;
 
+            this.source = $route.current.params.source;
+            this.editor = (typeof $route.current.$$route.editor !== 'undefined');
+
+            this.showSource = this.editor;
+            this.sourceEnabled = false;
+
+            if(this.editor && typeof this.source !== 'undefined') {
+                this.sourceEnabled = true;
+            }
+
             if (this.accountUsable) {
                 var path = '(new file)';
                 if (typeof $route.current.$$route.noAutoBreadcrumb === 'undefined') {

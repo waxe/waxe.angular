@@ -31,6 +31,7 @@ angular
         'ngTouch',
         'ui.layout',
         'ui.bootstrap',
+        'ui.codemirror',
         'diff-match-patch'
     ])
     .config(function ($routeProvider, $httpProvider) {
@@ -70,10 +71,18 @@ angular
                 controller: 'VersioningDiffCtrl',
                 resolve: resolve,
             })
+          .when('/account/:user/txt/edit', {
+                templateUrl: 'views/edittxt.html',
+                controller: 'EditTxtCtrl',
+                resolve: resolve,
+                editor: true
+
+            })
           .when('/account/:user/:type/edit', {
                 templateUrl: 'views/edit.html',
                 controller: 'EditCtrl',
-                resolve: resolve
+                resolve: resolve,
+                editor: true
             })
           .when('/account/:user/:type/new', {
                 templateUrl: 'views/edit.html',

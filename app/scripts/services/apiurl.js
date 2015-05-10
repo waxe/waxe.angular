@@ -24,6 +24,10 @@ angular.module('waxeApp')
                 var lis = url.split('/');
                 return lis[lis.length - 1];
             },
+            getTypeFromUrl: function(url) {
+                var lis = url.split('/');
+                return lis[lis.length - 2];
+            },
             urlFor: function (user, name, params) {
                 var u = '/account/' + user;
                 if (angular.isDefined(name)) {

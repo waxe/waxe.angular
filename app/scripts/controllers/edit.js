@@ -11,6 +11,7 @@ angular.module('waxeApp')
     .controller('EditCtrl', function ($scope, $http, $sce, $routeParams, $route, $location, UrlFactory, Session) {
 
         var action = UrlFactory.getActionFromUrl($location.path());
+
         var url = UrlFactory.getUserAPIUrl($routeParams.type+'/'+action);
         $http
             .get(url, {params: $routeParams})
@@ -18,5 +19,12 @@ angular.module('waxeApp')
                 $scope.html = $sce.trustAsHtml(res.data.content);
                 $scope.treeData = res.data.jstree_data;
                 Session.hasForm = true;
+            }, function() {
+                // Seems like there is a problem to display the XML file, we
+                // try to display it as txt.
+                // TODO: Do not redirect on 404
+                var redirect = UrlFactory.userUrl('txt/'+action);
+                var path = $location.path();
+                $location.path(redirect).search({path: $routeParams.path, source: path});
             });
     });
