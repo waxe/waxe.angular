@@ -8,7 +8,7 @@
  * Service in the waxeApp.
  */
 angular.module('waxeApp')
-    .service('AuthService', function ($http, $q, UserProfile, AccountProfile, UrlFactory, Session) {
+    .service('AuthService', ['$http', '$q', 'UserProfile', 'AccountProfile', 'UrlFactory', 'Session', function ($http, $q, UserProfile, AccountProfile, UrlFactory, Session) {
 
         this.login = function (credentials) {
             return $http
@@ -37,4 +37,4 @@ angular.module('waxeApp')
                 });
         };
         return this;
-    });
+    }]);

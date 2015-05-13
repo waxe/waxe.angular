@@ -8,7 +8,7 @@
  * Controller of the waxeApp
  */
 angular.module('waxeApp')
-    .controller('VersioningDiffCtrl', function ($scope, $http, $routeParams, $modal, $compile, UrlFactory, Session, Utils, MessageService) {
+    .controller('VersioningDiffCtrl', ['$scope', '$http', '$routeParams', '$modal', '$compile', 'UrlFactory', 'Session', 'Utils', 'MessageService', function ($scope, $http, $routeParams, $modal, $compile, UrlFactory, Session, Utils, MessageService) {
 
         var url = UrlFactory.getUserAPIUrl('versioning/full-diff');
         $http
@@ -82,4 +82,4 @@ angular.module('waxeApp')
             }
             return;
         };
-    });
+    }]);

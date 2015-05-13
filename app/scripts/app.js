@@ -14,9 +14,9 @@
 // If the user is not logged he will be redirect to the login page since in
 // this case the profile page returns a 401.
 var resolve = {
-    loadProfile: function($route, ProfileManager) {
+    loadProfile: ['$route', 'ProfileManager', function($route, ProfileManager) {
         return ProfileManager.load($route.current.params.user);
-    }
+    }]
 };
 
 angular
@@ -34,7 +34,7 @@ angular
         'ui.codemirror',
         'diff-match-patch'
     ])
-    .config(function ($routeProvider, $httpProvider) {
+    .config(['$routeProvider', '$httpProvider', function ($routeProvider, $httpProvider) {
         $routeProvider
           .when('/', {
                 templateUrl: 'views/main.html',
@@ -95,8 +95,8 @@ angular
             });
 
         $httpProvider.interceptors.push('HttpInterceptor');
-    })
-    .run(function($rootScope, Session) {
+    }])
+    .run(['$rootScope', 'Session', function($rootScope, Session) {
 
         // Be sure the user save before closing window
         window.onbeforeunload = function(event) {
@@ -112,4 +112,4 @@ angular
             }
         };
 
-    });
+    }]);

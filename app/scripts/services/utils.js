@@ -8,7 +8,7 @@
  * Service in the waxeApp.
  */
 angular.module('waxeApp')
-    .service('XmlUtils', function ($http, $q, UrlFactory) {
+    .service('XmlUtils', ['$http', '$q', 'UrlFactory', function ($http, $q, UrlFactory) {
         this._dtdTags = {};
         this.getDtdTags = function(url) {
             if (url in this._dtdTags) {
@@ -27,7 +27,7 @@ angular.module('waxeApp')
                 });
         };
 
-    }).service('Utils', function () {
+    }]).service('Utils', function () {
         this.getFormDataForSubmit = function($form) {
             var dic = {
                 url: $form.data('action')

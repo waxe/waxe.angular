@@ -8,7 +8,7 @@
  * Controller of the waxeApp
  */
 angular.module('waxeApp')
-    .controller('LoginCtrl', function ($scope, $location, AuthService, UserProfile) {
+    .controller('LoginCtrl', ['$scope', '$location', 'AuthService', 'UserProfile', function ($scope, $location, AuthService, UserProfile) {
 
         $scope.UserProfile = UserProfile;
 
@@ -31,4 +31,4 @@ angular.module('waxeApp')
                 });
             });
         };
-    });
+    }]);

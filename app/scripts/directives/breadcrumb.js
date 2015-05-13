@@ -7,7 +7,7 @@
  * # breadcrumb
  */
 angular.module('waxeApp')
-    .directive('breadcrumb', function (Session, $routeParams, UrlFactory) {
+    .directive('breadcrumb', ['Session', '$routeParams', 'UrlFactory', function (Session, $routeParams, UrlFactory) {
         return {
             template: '<div class="breadcrumb navbar-fixed-top" ng-if="session.breadcrumbFiles.length"><li ng-repeat="file in session.breadcrumbFiles"><a ng-if="isDefined(file.path)" href="#{{UrlFactory.userUrl(\'\', {path: file.path})}}">{{file.name}}</a><span ng-if="!isDefined(file.path)">{{file.name}}</span></li></div>',
             restrict: 'E',
@@ -18,4 +18,4 @@ angular.module('waxeApp')
                 scope.isDefined = angular.isDefined;
             }
         };
-    });
+    }]);

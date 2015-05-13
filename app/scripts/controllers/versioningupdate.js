@@ -8,7 +8,7 @@
  * Controller of the waxeApp
  */
 angular.module('waxeApp')
-    .controller('VersioningUpdateCtrl', function ($scope, $http, UrlFactory) {
+    .controller('VersioningUpdateCtrl', ['$scope', '$http', 'UrlFactory', function ($scope, $http, UrlFactory) {
 
         $scope.done = false;
         var url = UrlFactory.getUserAPIUrl('versioning/update');
@@ -19,4 +19,4 @@ angular.module('waxeApp')
             $scope.length = $scope.files.length;
             $scope.done = true;
         });
-    });
+    }]);

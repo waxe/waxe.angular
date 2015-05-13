@@ -8,7 +8,7 @@
  * Controller of the waxeApp
  */
 angular.module('waxeApp')
-    .controller('VersioningCtrl', function ($scope, $http, $routeParams, $location,  $modal, AccountProfile, UrlFactory, MessageService) {
+    .controller('VersioningCtrl', ['$scope', '$http', '$routeParams', '$location','$modal', 'AccountProfile', 'UrlFactory', 'MessageService', function ($scope, $http, $routeParams, $location,  $modal, AccountProfile, UrlFactory, MessageService) {
 
         if (!AccountProfile.has_versioning) {
             // TODO: error message
@@ -107,4 +107,4 @@ angular.module('waxeApp')
         };
 
         // TODO: support commit
-    });
+    }]);

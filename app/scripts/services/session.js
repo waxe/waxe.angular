@@ -8,7 +8,7 @@
  * Factory in the waxeangularApp.
  */
 angular.module('waxeApp')
-    .service('Session', function ($http, $q, $route, Utils, UserProfile, AccountProfile) {
+    .service('Session', ['$http', '$q', '$route', 'Utils', 'UserProfile', 'AccountProfile', function ($http, $q, $route, Utils, UserProfile, AccountProfile) {
 
         this.init = function(login, accountUsable) {
             this.login = login;
@@ -65,4 +65,4 @@ angular.module('waxeApp')
             // It's the case when making a diff of many files.
             this.breadcrumbFiles = Utils.getBreadcrumbFiles(this.currentFile);
         };
-    });
+    }]);

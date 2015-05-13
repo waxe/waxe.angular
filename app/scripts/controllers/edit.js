@@ -8,7 +8,7 @@
  * Controller of the waxeApp
  */
 angular.module('waxeApp')
-    .controller('EditCtrl', function ($scope, $http, $sce, $routeParams, $route, $location, UrlFactory, Session) {
+    .controller('EditCtrl', ['$scope', '$http', '$sce', '$routeParams', '$route', '$location', 'UrlFactory', 'Session' , function ($scope, $http, $sce, $routeParams, $route, $location, UrlFactory, Session) {
 
         var action = UrlFactory.getActionFromUrl($location.path());
 
@@ -27,4 +27,4 @@ angular.module('waxeApp')
                 var path = $location.path();
                 $location.path(redirect).search({path: $routeParams.path, source: path});
             });
-    });
+    }]);

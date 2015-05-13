@@ -7,7 +7,7 @@
  * # message
  */
 angular.module('waxeApp')
-    .directive('message', function (MessageService) {
+    .directive('message', ['MessageService', function (MessageService) {
         return {
             template: '<div class="alert-message alert alert-{{MessageService.type}}" ng-class="MessageService.animation" ng-if="MessageService.message">{{MessageService.message}}<button type="button" class="close" ng-click="MessageService.close()">x</button></div>',
             restrict: 'E',
@@ -15,4 +15,4 @@ angular.module('waxeApp')
                 scope.MessageService = MessageService;
             }
         };
-    });
+    }]);

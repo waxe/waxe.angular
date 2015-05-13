@@ -7,7 +7,7 @@
  * # editor
  */
 angular.module('waxeApp')
-    .directive('editor', function (Session, $interval) {
+    .directive('editor', ['Session', '$interval', function (Session, $interval) {
         return {
             template: '<div></div>',
             restrict: 'E',
@@ -44,4 +44,4 @@ angular.module('waxeApp')
                 });
             }
         };
-    });
+    }]);

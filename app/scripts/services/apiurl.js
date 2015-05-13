@@ -8,7 +8,7 @@
  * Service in the waxeApp.
  */
 angular.module('waxeApp')
-    .factory('UrlFactory', function (Session) {
+    .factory('UrlFactory', ['Session', function (Session) {
 
         return {
             getAPIUrl: function(key) {
@@ -42,4 +42,4 @@ angular.module('waxeApp')
                 return this.urlFor(Session.login, name, params);
             }
         };
-    });
+    }]);

@@ -8,7 +8,7 @@
  * Service in the waxeApp.
  */
 angular.module('waxeApp')
-    .service('ProfileManager', function ($q, $http, UserProfile, AccountProfile, UrlFactory, Session) {
+    .service('ProfileManager', ['$q', '$http', 'UserProfile', 'AccountProfile', 'UrlFactory', 'Session', function ($q, $http, UserProfile, AccountProfile, UrlFactory, Session) {
 
         this.load = function(username) {
             var userProfileLoaded = angular.isDefined(UserProfile.login);
@@ -53,7 +53,7 @@ angular.module('waxeApp')
                     Session.load();
                 });
         };
-    })
+    }])
     .service('UserProfile', function () {
         var keys = [];
 

@@ -7,7 +7,7 @@
  * # navbar
  */
 angular.module('waxeApp')
-    .directive('navbar', function ($location, $modal, $http, NavbarService, UserProfile, AccountProfile, AuthService, MessageService, XmlUtils, Utils, UrlFactory, Session, $routeParams) {
+    .directive('navbar', ['$location', '$modal', '$http', 'NavbarService', 'UserProfile', 'AccountProfile', 'AuthService', 'MessageService', 'XmlUtils', 'Utils', 'UrlFactory', 'Session', '$routeParams', function ($location, $modal, $http, NavbarService, UserProfile, AccountProfile, AuthService, MessageService, XmlUtils, Utils, UrlFactory, Session, $routeParams) {
         return {
             templateUrl: 'views/navbar.html',
             restrict: 'E',
@@ -258,4 +258,4 @@ angular.module('waxeApp')
                 };
             }
         };
-    });
+    }]);

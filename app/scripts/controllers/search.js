@@ -8,7 +8,7 @@
  * Controller of the waxeApp
  */
 angular.module('waxeApp')
-    .controller('SearchCtrl', function ($scope, $http, $routeParams, $location, $anchorScroll, $modal, UrlFactory, Utils) {
+    .controller('SearchCtrl', ['$scope', '$http', '$routeParams', '$location', '$anchorScroll', '$modal', 'UrlFactory', 'Utils', function ($scope, $http, $routeParams, $location, $anchorScroll, $modal, UrlFactory, Utils) {
 
         $scope.UrlFactory = UrlFactory;
         $scope.search = {
@@ -84,4 +84,4 @@ angular.module('waxeApp')
             });
 
         };
-    });
+    }]);

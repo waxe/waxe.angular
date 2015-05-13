@@ -8,7 +8,7 @@
  * Controller of the waxeApp
  */
 angular.module('waxeApp')
-    .controller('EditTxtCtrl', function ($scope, $http, $sce, $routeParams, $route, $location, UrlFactory, Session, MessageService) {
+    .controller('EditTxtCtrl',['$scope', '$http', '$sce', '$routeParams', '$route', '$location', 'UrlFactory', 'Session', 'MessageService' , function ($scope, $http, $sce, $routeParams, $route, $location, UrlFactory, Session, MessageService) {
         $scope.editorOptions = {
                 lineWrapping : true,
                 lineNumbers: true,
@@ -35,4 +35,4 @@ angular.module('waxeApp')
             .then(function(res) {
                 $scope.txt = res.data;
             });
-    });
+    }]);

@@ -8,7 +8,7 @@
  * Factory in the waxeApp.
  */
 angular.module('waxeApp')
-    .factory('HttpInterceptor', function ($location, $q, MessageService) {
+    .factory('HttpInterceptor', ['$location', '$q', 'MessageService', function ($location, $q, MessageService) {
 
         return {
             responseError: function(rejection) {
@@ -24,4 +24,4 @@ angular.module('waxeApp')
                 return $q.reject(rejection);
             }
         };
-    });
+    }]);
