@@ -78,7 +78,7 @@ angular.module('waxeApp')
 
                 scope.currentXmlTemplatePath = null;
                 scope.newXmlTemplateModal = function() {
-                    var modalInstance = $modal.open({
+                    $modal.open({
                         templateUrl: 'navbar-open.html',
                         controller: function($scope, $modalInstance, parentScope) {
 
@@ -111,7 +111,7 @@ angular.module('waxeApp')
 
                 scope.currentPath = null;
                 scope.openModal = function() {
-                    var modalInstance = $modal.open({
+                    $modal.open({
                         templateUrl: 'navbar-open.html',
                         controller: function($scope, $modalInstance, parentScope) {
 
