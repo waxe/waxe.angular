@@ -12,7 +12,11 @@ angular.module('waxeApp')
 
         return {
             getAPIUrl: function(key) {
-                return '/api/1/' + key + '.json';
+                if (key.indexOf('/') !== 0) {
+                    key = '/' + key;
+                }
+                return key + '.json';
+                // return '/api/1/' + key + '.json';
             },
 
             getUserAPIUrl: function(key) {
