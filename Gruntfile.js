@@ -288,7 +288,7 @@ module.exports = function (grunt) {
         files: [{
           expand: true,
           cwd: '<%= yeoman.dist %>',
-          src: ['*.html', 'views/{,*/}*.html'],
+          src: ['views/{,*/}*.html'],
           dest: '<%= yeoman.dist %>'
         }]
       }
@@ -335,6 +335,11 @@ module.exports = function (grunt) {
           cwd: '.tmp/images',
           dest: '<%= yeoman.dist %>/images',
           src: ['generated/*']
+        }, {
+          expand: true,
+          cwd: 'bower_components/font-awesome',
+          src: 'fonts/*',
+          dest: '<%= yeoman.dist %>'
         }, {
           expand: true,
           cwd: 'bower_components/bootstrap/dist',
@@ -413,7 +418,7 @@ module.exports = function (grunt) {
     'concat',
     'ngAnnotate',
     'copy:dist',
-    'cdnify',
+    // 'cdnify',
     'cssmin',
     'uglify',
     'filerev',
