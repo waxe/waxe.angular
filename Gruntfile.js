@@ -18,7 +18,8 @@ module.exports = function (grunt) {
   // Configurable paths for the application
   var appConfig = {
     app: require('./bower.json').appPath || 'app',
-    dist: 'dist'
+    dist: 'waxe/angular/ng-static',
+    templates: 'waxe/angular/templates'
   };
 
   // Define the configuration for all the tasks
@@ -217,7 +218,7 @@ module.exports = function (grunt) {
 
     // Performs rewrites based on filerev and the useminPrepare configuration
     usemin: {
-      html: ['<%= yeoman.dist %>/{,*/}*.html'],
+      html: ['<%= yeoman.templates %>/{,*/}*.mak'],
       css: ['<%= yeoman.dist %>/styles/{,*/}*.css'],
       options: {
         assetsDirs: [
@@ -323,13 +324,24 @@ module.exports = function (grunt) {
           cwd: '<%= yeoman.app %>',
           dest: '<%= yeoman.dist %>',
           src: [
-            '*.{ico,png,txt}',
-            '.htaccess',
-            '*.html',
+            // '*.{ico,png,txt}',
+            // '.htaccess',
             'views/{,*/}*.html',
             'images/{,*/}*.{webp}',
             'styles/fonts/{,*/}*.*'
           ]
+        }, {
+          expand: true,
+          dot: true,
+          cwd: '<%= yeoman.app %>',
+          dest: '<%= yeoman.templates %>',
+          src: [
+            'index.html',
+          ],
+          rename: function(dest, src) {
+            // We need a mak file for pyramid
+            return dest + '/' + src.replace(/\.html$/, ".mak");
+          }
         }, {
           expand: true,
           cwd: '.tmp/images',
