@@ -18,10 +18,6 @@
     <link rel="stylesheet" href="styles/main.css">
     <!-- endbuild -->
 
-    <link rel="stylesheet" type="text/css" href="http://127.0.0.1:6543/static-core/css/waxe.min.css" />
-    <link rel="stylesheet" type="text/css" href="http://127.0.0.1:6543/static-xml/xmltool.min.css" />
-    <link rel="stylesheet" type="text/css" href="http://127.0.0.1:6543/static-xml/themes/default/style.min.css" />
-
     % for resource in request.css_resources:
       <link rel="stylesheet" type="text/css" href="${request.static_url(resource)}" />
     % endfor
@@ -99,10 +95,6 @@
     <script src="scripts/controllers/versioningupdate.js"></script>
     <script src="scripts/controllers/edittxt.js"></script>
     <!-- endbuild -->
-
-    <script type="text/javascript" src="http://127.0.0.1:6543/static-core/js/waxe.js"></script>
-    <script type="text/javascript" src="http://127.0.0.1:6543/static-xml/jstree.min.js"></script>
-    <script type="text/javascript" src="http://127.0.0.1:6543/static-xml/xmltool.js"></script>
 
     % for resource in request.js_resources:
       <script type="text/javascript" src="${request.static_url(resource)}"></script>
