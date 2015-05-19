@@ -12,11 +12,13 @@ angular.module('waxeApp')
 
         return {
             getAPIUrl: function(key) {
+                // TODO: remove this hardcoded value, it should be defined by
+                // pyramid in index.mak
+                var url = '/api/1';
                 if (key.indexOf('/') !== 0) {
-                    key = '/' + key;
+                    url += '/';
                 }
-                return key + '.json';
-                // return '/api/1/' + key + '.json';
+                return url + key + '.json';
             },
 
             getUserAPIUrl: function(key) {
