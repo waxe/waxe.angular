@@ -20,7 +20,10 @@ angular.module('waxeApp')
                 }
                 return url + key + '.json';
             },
-
+            getAPIUrlFor: function(user, name, params) {
+                var url = this.urlFor(user, name, params);
+                return this.getAPIUrl(url);
+            },
             getUserAPIUrl: function(key) {
                 return this.getAPIUrl(this.userUrl(key));
             },

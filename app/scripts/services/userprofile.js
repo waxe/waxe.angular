@@ -36,7 +36,7 @@ angular.module('waxeApp')
                     params = {full: true};
                 }
                 return $http
-                    .get(UrlFactory.urlFor(username, 'account-profile.json'), {params: params})
+                    .get(UrlFactory.getAPIUrlFor(username, 'account-profile'), {params: params})
                     .then(function (res) {
                         if (!userProfileLoaded) {
                             UserProfile.create(res.data.user_profile);
