@@ -41,7 +41,8 @@ angular.module('waxeApp')
             });
             var $form = angular.element('.diff-form'),
                 dic = Utils.getFormDataForSubmit($form),
-                url = UrlFactory.getUserAPIUrl('versioning/update-texts');
+                url = UrlFactory.getUserAPIUrl('txt/updates');
+
             $http
                 .post(url, dic.data)
                 .then(function(res) {
