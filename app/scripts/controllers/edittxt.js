@@ -16,13 +16,17 @@ angular.module('waxeApp')
                 mode: 'xml',
             };
 
-
         Session.hasForm = true;
 
         Session.submitForm = function() {
             var url = UrlFactory.getUserAPIUrl('txt/update');
+            var params = {path: $routeParams.path, filecontent: $scope.txt};
+            var conflicted = $location.search().conflicted;
+            if (angular.isDefined(conflicted)) {
+                params.conflicted = conflicted;
+            }
             $http
-                .post(url, {path: $routeParams.path, filecontent: $scope.txt})
+                .post(url, params)
                 .then(function() {
                     MessageService.set('success', 'Saved!');
                 });

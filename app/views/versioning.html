@@ -13,7 +13,7 @@
       <li ng-repeat="conflicted in versioning.conflicteds">
       <input type="checkbox" ng-model="conflicted.selected" value="{{conflicted.relpath}}" />
       <span class="label label-{{conflicted.status}}">{{conflicted.status}}</span>
-      <a href="#{{UrlFactory.userUrl('txt/edit', {path: conflicted.relpath})}}">{{conflicted.relpath}}</a>
+      <a href="#{{UrlFactory.userUrl('txt/edit', {path: conflicted.relpath, conflicted: true})}}">{{conflicted.relpath}}</a>
       </li>
     </ul>
     <button class="btn btn-danger" type="submit" ng-click="doRevert(versioning.conflicteds)" data-confirm="Are you sure you want to revert the selected files? All your modifications will be deleted!">Revert</button>

@@ -39,6 +39,11 @@ angular.module('waxeApp')
                 }
                 if (typeof params !== 'undefined') {
                     u += '?path=' + params.path;
+
+                    // TODO: use angular location to generate url
+                    if (angular.isDefined(params.conflicted)) {
+                        u += '&conflicted=true';
+                    }
                 }
                 return u;
             },
