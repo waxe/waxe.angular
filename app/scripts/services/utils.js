@@ -37,7 +37,9 @@ angular.module('waxeApp')
             for (var i=0, len=lis.length; i < len; i++) {
                 var d = lis[i];
                 // TODO: support to have many values for one key.
-                data[d.name] = d.value;
+                // NOTE: serializeArray add some CR, we remove them to keep
+                // unix format.
+                data[d.name] = d.value.replace(/\r/g, '');
             }
             dic.data = data;
             return dic;
