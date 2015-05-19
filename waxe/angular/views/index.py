@@ -7,27 +7,39 @@ def index(request):
 
 
 def includeme(config):
+    dev = True
+    if dev:
+        # Development
+        static_path = 'waxe.angular:static'
+        config.add_static_view(
+            '/bower_components',
+            '%s/bower_components' % static_path,
+            cache_max_age=3600,
+        )
+    else:
+        static_path = 'waxe.angular:ng-static'
+
     config.add_route('index.html', '/')
 
     config.add_static_view(
         '/fonts',
-        'waxe.angular:ng-static/fonts',
+        '%s/fonts' % static_path,
         cache_max_age=3600,
     )
 
     config.add_static_view(
         '/styles',
-        'waxe.angular:ng-static/styles',
+        '%s/styles' % static_path,
         cache_max_age=3600,
     )
     config.add_static_view(
         '/views',
-        'waxe.angular:ng-static/views',
+        '%s/views' % static_path,
         cache_max_age=3600,
     )
     config.add_static_view(
         '/scripts',
-        'waxe.angular:ng-static/scripts',
+        '%s/scripts' % static_path,
         cache_max_age=3600,
     )
     config.scan(__name__)
