@@ -22,6 +22,11 @@
       <link rel="stylesheet" type="text/css" href="${request.static_url(resource)}" />
     % endfor
 
+    % for resource in request.str_resources:
+      ${resource|n}
+    % endfor
+
+
   </head>
   <body ng-app="waxeApp">
     <!--[if lt IE 7]>
