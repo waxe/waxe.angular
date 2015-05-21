@@ -12,9 +12,7 @@ angular.module('waxeApp')
 
         return {
             getAPIUrl: function(key) {
-                // TODO: remove this hardcoded value, it should be defined by
-                // pyramid in index.mak
-                var url = '/api/1';
+                var url = API_BASE_PATH;
                 if (key.indexOf('/') !== 0) {
                     url += '/';
                 }

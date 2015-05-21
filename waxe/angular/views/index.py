@@ -3,7 +3,9 @@ from pyramid.view import view_config
 
 @view_config(route_name='index.html', permission='edit', renderer='index.mak')
 def index(request):
-    return {}
+    return {
+        'api_base_path': request.route_path('api')
+    }
 
 
 def includeme(config):

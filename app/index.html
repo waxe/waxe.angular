@@ -18,6 +18,10 @@
     <link rel="stylesheet" href="styles/main.css">
     <!-- endbuild -->
 
+    <script type="text/javascript">
+      var API_BASE_PATH = "${api_base_path}";
+    </script>
+
     % for resource in request.css_resources:
       <link rel="stylesheet" type="text/css" href="${request.static_url(resource)}" />
     % endfor
