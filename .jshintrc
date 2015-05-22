@@ -19,6 +19,8 @@
   "smarttabs": true,
   "globals": {
     "angular": false,
-    "waxe": false
+    "waxe": false,
+    // Should be defined in the template
+    "API_BASE_PATH": false
   }
 }
