@@ -83,6 +83,7 @@
       <li ng-class="{disabled: !Session.accountUsable}"><a class="fa fa-folder-open-o" title="Open" ng-click="openModal()" href=""></a></li>
       <li ng-class="{disabled: !Session.hasForm}"><a class="save fa fa-save" title="Save" ng-click="save()"></a></li>
       <li ng-class="{disabled: !Session.showSource}"><a ng-class="{'btn-enabled': Session.sourceEnabled}" title="Show source" ng-click="sourceToggle()">SOURCE</a></li>
+      <li ng-class="{disabled: !Session.hasForm}"><a title="View diff" ng-click="showDiff()">Diff</a></li>
     </ul>
   </div>
 

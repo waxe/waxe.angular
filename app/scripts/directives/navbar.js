@@ -256,6 +256,14 @@ angular.module('waxeApp')
                         $location.path(source).search({path: $routeParams.path});
                     }
                 };
+
+                scope.showDiff = function() {
+                    var redirect = UrlFactory.userUrl('versioning/unified-diff');
+                    var params = {
+                        path: $routeParams.path,
+                    };
+                    $location.path(redirect).search(params);
+                };
             }
         };
     }]);
