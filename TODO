@@ -1,15 +1,10 @@
 waxe.angular:
 
-* spinner for loading?
-* center correclty messages and close automatically success and info
 * Rendering action: we need to add link or something
-* We can't logout since we have to much users
-=> check in bootstrap to add max-height on elements: we also have probem on modal
-* Remove hardcoded API url in apiurl
-* The welcome page is not really nice
-* Login page is not really nice too
-* Review the entire design
 
-waxe.xml:
-
-* Where are the ckeditor js and config ? We have entities in the XML...
+* Review the design:
+    * spinner for loading?
+    * The welcome page is not really nice
+    * Login page is not really nice too
+    * We can't logout since we have too much users
+        => check in bootstrap to add max-height on elements: we also have probem on modal
