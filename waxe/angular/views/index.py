@@ -9,7 +9,7 @@ def index(request):
 
 
 def includeme(config):
-    dev = True
+    dev = False
     if dev:
         # Development
         static_path = 'waxe.angular:static'
