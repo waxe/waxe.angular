@@ -91,17 +91,16 @@ body {
   margin-left: 10px;
 }
 
-/* The layout is absolute on the top. Instead of rewriting the css just hack the top position */
-.ui-layout-column {
-  top: 30px;
-}
-
 .ui-splitbar {
   background: grey;
 }
 
 .container {
   width: 100%;
+}
+
+#tree {
+  height: 100% !important;
 }
 
 /* From ui.bootstrap since we can't add empty href */
