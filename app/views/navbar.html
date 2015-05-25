@@ -48,7 +48,7 @@
               </li>
           </ul>
         </li>
-        <li ng-if="Session.accountUsable && AccountProfile.has_xml_renderer"><a href="#">Rendering</a></li>
+        <li ng-if="Session.accountUsable && AccountProfile.has_xml_renderer" ng-class="{disabled: !Session.editor}"><a ng-click="doRender()">Rendering</a></li>
       </ul>
 
       <ul class="nav navbar-nav navbar-right">

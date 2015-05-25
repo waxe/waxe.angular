@@ -34,6 +34,12 @@ angular.module('waxeApp')
                     scope.search.text = '';
                 };
 
+                scope.doRender = function() {
+                    // TODO: the url should not be in JSON.
+                    var url = UrlFactory.getUserAPIUrl('xml/view') + '?path=' + $routeParams.path;
+                    window.open(url, '_viewer');
+                };
+
                 // We need this variable to keep the last selected choice
                 scope.dtd_url = null;
                 scope.dtd_tag =  null;
