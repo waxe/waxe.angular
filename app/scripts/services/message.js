@@ -13,13 +13,14 @@ angular.module('waxeApp')
         this.type = null;
         this.timer = null;
 
-        this.set = function(type, message) {
+        this.set = function(type, message, classname) {
             if (this.timer) {
                 // Stop the timer
                 $timeout.cancel(this.timer);
             }
             this.type = type;
             this.message = message;
+            this.classname = angular.isDefined(classname)? classname: this.type;
 
             if (this.type === 'success') {
                 var that = this;
@@ -29,7 +30,17 @@ angular.module('waxeApp')
             }
         };
 
-        this.close = function() {
+        this.setIfEmpty = function(type, message, classname) {
+            if (this.message) {
+                return false;
+            }
+            this.set(type, message, classname);
+        };
+
+        this.close = function(type) {
+            if (angular.isDefined(type) && type !== this.type ){
+                return false;
+            }
             this.message = null;
         };
     }]);

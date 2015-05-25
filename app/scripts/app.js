@@ -102,7 +102,29 @@ angular
 
         $httpProvider.interceptors.push('HttpInterceptor');
     }])
-    .run(['$rootScope', 'Session', function($rootScope, Session) {
+    .run(['$rootScope', 'Session', 'MessageService', function($rootScope, Session, MessageService) {
+
+        $rootScope.$on('$routeChangeStart', function(event, next, current) {
+            if (angular.isDefined(current)) {
+                if (!angular.isDefined(current.$$route.editor) || current.$$route.editor !== next.$$route.editor) {
+                    // Do not close message when we are switching from an
+                    // editor to an other. It's usefull to keep error message
+                    // when for example a file is invalid and we redirect to
+                    // the txt editor
+                    MessageService.close();
+                }
+            }
+            MessageService.setIfEmpty('loading', 'Loading...', 'info');
+
+        });
+
+        $rootScope.$on('$routeChangeSuccess', function() {
+            MessageService.close('loading');
+        });
+
+        $rootScope.$on('$routeChangeError', function() {
+            MessageService.close('loading');
+        });
 
         // Be sure the user save before closing window
         window.onbeforeunload = function(event) {
