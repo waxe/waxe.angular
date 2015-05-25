@@ -7,15 +7,20 @@
     <meta name="viewport" content="width=device-width">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <link rel="stylesheet" href="styles/vendor.4bccc65f.css">
-    <link rel="stylesheet" href="styles/main.d1302ad0.css">
+    <link rel="stylesheet" href="styles/main.6bcddf5d.css">
 
-    <link rel="stylesheet" type="text/css" href="http://127.0.0.1:6543/static-core/css/waxe.min.css" />
-    <link rel="stylesheet" type="text/css" href="http://127.0.0.1:6543/static-xml/xmltool.min.css" />
-    <link rel="stylesheet" type="text/css" href="http://127.0.0.1:6543/static-xml/themes/default/style.min.css" />
+    <script type="text/javascript">
+      var API_BASE_PATH = "${api_base_path}";
+    </script>
 
     % for resource in request.css_resources:
       <link rel="stylesheet" type="text/css" href="${request.static_url(resource)}" />
     % endfor
+
+    % for resource in request.str_resources:
+      ${resource|n}
+    % endfor
+
 
   </head>
   <body ng-app="waxeApp">
@@ -42,13 +47,9 @@
        ga('send', 'pageview');
     </script>
 
-    <script src="scripts/vendor.9d20c879.js"></script>
+    <script src="scripts/vendor.12bbf906.js"></script>
 
-    <script src="scripts/scripts.2f7e456a.js"></script>
-
-    <script type="text/javascript" src="http://127.0.0.1:6543/static-core/js/waxe.js"></script>
-    <script type="text/javascript" src="http://127.0.0.1:6543/static-xml/jstree.min.js"></script>
-    <script type="text/javascript" src="http://127.0.0.1:6543/static-xml/xmltool.js"></script>
+    <script src="scripts/scripts.131e59fd.js"></script>
 
     % for resource in request.js_resources:
       <script type="text/javascript" src="${request.static_url(resource)}"></script>
