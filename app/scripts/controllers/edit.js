@@ -25,6 +25,6 @@ angular.module('waxeApp')
                 // TODO: Do not redirect on 404
                 var redirect = UrlFactory.userUrl('txt/'+action);
                 var path = $location.path();
-                $location.path(redirect).search({path: $routeParams.path, source: path});
+                $location.path(redirect).search({path: $routeParams.path, from: path, fromtype: 'source'});
             });
     }]);

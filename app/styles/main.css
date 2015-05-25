@@ -154,7 +154,18 @@ body {
   height: auto !important;
 }
 
-.btn-enabled {
+.btn-enabled,
+.navbar-default .navbar-nav.navbar-icons > li > a.btn-enabled:hover,
+.navbar-default .navbar-nav.navbar-icons > li > a.btn-enabled:focus {
   color: #555;
   background-color: #e7e7e7;
+}
+
+.navbar-default .navbar-nav.navbar-icons > li > a {
+  outline: none;
+}
+
+.navbar-default .navbar-nav > li > a:hover,
+.navbar-default .navbar-nav > li > a:focus {
+
 }

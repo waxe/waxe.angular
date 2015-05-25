@@ -245,21 +245,37 @@ angular.module('waxeApp')
                 };
 
                 scope.sourceToggle = function() {
-                    var source = $routeParams.source;
+                    var from = $routeParams.from;
                     var type = UrlFactory.getTypeFromUrl($location.path());
-                    if (typeof source === 'undefined') {
+                    if (typeof from === 'undefined' || $routeParams.fromtype !== 'source') {
                         if (type !== 'txt') {
-                            var action = UrlFactory.getActionFromUrl($location.path());
-                            var redirect = UrlFactory.userUrl('txt/'+action);
+                            var redirect = UrlFactory.userUrl('txt/edit');
                             var params = {
                                 path: $routeParams.path,
-                                source: $location.path(),
+                                from: from || $location.path(),
+                                fromtype: 'source'
                             };
                             $location.path(redirect).search(params);
                         }
                     }
                     else {
-                        $location.path(source).search({path: $routeParams.path});
+                        $location.path(from).search({path: $routeParams.path});
+                    }
+                };
+
+                scope.diffToggle = function() {
+                    var from = $routeParams.from;
+                    if (typeof from === 'undefined' || $routeParams.fromtype !== 'diff') {
+                        var redirect = UrlFactory.userUrl('versioning/unified-diff');
+                        var params = {
+                            path: $routeParams.path,
+                            from: from || $location.path(),
+                            fromtype: 'diff'
+                        };
+                        $location.path(redirect).search(params);
+                    }
+                    else {
+                        $location.path(from).search({path: $routeParams.path});
                     }
                 };
 

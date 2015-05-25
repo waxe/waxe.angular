@@ -69,12 +69,13 @@ angular
           .when('/account/:user/versioning/diff', {
                 templateUrl: 'views/versioningdiff.html',
                 controller: 'VersioningDiffCtrl',
-                resolve: resolve,
+                resolve: resolve
             })
           .when('/account/:user/versioning/unified-diff', {
                 templateUrl: 'views/versioningunifieddiff.html',
                 controller: 'VersioningUnifiedDiffCtrl',
                 resolve: resolve,
+                diff: true
             })
           .when('/account/:user/txt/edit', {
                 templateUrl: 'views/edittxt.html',

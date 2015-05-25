@@ -26,14 +26,21 @@ angular.module('waxeApp')
             // NOTE: it enables the 'save as' button
             this.form = null;
 
-            this.source = $route.current.params.source;
+            this.from = $route.current.params.from;
             this.editor = (typeof $route.current.$$route.editor !== 'undefined');
+            this.diff = (typeof $route.current.$$route.diff !== 'undefined');
 
-            this.showSource = this.editor;
+            this.showSource = this.editor || this.diff;
             this.sourceEnabled = false;
 
-            if(this.editor && typeof this.source !== 'undefined') {
+            if(this.editor && typeof this.from !== 'undefined') {
                 this.sourceEnabled = true;
+            }
+
+            this.showDiff = (AccountProfile.has_versioning && (this.diff || this.editor));
+            this.diffEnabled = false;
+            if(this.diff && typeof this.from !== 'undefined') {
+                this.diffEnabled = true;
             }
 
             if (this.accountUsable) {
