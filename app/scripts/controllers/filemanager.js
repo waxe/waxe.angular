@@ -28,4 +28,14 @@ angular.module('waxeApp')
             });
         }
 
+        $scope.opened_files = [];
+        $scope.commited_files = [];
+        url = UrlFactory.getAPIUrl('last-files');
+        $http
+          .get(url)
+          .then(function(res) {
+            $scope.opened_files = res.data.opened_files;
+            $scope.commited_files = res.data.commited_files;
+        });
+
     }]);
