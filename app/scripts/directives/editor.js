@@ -7,16 +7,21 @@
  * # editor
  */
 angular.module('waxeApp')
-    .directive('editor', ['Session', '$interval', function (Session, $interval) {
+    .directive('editor', ['Session', '$interval', '$compile', function (Session, $interval, $compile) {
         return {
             template: '<div></div>',
             restrict: 'E',
+            scope: {
+                'html': '='
+            },
             link: function postLink(scope, element) {
+                var html = $compile(scope.html)(scope.$parent);
+                element.append(html);
                 var listener = scope.$watch(function(){
                     if(element.text()) {
                         // Remove the watch since the form is fully loaded
                         listener();
-                        waxe.form = new waxe.Form(scope.treeData);
+                        waxe.form = new waxe.Form(scope.$parent.treeData);
                         Session.form = waxe.form;
                     }
                 });

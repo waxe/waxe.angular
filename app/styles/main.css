@@ -169,3 +169,35 @@ body {
 .navbar-default .navbar-nav > li > a:focus {
 
 }
+
+.external-editor {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  width: 300px;
+  z-index: 10000;
+}
+
+.external-editor textarea {
+  width: 100%;
+}
+
+.external-editor .modal-header i {
+  color: #000;
+  opacity: 0.2;
+}
+
+.external-editor .modal-content {
+  resize: both;
+  overflow: auto;
+}
+
+.external-editor .modal-body {
+  min-height: 200px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.external-editor .form-control{
+  height: auto;
+}
