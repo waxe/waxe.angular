@@ -1,16 +1,19 @@
 <div class="jumbotron">
   <h1>Welcome to Waxe</h1>
+  <p>The best online XML editor.</p>
+  <p>In the future, this space will be replaced by some tips to help you to use waxe</p>
+</div>
 
-  <div ng-if="UserProfile.logins">
-    You don't have any personal account but you can edit other one:
 
-    <div ng-repeat="login in UserProfile.logins">
-      <a href="#{{UrlFactory.urlFor(login)}}">{{login}}</a>
-    </div>
+<div ng-if="UserProfile.logins">
+  You don't have any personal account but you can edit other one:
 
+  <div ng-repeat="login in UserProfile.logins">
+    <a href="#{{UrlFactory.urlFor(login)}}">{{login}}</a>
   </div>
 
-  <div ng-if="!UserProfile.logins">
-    You don't have any permission, please contact your administrator.
-  </div>
+</div>
+
+<div ng-if="!UserProfile.logins">
+  You don't have any permission, if you think it's an error, please contact your administrator.
 </div>
