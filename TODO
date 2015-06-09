@@ -1,10 +1,9 @@
 waxe.angular:
 
-* Rendering action: we need to add link or something
-
 * Review the design:
-    * spinner for loading?
     * The welcome page is not really nice
     * Login page is not really nice too
     * We can't logout since we have too much users
         => check in bootstrap to add max-height on elements: we also have probem on modal
+
+* When adding a new XML element, we need to compile the new part to make the external editor works
