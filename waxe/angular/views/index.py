@@ -11,8 +11,10 @@ def index(request):
 
 
 def includeme(config):
-    dev = False
-    if dev:
+    settings = config.registry.settings
+    if settings.get('waxe.angular.development'):
+        settings['mako.directories'] = (
+            'waxe.angular:static\n%s' % settings['mako.directories'])
         # Development
         static_path = 'waxe.angular:static'
         config.add_static_view(
@@ -21,6 +23,8 @@ def includeme(config):
             cache_max_age=3600,
         )
     else:
+        settings['mako.directories'] = (
+            'waxe.angular:templates\n%s' % settings['mako.directories'])
         static_path = 'waxe.angular:ng-static'
 
     config.add_route('index.html', '/')
