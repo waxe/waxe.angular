@@ -1,7 +1,9 @@
 from pyramid.view import view_config
 
 
-@view_config(route_name='index.html', permission='edit', renderer='index.mak')
+# NOTE: we shouldn't put any permission here since we need to load the index to
+# access the login page
+@view_config(route_name='index.html', renderer='index.mak')
 def index(request):
     return {
         'api_base_path': request.route_path('api')
