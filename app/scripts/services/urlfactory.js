@@ -2,9 +2,9 @@
 
 /**
  * @ngdoc service
- * @name waxeApp.Apiurl
+ * @name waxeApp.UrlFactory
  * @description
- * # Apiurl
+ * # UrlFactory
  * Service in the waxeApp.
  */
 angular.module('waxeApp')
