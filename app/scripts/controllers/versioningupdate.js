@@ -11,7 +11,7 @@ angular.module('waxeApp')
     .controller('VersioningUpdateCtrl', ['$scope', '$http', 'UrlFactory', function ($scope, $http, UrlFactory) {
 
         $scope.done = false;
-        var url = UrlFactory.getUserAPIUrl('versioning/update');
+        var url = UrlFactory.jsonAPIUserUrl('versioning/update');
         $http
           .get(url)
           .then(function(res) {

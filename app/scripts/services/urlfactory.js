@@ -1,57 +1,233 @@
 'use strict';
 
+
 /**
  * @ngdoc service
  * @name waxeApp.UrlFactory
  * @description
  * # UrlFactory
- * Service in the waxeApp.
+ * Functions to generate the url for angular and to call the API
  */
 angular.module('waxeApp')
     .factory('UrlFactory', ['Session', function (Session) {
 
-        return {
-            getAPIUrl: function(key) {
-                var url = API_BASE_PATH;
-                if (key.indexOf('/') !== 0) {
-                    url += '/';
-                }
-                return url + key + '.json';
-            },
-            getAPIUrlFor: function(user, name, params) {
-                var url = this.urlFor(user, name, params);
-                return this.getAPIUrl(url);
-            },
-            getUserAPIUrl: function(key) {
-                return this.getAPIUrl(this.userUrl(key));
-            },
-            getActionFromUrl: function(url) {
-                // The action is the last past of the url
-                // We assume we never pass the query string in url.
-                var lis = url.split('/');
-                return lis[lis.length - 1];
-            },
-            getTypeFromUrl: function(url) {
-                var lis = url.split('/');
-                return lis[lis.length - 2];
-            },
-            urlFor: function (user, name, params) {
-                var u = '/account/' + user;
-                if (angular.isDefined(name)) {
-                    u+= '/' + name;
-                }
-                if (typeof params !== 'undefined') {
-                    u += '?path=' + params.path;
+        var api_base_path = '/api/1';
+        if (typeof(API_BASE_PATH) !== 'undefined') {
+            // API_BASE_PATH should be defined in the template but we also need
+            // it to be defined in the tests.
+            api_base_path = API_BASE_PATH;
+        }
 
-                    // TODO: use angular location to generate url
-                    if (angular.isDefined(params.conflicted)) {
-                        u += '&conflicted=true';
-                    }
+        return {
+            /**
+             * @ngdoc method
+             * @name _generateUrl
+             * @methodOf waxeApp.UrlFactory
+             * @private
+             *
+             * @param {string} username the username we want to use to generate the url
+             * @param {string=} routename the name of the route we want to go
+             * @param {object=} params the values to put in the query string
+             * @returns {string} A relative url
+             *
+             * @description:
+             * Generate the url corresponding to the given parameters. If this
+             * url is prefixed by:
+             *   * '#' it can be used as angular link
+             *   * API_BASE_PATH it can be used to call the API
+             *
+             *
+             * This is an internal function, do not use it directly.
+             */
+            _generateUrl: function (username, routename, params) {
+                var u = '';
+                if (username) {
+                    u = '/account/' + username;
+                }
+                if (angular.isDefined(routename)) {
+                    u += '/' + routename;
+                }
+                if (angular.isDefined(params)) {
+                    var lis = [];
+                    angular.forEach(params, function(value, key) {
+                        lis.push(key + '=' + value);
+                    });
+                    u += '?' + lis.join('&');
                 }
                 return u;
             },
-            userUrl: function(name, params) {
-                return this.urlFor(Session.login, name, params);
-            }
+            /**
+             * @ngdoc method
+             * @name _generateUserUrl
+             * @methodOf waxeApp.UrlFactory
+             * @private
+             *
+             * @param {string=} routename the name of the route we want to go
+             * @param {object=} params the values to put in the query string
+             * @returns {string} A relative url
+             *
+             * @description:
+             *
+             * Generate the url corresponding to the given parameters.
+             * Basically same function as {@link waxeApp.UrlFactory#methods__generateUrl _generateUrl}.
+             * The only difference is the username which comes from the Session
+             *
+             * If this url is prefixed by:
+             *   * '#' it can be used as angular link
+             *   * API_BASE_PATH it can be used to call the API
+             *
+             *
+             * This is an internal function, do not use it directly.
+             */
+            _generateUserUrl: function() {
+                var args = [];
+                args.push(Session.login);
+                args.push.apply(args, arguments);
+                return this._generateUrl.apply(this, args);
+            },
+            /**
+             * @ngdoc method
+             * @name url
+             * @methodOf waxeApp.UrlFactory
+             * @private
+             *
+             * @param {string} username the username we want to use to generate the url
+             * @param {string=} routename the name of the route we want to go
+             * @param {object=} params the values to put in the query string
+             * @returns {string} A relative url
+             *
+             * @description:
+             * Generate an url to use in angular, starting with '#'
+             */
+            url: function() {
+                return this._generateUrl.apply(this, arguments);
+            },
+            /**
+             * @ngdoc method
+             * @name userUrl
+             * @methodOf waxeApp.UrlFactory
+             * @private
+             *
+             * @param {string=} routename the name of the route we want to go
+             * @param {object=} params the values to put in the query string
+             * @returns {string} A relative url
+             *
+             * @description:
+             * Generate an url to use in angular. The username comes from the
+             * Session.
+             */
+            userUrl: function() {
+                return this._generateUserUrl.apply(this, arguments);
+            },
+            /**
+             * @ngdoc method
+             * @name _generateAPIUrl
+             * @methodOf waxeApp.UrlFactory
+             * @private
+             *
+             * @param {string} url the url to prefix by the API path
+             * @returns {string} A relative url used to call the API
+             *
+             * @description:
+             * Prefix the given url by the API path
+             *
+             * This is an internal function, do not use it directly.
+             */
+            _generateAPIUrl: function(url) {
+                var u = api_base_path;
+                if (url.indexOf('/') !== 0) {
+                    u += '/';
+                }
+                return u + url;
+            },
+            _generateJsonAPIUrl: function(url) {
+            /**
+             * @ngdoc method
+             * @name _generateJsonAPIUrl
+             * @methodOf waxeApp.UrlFactory
+             * @private
+             *
+             * @param {string} url the url to update
+             * @returns {string} A relative url used to call the API
+             *
+             * @description:
+             * Prefix the given url by the API path and add the extension '.json'
+             *
+             * This is an internal function, do not use it directly.
+             */
+                url += '.json';
+                return this._generateAPIUrl(url);
+            },
+            /**
+             * @ngdoc method
+             * @name APIUrl
+             * @methodOf waxeApp.UrlFactory
+             * @private
+             *
+             * @param {string} username the username we want to use to generate the url
+             * @param {string=} routename the name of the route we want to go
+             * @param {object=} params the values to put in the query string
+             * @returns {string} A relative url used to call the API
+             *
+             * @description:
+             * Generate an url to call the API
+             */
+            APIUrl: function() {
+                var url = this._generateUrl.apply(this, arguments);
+                return this._generateAPIUrl(url);
+            },
+            /**
+             * @ngdoc method
+             * @name APIUserUrl
+             * @methodOf waxeApp.UrlFactory
+             * @private
+             *
+             * @param {string=} routename the name of the route we want to go
+             * @param {object=} params the values to put in the query string
+             * @returns {string} A relative url used to call the API
+             *
+             * @description:
+             * Generate an url to call the API
+             */
+            APIUserUrl: function() {
+                var url = this._generateUserUrl.apply(this, arguments);
+                return this._generateAPIUrl(url);
+            },
+            /**
+             * @ngdoc method
+             * @name jsonAPIUrl
+             * @methodOf waxeApp.UrlFactory
+             * @private
+             *
+             * @param {string} username the username we want to use to generate the url
+             * @param {string=} routename the name of the route we want to go
+             * @param {object=} params the values to put in the query string
+             * @returns {string} A relative url used to call the API
+             *
+             * @description:
+             * Generate an url to call the API
+             */
+            jsonAPIUrl: function() {
+                var url = this._generateUrl.apply(this, arguments);
+                return this._generateJsonAPIUrl(url);
+            },
+            /**
+             * @ngdoc method
+             * @name jsonAPIUserUrl
+             * @methodOf waxeApp.UrlFactory
+             * @private
+             *
+             * @param {string} username the username we want to use to generate the url
+             * @param {string=} routename the name of the route we want to go
+             * @param {object=} params the values to put in the query string
+             * @returns {string} A relative url used to call the API
+             *
+             * @description:
+             * Generate an url to call the API
+             */
+            jsonAPIUserUrl: function() {
+                var url = this._generateUserUrl.apply(this, arguments);
+                return this._generateJsonAPIUrl(url);
+            },
         };
     }]);

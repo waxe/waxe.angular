@@ -16,7 +16,7 @@ angular.module('waxeApp')
         }
 
         $scope.versioning = {};
-        var url = UrlFactory.getUserAPIUrl('versioning/status');
+        var url = UrlFactory.jsonAPIUserUrl('versioning/status');
         $http
           .get(url, {params: $routeParams})
           .then(function(res) {
@@ -45,7 +45,7 @@ angular.module('waxeApp')
                     reals.push(filename);
                 }
             }
-            var url = UrlFactory.getUserAPIUrl('versioning/revert');
+            var url = UrlFactory.jsonAPIUserUrl('versioning/revert');
             $http
                 .post(url, {paths: files})
                 .then(function() {
@@ -81,7 +81,7 @@ angular.module('waxeApp')
                         reals.push(filename);
                     }
                 }
-                var url = UrlFactory.getUserAPIUrl('versioning/commit');
+                var url = UrlFactory.jsonAPIUserUrl('versioning/commit');
                 $http
                     .post(url, {paths: files, msg: data.message})
                     .then(function(res) {

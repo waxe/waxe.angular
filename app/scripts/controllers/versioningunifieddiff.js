@@ -9,7 +9,7 @@
  */
 angular.module('waxeApp')
     .controller('VersioningUnifiedDiffCtrl', ['$scope', '$http', '$routeParams', '$modal', 'UrlFactory', 'MessageService', function ($scope, $http, $routeParams, $modal, UrlFactory, MessageService) {
-        var url = UrlFactory.getUserAPIUrl('versioning/diff');
+        var url = UrlFactory.jsonAPIUserUrl('versioning/diff');
         $http
           .get(url, {params: $routeParams})
           .then(function(res) {
@@ -37,7 +37,7 @@ angular.module('waxeApp')
 
             modalInstance.result.then(function(data) {
                 var filenames = [$routeParams.path];
-                var url = UrlFactory.getUserAPIUrl('versioning/commit');
+                var url = UrlFactory.jsonAPIUserUrl('versioning/commit');
                 $http
                     .post(url, {paths: filenames, msg: data.message})
                     .then(function(res) {
@@ -50,7 +50,7 @@ angular.module('waxeApp')
         // TODO: refactor this with versioning.js, it's a copy/paste of
         // the code
         $scope.doRevert = function() {
-            var url = UrlFactory.getUserAPIUrl('versioning/revert');
+            var url = UrlFactory.jsonAPIUserUrl('versioning/revert');
             var filenames = [$routeParams.path];
             $http
                 .post(url, {paths: filenames})

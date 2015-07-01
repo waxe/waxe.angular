@@ -12,7 +12,7 @@ angular.module('waxeApp')
 
         this.login = function (credentials) {
             return $http
-                .post(UrlFactory.getAPIUrl('login'), credentials)
+                .post(UrlFactory.jsonAPIUrl(null, 'login'), credentials)
                 .then(function (res) {
                     UserProfile.create(res.data);
                     Session.init();
@@ -21,7 +21,7 @@ angular.module('waxeApp')
 
         this.logout = function () {
             return $http
-                .get(UrlFactory.getAPIUrl('logout'))
+                .get(UrlFactory.jsonAPIUrl(null, 'logout'))
                 .then(function () {
                     UserProfile.destroy();
                     AccountProfile.destroy();
@@ -31,7 +31,7 @@ angular.module('waxeApp')
 
         this.profile = function() {
             return $http
-                .get(UrlFactory.getAPIUrl('profile'))
+                .get(UrlFactory.jsonAPIUrl(null, 'profile'))
                 .then(function (res) {
                     UserProfile.create(res.data);
                 });

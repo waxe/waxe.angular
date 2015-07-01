@@ -19,7 +19,7 @@ angular.module('waxeApp')
         Session.hasForm = true;
 
         Session.submitForm = function() {
-            var url = UrlFactory.getUserAPIUrl('txt/update');
+            var url = UrlFactory.jsonAPIUserUrl('txt/update');
             var params = {path: $routeParams.path, filecontent: $scope.txt};
             var conflicted = $location.search().conflicted;
             if (angular.isDefined(conflicted)) {
@@ -32,8 +32,8 @@ angular.module('waxeApp')
                 });
         };
 
-        var action = UrlFactory.getActionFromUrl($location.path());
-        var url = UrlFactory.getUserAPIUrl('txt/' + action);
+        var action = $route.current.$$route.action;
+        var url = UrlFactory.jsonAPIUserUrl('txt/' + action);
         $http
             .get(url, {params: $routeParams})
             .then(function(res) {

@@ -26,7 +26,7 @@
 
 <div ng-repeat="result in results">
   <i class="fa fa-file-excel-o"></i>
-  <a href="{{'#' + UrlFactory.userUrl('xml/edit', {path: result[0] }) }}">{{result[0]}}</a>
+  <a href="#{{UrlFactory.userUrl('xml/edit', {path: result[0] }) }}">{{result[0]}}</a>
   <p ng-bind-html="result[1]"></p>
 </div>
 

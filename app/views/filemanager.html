@@ -13,7 +13,7 @@
       <div class="panel-body">
         <div ng-repeat="f in opened_files">
           <span ng-if="f.user">
-          <a href="#{{ UrlFactory.urlFor(f.user, 'xml/edit', {path: f.path}) }}"><i class="fa fa-file-excel-o"></i> {{f.path}} ({{f.user}})</a>
+          <a href="#{{ UrlFactory.url(f.user, 'xml/edit', {path: f.path}) }}"><i class="fa fa-file-excel-o"></i> {{f.path}} ({{f.user}})</a>
          </span>
           <span ng-if="!f.user">
           <a href="#{{ UrlFactory.userUrl('xml/edit', {path: f.path}) }}"><i class="fa fa-file-excel-o"></i> {{f.path}}</a>

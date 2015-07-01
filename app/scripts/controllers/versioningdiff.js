@@ -10,7 +10,7 @@
 angular.module('waxeApp')
     .controller('VersioningDiffCtrl', ['$scope', '$http', '$routeParams', '$modal', '$compile', 'UrlFactory', 'Session', 'Utils', 'MessageService', function ($scope, $http, $routeParams, $modal, $compile, UrlFactory, Session, Utils, MessageService) {
 
-        var url = UrlFactory.getUserAPIUrl('versioning/full-diff');
+        var url = UrlFactory.jsonAPIUserUrl('versioning/full-diff');
         $http
           .get(url, {params: $routeParams})
           .then(function(res) {
@@ -41,7 +41,7 @@ angular.module('waxeApp')
             });
             var $form = angular.element('.diff-form'),
                 dic = Utils.getFormDataForSubmit($form),
-                url = UrlFactory.getUserAPIUrl('txt/updates');
+                url = UrlFactory.jsonAPIUserUrl('txt/updates');
 
             $http
                 .post(url, dic.data)
@@ -73,7 +73,7 @@ angular.module('waxeApp')
                 });
 
                 modalInstance.result.then(function(data) {
-                    var url = UrlFactory.getUserAPIUrl('versioning/commit');
+                    var url = UrlFactory.jsonAPIUserUrl('versioning/commit');
                     $http
                         .post(url, {paths: filenames, msg: data.message})
                         .then(function(res) {

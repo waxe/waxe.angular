@@ -23,7 +23,7 @@ angular.module('waxeApp')
 
         $scope.doSearch = function() {
             $location.search($scope.search);
-            var url = UrlFactory.getUserAPIUrl('search');
+            var url = UrlFactory.jsonAPIUserUrl('search');
             $http
               .get(url, {params: $scope.search})
               .then(function(res) {
@@ -57,7 +57,7 @@ angular.module('waxeApp')
                     $scope.selectFolder = function(path) {
                         parentScope.currentPath = path;
                         $scope.breadcrumbFiles = Utils.getBreadcrumbFiles(path);
-                        var url = UrlFactory.getUserAPIUrl('explore');
+                        var url = UrlFactory.jsonAPIUserUrl('explore');
                         $http
                           .get(url, {params: {path: path}})
                           .then(function(res) {

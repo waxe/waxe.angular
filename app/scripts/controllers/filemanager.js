@@ -10,7 +10,7 @@
 angular.module('waxeApp')
     .controller('FileManagerCtrl',['$scope', '$http', '$routeParams', 'UrlFactory', 'UserProfile' , function ($scope, $http, $routeParams, UrlFactory, UserProfile) {
 
-        var url = UrlFactory.getUserAPIUrl('explore');
+        var url = UrlFactory.jsonAPIUserUrl('explore');
         $http
           .get(url, {params: $routeParams})
           .then(function(res) {
@@ -20,7 +20,7 @@ angular.module('waxeApp')
 
         $scope.versioning = {};
         if (UserProfile.versioning) {
-            url = UrlFactory.getUserAPIUrl('versioning/short-status');
+            url = UrlFactory.jsonAPIUserUrl('versioning/short-status');
             $http
               .get(url, {params: $routeParams})
               .then(function(res) {
@@ -30,7 +30,7 @@ angular.module('waxeApp')
 
         $scope.opened_files = [];
         $scope.commited_files = [];
-        url = UrlFactory.getAPIUrl('last-files');
+        url = UrlFactory.jsonAPIUrl(null, 'last-files');
         $http
           .get(url)
           .then(function(res) {

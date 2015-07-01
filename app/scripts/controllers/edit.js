@@ -10,9 +10,8 @@
 angular.module('waxeApp')
     .controller('EditCtrl', ['$scope', '$http', '$sce', '$routeParams', '$route', '$location', '$compile', 'UrlFactory', 'Session' , function ($scope, $http, $sce, $routeParams, $route, $location, $compile, UrlFactory, Session) {
 
-        var action = UrlFactory.getActionFromUrl($location.path());
-
-        var url = UrlFactory.getUserAPIUrl($routeParams.type+'/'+action);
+        var action = $route.current.$$route.action;
+        var url = UrlFactory.jsonAPIUserUrl($routeParams.type+'/'+action);
         $http
             .get(url, {params: $routeParams})
             .then(function(res) {

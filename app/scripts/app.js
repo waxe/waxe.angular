@@ -81,20 +81,25 @@ angular
                 templateUrl: 'views/edittxt.html',
                 controller: 'EditTxtCtrl',
                 resolve: resolve,
-                editor: true
+                editor: true,
+                type: 'txt'
 
             })
           .when('/account/:user/:type/edit', {
                 templateUrl: 'views/edit.html',
                 controller: 'EditCtrl',
                 resolve: resolve,
-                editor: true
+                editor: true,
+                type: 'xml',
+                action: 'edit'
             })
           .when('/account/:user/:type/new', {
                 templateUrl: 'views/edit.html',
                 controller: 'EditCtrl',
                 resolve: resolve,
-                noAutoBreadcrumb: true
+                noAutoBreadcrumb: true,
+                type: 'xml',
+                action: 'new'
             })
           .otherwise({
                 redirectTo: '/'

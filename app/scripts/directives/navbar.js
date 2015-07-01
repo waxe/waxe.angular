@@ -7,7 +7,7 @@
  * # navbar
  */
 angular.module('waxeApp')
-    .directive('navbar', ['$location', '$modal', '$http', 'NavbarService', 'UserProfile', 'AccountProfile', 'AuthService', 'MessageService', 'XmlUtils', 'Utils', 'UrlFactory', 'Session', '$routeParams', function ($location, $modal, $http, NavbarService, UserProfile, AccountProfile, AuthService, MessageService, XmlUtils, Utils, UrlFactory, Session, $routeParams) {
+    .directive('navbar', ['$location', '$modal', '$http', 'NavbarService', 'UserProfile', 'AccountProfile', 'AuthService', 'MessageService', 'XmlUtils', 'Utils', 'UrlFactory', 'Session', '$routeParams', '$route', function ($location, $modal, $http, NavbarService, UserProfile, AccountProfile, AuthService, MessageService, XmlUtils, Utils, UrlFactory, Session, $routeParams, $route) {
         return {
             templateUrl: 'views/navbar.html',
             restrict: 'E',
@@ -36,7 +36,7 @@ angular.module('waxeApp')
 
                 scope.doRender = function() {
                     // TODO: the url should not be in JSON.
-                    var url = UrlFactory.getUserAPIUrl('xml/view') + '?path=' + $routeParams.path;
+                    var url = UrlFactory.jsonAPIUserUrl('xml/view') + '?path=' + $routeParams.path;
                     window.open(url, '_viewer');
                 };
 
@@ -93,7 +93,7 @@ angular.module('waxeApp')
                             $scope.open = function(path) {
                                 parentScope.currentXmlTemplatePath = path;
                                 $scope.breadcrumbFiles = Utils.getBreadcrumbFiles(path, AccountProfile.templates_path);
-                                var url = UrlFactory.getUserAPIUrl('explore');
+                                var url = UrlFactory.jsonAPIUserUrl('explore');
                                 $http
                                   .get(url, {params: {path: path}})
                                   .then(function(res) {
@@ -126,7 +126,7 @@ angular.module('waxeApp')
                             $scope.open = function(path) {
                                 parentScope.currentPath = path;
                                 $scope.breadcrumbFiles = Utils.getBreadcrumbFiles(path);
-                                var url = UrlFactory.getUserAPIUrl('explore');
+                                var url = UrlFactory.jsonAPIUserUrl('explore');
                                 $http
                                   .get(url, {params: {path: path}})
                                   .then(function(res) {
@@ -183,7 +183,7 @@ angular.module('waxeApp')
                             $scope.filename = '';
 
                             $scope.createFolder = function() {
-                                var url = UrlFactory.getUserAPIUrl('create-folder');
+                                var url = UrlFactory.jsonAPIUserUrl('create-folder');
                                 $http
                                   .post(url, {path: parentScope.currentPath,
                                                       name: $scope.folder})
@@ -216,7 +216,7 @@ angular.module('waxeApp')
 
                                 $scope.breadcrumbFiles = Utils.getBreadcrumbFiles(path);
 
-                                var url = UrlFactory.getUserAPIUrl('explore');
+                                var url = UrlFactory.jsonAPIUserUrl('explore');
                                 $http
                                   .get(url, {params: {path: path}})
                                   .then(function(res) {
@@ -246,7 +246,8 @@ angular.module('waxeApp')
 
                 scope.sourceToggle = function() {
                     var from = $routeParams.from;
-                    var type = UrlFactory.getTypeFromUrl($location.path());
+                    var type = $route.current.$$route.type;
+                    console.log('type', type);
                     if (typeof from === 'undefined' || $routeParams.fromtype !== 'source') {
                         if (type !== 'txt') {
                             var redirect = UrlFactory.userUrl('txt/edit');
