@@ -61,6 +61,10 @@ module.exports = function (grunt) {
           '.tmp/styles/{,*/}*.css',
           '<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
         ]
+      },
+      doc: {
+        files: ['<%= yeoman.app %>/scripts/{,*/}*.js'],
+        tasks: ['ngdocs'],
       }
     },
 
@@ -99,6 +103,17 @@ module.exports = function (grunt) {
                 connect.static('./bower_components')
               ),
               connect.static(appConfig.app)
+            ];
+          }
+        }
+      },
+      doc: {
+        options: {
+          port: 9002,
+          open: true,
+          middleware: function (connect) {
+            return [
+              connect.static('docs'),
             ];
           }
         }
@@ -388,6 +403,13 @@ module.exports = function (grunt) {
         configFile: 'test/karma.conf.js',
         singleRun: true
       }
+    },
+
+    ngdocs: {
+      api: {
+        src: ['app/scripts/**/*.js'],
+        title: 'API Documentation'
+      }
     }
   });
 
@@ -411,6 +433,11 @@ module.exports = function (grunt) {
     grunt.log.warn('The `server` task has been deprecated. Use `grunt serve` to start a server.');
     grunt.task.run(['serve:' + target]);
   });
+
+  grunt.registerTask('servedoc', [
+      'connect:doc',
+      'watch:doc'
+  ]);
 
   grunt.registerTask('test', [
     'clean:server',
