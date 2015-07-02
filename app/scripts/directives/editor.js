@@ -7,7 +7,7 @@
  * # editor
  */
 angular.module('waxeApp')
-    .directive('editor', ['Session', '$interval', '$compile', function (Session, $interval, $compile) {
+    .directive('editor', ['Session', '$interval', function (Session, $interval) {
         return {
             template: '<div></div>',
             restrict: 'E',
@@ -15,14 +15,16 @@ angular.module('waxeApp')
                 'html': '='
             },
             link: function postLink(scope, element) {
-                var html = $compile(scope.html)(scope.$parent);
-                element.append(html);
+                element.append(scope.html);
                 var listener = scope.$watch(function(){
                     if(element.text()) {
                         // Remove the watch since the form is fully loaded
                         listener();
                         waxe.form = new waxe.Form(scope.$parent.treeData);
                         Session.form = waxe.form;
+                        angular.element(document).on('click', '.btn-external-editor', function() {
+                            eval('scope.$parent.' + angular.element(this).attr('ng-click'));
+                        });
                     }
                 });
 
