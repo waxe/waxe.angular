@@ -247,7 +247,6 @@ angular.module('waxeApp')
                 scope.sourceToggle = function() {
                     var from = $routeParams.from;
                     var type = $route.current.$$route.type;
-                    console.log('type', type);
                     if (typeof from === 'undefined' || $routeParams.fromtype !== 'source') {
                         if (type !== 'txt') {
                             var redirect = UrlFactory.userUrl('txt/edit');

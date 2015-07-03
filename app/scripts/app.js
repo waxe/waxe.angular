@@ -82,7 +82,8 @@ angular
                 controller: 'EditTxtCtrl',
                 resolve: resolve,
                 editor: true,
-                type: 'txt'
+                type: 'txt',
+                action: 'edit'
 
             })
           .when('/account/:user/:type/edit', {
