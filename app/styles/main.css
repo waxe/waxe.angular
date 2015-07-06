@@ -101,6 +101,7 @@ body {
 
 #tree {
   height: 100% !important;
+  overflow: visible !important;
 }
 
 /* From ui.bootstrap since we can't add empty href */
