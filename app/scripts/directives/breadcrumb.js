@@ -9,7 +9,7 @@
 angular.module('waxeApp')
     .directive('breadcrumb', ['Session', '$routeParams', 'UrlFactory', function (Session, $routeParams, UrlFactory) {
         return {
-            template: '<div class="breadcrumb navbar-fixed-top" ng-if="session.breadcrumbFiles.length"><li ng-repeat="file in session.breadcrumbFiles"><a ng-if="isDefined(file.path)" href="#{{UrlFactory.userUrl(\'\', {path: file.path})}}">{{file.name}}</a><span ng-if="!isDefined(file.path)">{{file.name}}</span></li></div>',
+            template: '<div class="breadcrumb navbar-fixed-top" ng-if="session.breadcrumbFiles.length"><li ng-repeat="file in session.breadcrumbFiles"><a ng-if="isDefined(file.path)" href="#{{UrlFactory.userUrl(\'\', {path: file.path})}}">{{file.name}}</a><span ng-if="!isDefined(file.path)">{{file.name}}</span></li><li ng-if="Session.showFileFilter"><input type="text" ng-model="session.fileFilter" class="form-control" /></div>',
             restrict: 'E',
             replace: true,
             link: function postLink(scope) {

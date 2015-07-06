@@ -127,6 +127,12 @@ body {
   z-index: 1;
 }
 
+.breadcrumb input {
+  display: inline-block;
+  width: 160px;
+  height: 25px;
+}
+
 .match, .textdiff span {
   color: gray;
 }

@@ -1,7 +1,7 @@
 <div class="row file-navigation">
   <div class="col-md-8">
     <div class="row">
-      <div class="col-md-6" ng-repeat="file in files" ng-class="'versioning-' + versioning[file.link]">
+      <div class="col-md-6" ng-repeat="file in files | filter: session.fileFilter" ng-class="'versioning-' + versioning[file.link]">
         <a ng-if="file.type === 'folder'" href="#{{ UrlFactory.userUrl('', {path: file.link}) }}"><i  class="fa fa-folder-o"></i> {{file.name}}</a>
         <a ng-if="file.type === 'file'" href="#{{ UrlFactory.userUrl('xml/edit', {path: file.link}) }}"><i class="fa fa-file-excel-o"></i> {{file.name}}</a>
       </div>

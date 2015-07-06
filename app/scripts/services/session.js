@@ -18,6 +18,11 @@ angular.module('waxeApp')
             this.user = null;
             this.breadcrumbFiles = [];
 
+            // If true we display the input to filter the files displayed
+            this.showFileFilter = false;
+            // The file filter to use on ng-model
+            // this.fileFilter
+
             // Special handler when we click on the save button
             this.submitForm = null;
             // We have a form, we should enable the save button
