@@ -16,7 +16,7 @@
       <a href="#{{UrlFactory.userUrl('txt/edit', {path: conflicted.relpath, conflicted: true})}}">{{conflicted.relpath}}</a>
       </li>
     </ul>
-    <button class="btn btn-danger" type="submit" ng-click="doRevert(versioning.conflicteds)" data-confirm="Are you sure you want to revert the selected files? All your modifications will be deleted!">Revert</button>
+    <button class="btn btn-danger" type="submit" ng-click="doRevert(versioning.conflicteds)" ng-confirm-click="Are you sure you want to revert the selected files? All your modifications will be deleted!">Revert</button>
     </form>
   </div>
 </div>
@@ -38,8 +38,8 @@
             <a href="#{{UrlFactory.userUrl('xml/edit', {path: uncommitable.relpath})}}">{{uncommitable.relpath}}</a>
           </li>
         </ul>
-        <button class="btn btn-danger" type="submit" ng-click="doRevert(versioning.uncommitables)" data-confirm="Are you sure you want to revert the selected files? All your modifications will be deleted!">Revert</button>
-        <button class="btn btn-danger" type="submit" ng-click="doRemove(versioning.uncommitable)" data-confirm="Are you sure you want to delete the selected files?">Remove</button>
+        <button class="btn btn-danger" type="submit" ng-click="doRevert(versioning.uncommitables)" ng-confirm-click="Are you sure you want to revert the selected files? All your modifications will be deleted!">Revert</button>
+        <button class="btn btn-danger" type="submit" ng-click="doRemove(versioning.uncommitable)" ng-confirm-click="Are you sure you want to delete the selected files?">Remove</button>
         <button class="btn btn-primary" type="submit" ng-click="doDiff(versioning.uncommitable)">Diff</button>
       </form>
     </div>
@@ -63,7 +63,7 @@
           <a href="#{{UrlFactory.userUrl('xml/edit', {path: other.relpath})}}">{{other.relpath}}</a>
         </li>
       </ul>
-      <button class="btn btn-danger" type="submit" ng-click="doRevert(versioning.others)" data-confirm="Are you sure you want to revert the selected files? All your modifications will be deleted!">Revert</button>
+      <button class="btn btn-danger" type="submit" ng-click="doRevert(versioning.others)" ng-confirm-click="Are you sure you want to revert the selected files? All your modifications will be deleted!">Revert</button>
       <button class="btn btn-primary" type="submit" ng-click="doDiff(versioning.others)">Diff</button>
       <button class="btn btn-success" type="submit" ng-click="doCommit(versioning.others)">Commit</button>
     </form>

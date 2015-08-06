@@ -1,7 +1,7 @@
 <span ng-if="ok">
   <pre ng-bind-html="diff"></pre>
   
-  <a data-confirm="Are you sure you want to revert the modification applied to this file?" class="btn btn-danger" ng-click="doRevert()">Revert</a>
+  <a ng-confirm-click="Are you sure you want to revert the modification applied to this file?" class="btn btn-danger" ng-click="doRevert()">Revert</a>
   <button type="button" class="btn btn-success" ng-click="doCommit()" ng-if="can_commit">Commit</button>
 </span>
 
