@@ -9,7 +9,8 @@
   You don't have any personal account but you can edit other one:
 
   <div ng-repeat="login in UserProfile.logins">
-    <a href="#{{UrlFactory.url(login)}}">{{login}}</a>
+    <a ng-if="path" href="#{{UrlFactory.url(login, 'xml/edit', {path: path})}}">{{login}}</a>
+    <a ng-if="!path" href="#{{UrlFactory.url(login)}}">{{login}}</a>
   </div>
 
 </div>
