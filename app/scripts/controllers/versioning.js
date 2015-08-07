@@ -35,7 +35,22 @@ angular.module('waxeApp')
             });
         };
 
+
+        var hasFilenameSelected = function(filenames) {
+            for (var i=0, len=filenames.length; i < len; i++) {
+                if (filenames[i].selected) {
+                    return true;
+                }
+            }
+            return false;
+        };
+
         $scope.doRevert = function(filenames) {
+            if (!hasFilenameSelected(filenames)) {
+                MessageService.set('warning', 'Please select at least one file', undefined, 1000);
+                return false;
+            }
+
             var files = [],
                 reals = [];
             for (var i=0, len=filenames.length; i < len; i++) {
@@ -57,6 +72,11 @@ angular.module('waxeApp')
         };
 
         $scope.doCommit = function(filenames) {
+            if (!hasFilenameSelected(filenames)) {
+                MessageService.set('warning', 'Please select at least one file', undefined, 1000);
+                return false;
+            }
+
             var modalInstance = $modal.open({
                 templateUrl: 'commit.html',
                 controller: function($scope, $modalInstance) {
@@ -95,6 +115,11 @@ angular.module('waxeApp')
         };
 
         $scope.doDiff = function(filenames) {
+            if (!hasFilenameSelected(filenames)) {
+                MessageService.set('warning', 'Please select at least one file', undefined, 1000);
+                return false;
+            }
+
             var files = [];
             for (var i=0, len=filenames.length; i < len; i++) {
                 var filename = filenames[i];
@@ -105,6 +130,4 @@ angular.module('waxeApp')
             var url = UrlFactory.userUrl('versioning/diff');
             $location.path(url).search({paths: files});
         };
-
-        // TODO: support commit
     }]);

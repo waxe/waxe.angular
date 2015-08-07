@@ -13,7 +13,7 @@ angular.module('waxeApp')
         this.type = null;
         this.timer = null;
 
-        this.set = function(type, message, classname) {
+        this.set = function(type, message, classname, timeout) {
             if (this.timer) {
                 // Stop the timer
                 $timeout.cancel(this.timer);
@@ -22,11 +22,12 @@ angular.module('waxeApp')
             this.message = message;
             this.classname = angular.isDefined(classname)? classname: this.type;
 
-            if (this.type === 'success') {
+            timeout = angular.isDefined(timeout)? timeout: 500;
+            if (this.type === 'success' || timeout) {
                 var that = this;
                 this.timer = $timeout(function () {
                     that.close();
-                }, 500);
+                }, timeout);
             }
         };
 
