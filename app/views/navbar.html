@@ -49,9 +49,6 @@
           </ul>
         </li>
         <li ng-if="Session.accountUsable && AccountProfile.has_xml_renderer" ng-class="{disabled: !Session.editor}"><a ng-click="doRender()">Rendering</a></li>
-      </ul>
-
-      <ul class="nav navbar-nav navbar-right">
         <li ng-if="Session.accountUsable && AccountProfile.has_search">
         <form class="navbar-form navbar-left" role="search" ng-submit="doSearch()">
             <div class="form-group">
@@ -59,6 +56,9 @@
             </div>
           </form>
         </li>
+      </ul>
+
+      <ul class="nav navbar-nav navbar-right">
         <li ng-if="!Session.login" class="active"><a ng-href="#/login">Sign in</a></li>
         <li dropdown ng-if="Session.login">
           <a dropdown-toggle>
