@@ -5,7 +5,7 @@
     <pre processing-diff class="diff" left-obj="diff.left" right-obj="diff.right" options="diffOptions"></pre>
   </span>
 
-  <button type="submit" class="btn" ng-if="can_commit">Commit</button>
+  <button type="submit" class="btn btn-primary" ng-if="can_commit">Commit</button>
 </form>
 
 
@@ -18,7 +18,7 @@
   </div>
 
   <div class="modal-footer">
+      <button class="btn btn-default" ng-click="cancel()">Cancel</button>
       <button class="btn btn-primary" ng-click="ok()">OK</button>
-      <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
   </div>
 </script>
