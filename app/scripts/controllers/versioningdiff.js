@@ -19,6 +19,9 @@ angular.module('waxeApp')
                     attrs: {
                         insert: {
                             contenteditable: true
+                        },
+                        equal: {
+                            contenteditable: true
                         }
                     }
                 };

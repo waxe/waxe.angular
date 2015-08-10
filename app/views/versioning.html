@@ -39,7 +39,6 @@
           </li>
         </ul>
         <button class="btn btn-danger" type="submit" ng-click="doRevert(versioning.uncommitables)" ng-confirm-click="Are you sure you want to revert the selected files? All your modifications will be deleted!">Revert</button>
-        <button class="btn btn-danger" type="submit" ng-click="doRemove(versioning.uncommitable)" ng-confirm-click="Are you sure you want to delete the selected files?">Remove</button>
         <button class="btn btn-primary" type="submit" ng-click="doDiff(versioning.uncommitable)">Diff</button>
       </form>
     </div>
@@ -80,7 +79,7 @@
   </div>
 
   <div class="modal-footer">
+      <button class="btn btn-default" ng-click="cancel()">Cancel</button>
       <button class="btn btn-primary" ng-click="ok()">OK</button>
-      <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
   </div>
 </script>
