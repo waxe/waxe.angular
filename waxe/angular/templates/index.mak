@@ -47,9 +47,9 @@
        ga('send', 'pageview');
     </script>
 
-    <script src="scripts/vendor.44af537c.js"></script>
+    <script src="scripts/vendor.199ff4ac.js"></script>
 
-    <script src="scripts/scripts.a9dcbda9.js"></script>
+    <script src="scripts/scripts.89f253e8.js"></script>
 
     % for resource in request.js_resources:
       <script type="text/javascript" src="${request.static_url(resource)}"></script>
