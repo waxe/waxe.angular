@@ -10,6 +10,13 @@
 angular.module('waxeApp')
     .service('Session', ['$http', '$q', '$route', 'Utils', 'UserProfile', 'AccountProfile', function ($http, $q, $route, Utils, UserProfile, AccountProfile) {
 
+        // The variables defined here should not be reset during the navigation.
+        // It's like a cache
+
+        // The current path we open/save file. It's used in the modal
+        this.currentPath = null;
+
+
         this.init = function(login, accountUsable) {
             this.login = login;
             // Should be true when we can use the account data

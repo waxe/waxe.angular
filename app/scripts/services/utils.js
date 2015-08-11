@@ -82,4 +82,96 @@ angular.module('waxeApp')
             }
             return breadcrumbFiles;
         };
-    });
+
+    }).service('FileUtils', ['$http', '$location', '$modal', 'Session', 'MessageService', 'UrlFactory', 'Utils', function ($http, $location, $modal, Session, MessageService, UrlFactory, Utils) {
+        var that = this;
+        this.save = function() {
+            var dic;
+            // TODO: if we keep this logic we should refactor this function.
+            if (Session.submitForm) {
+                Session.submitForm();
+                return;
+            }
+
+            if (!Session.form.filename) {
+                this.saveasModal();
+                return;
+            }
+            dic = Utils.getFormDataForSubmit(Session.form.$element);
+            return $http
+                .post(dic.url, dic.data)
+                .then(function() {
+                    if (Session.form) {
+                        // When we save before destroying the form
+                        // Session.form can be already deleted
+                        Session.form.status = null;
+                    }
+                    MessageService.set('success', 'Saved!');
+                });
+        };
+
+        this.saveasModal = function() {
+            var modalInstance = $modal.open({
+                templateUrl: 'navbar-saveas.html',
+                controller: function($scope, $modalInstance) {
+
+                    $scope.folder = '';
+                    $scope.filename = '';
+
+                    $scope.createFolder = function() {
+                        var url = UrlFactory.jsonAPIUserUrl('create-folder');
+                        $http
+                          .post(url, {path: Session.currentPath,
+                                              name: $scope.folder})
+                          .then(function(res) {
+                            $scope.open(res.data.link);
+                            $scope.folder = '';
+                        });
+                    };
+
+                    $scope.saveAs = function(filename) {
+                        filename = filename || $scope.filename;
+                        if (! filename) {
+                            return;
+                        }
+                        $scope.cancel();
+                        var path = [];
+                        if (Session.currentPath) {
+                            path.push(Session.currentPath);
+                        }
+                        path.push(filename);
+                        var relpath = path.join('/');
+                        Session.form.setFilename(relpath);
+                        that.save().then(function() {
+                            Session.setBreadcrumbFiles(relpath);
+                        });
+                    };
+
+                    $scope.open = function(path) {
+                        Session.currentPath = path;
+
+                        $scope.breadcrumbFiles = Utils.getBreadcrumbFiles(path);
+
+                        var url = UrlFactory.jsonAPIUserUrl('explore');
+                        $http
+                          .get(url, {params: {path: path}})
+                          .then(function(res) {
+                            $scope.files = res.data;
+                        });
+                    };
+
+                    $scope.open(Session.currentPath);
+
+                    $scope.cancel = function () {
+                        $modalInstance.dismiss('cancel');
+                    };
+                }
+            });
+
+            modalInstance.result.then(function(data) {
+                var url = UrlFactory.userUrl('xml/new');
+                $location.path(url).search(data);
+            });
+
+        };
+    }]);

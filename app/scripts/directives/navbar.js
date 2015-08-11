@@ -7,7 +7,7 @@
  * # navbar
  */
 angular.module('waxeApp')
-    .directive('navbar', ['$location', '$modal', '$http', 'NavbarService', 'UserProfile', 'AccountProfile', 'AuthService', 'MessageService', 'XmlUtils', 'Utils', 'UrlFactory', 'Session', '$routeParams', '$route', function ($location, $modal, $http, NavbarService, UserProfile, AccountProfile, AuthService, MessageService, XmlUtils, Utils, UrlFactory, Session, $routeParams, $route) {
+    .directive('navbar', ['$location', '$modal', '$http', 'NavbarService', 'UserProfile', 'AccountProfile', 'AuthService', 'MessageService', 'XmlUtils', 'Utils', 'FileUtils', 'UrlFactory', 'Session', '$routeParams', '$route', function ($location, $modal, $http, NavbarService, UserProfile, AccountProfile, AuthService, MessageService, XmlUtils, Utils, FileUtils, UrlFactory, Session, $routeParams, $route) {
         return {
             templateUrl: 'views/navbar.html',
             restrict: 'E',
@@ -19,6 +19,7 @@ angular.module('waxeApp')
                 scope.AccountProfile = AccountProfile;
                 scope.UrlFactory = UrlFactory;
                 scope.Session = Session;
+                scope.FileUtils = FileUtils;
                 scope.logout = function() {
                     AuthService.logout().then(function() {
                         $location.path('/login');
@@ -115,16 +116,16 @@ angular.module('waxeApp')
                     });
                 };
 
-                scope.currentPath = null;
+                Session.currentPath = null;
                 scope.openModal = function() {
                     $modal.open({
                         templateUrl: 'navbar-open.html',
-                        controller: function($scope, $modalInstance, parentScope) {
+                        controller: function($scope, $modalInstance) {
 
                             $scope.url = 'xml/edit';
 
                             $scope.open = function(path) {
-                                parentScope.currentPath = path;
+                                Session.currentPath = path;
                                 $scope.breadcrumbFiles = Utils.getBreadcrumbFiles(path);
                                 var url = UrlFactory.jsonAPIUserUrl('explore');
                                 $http
@@ -134,114 +135,13 @@ angular.module('waxeApp')
                                 });
                             };
 
-                            $scope.open(parentScope.currentPath);
+                            $scope.open(Session.currentPath);
 
                             $scope.cancel = function () {
                                 $modalInstance.dismiss('cancel');
                             };
-                        },
-                        resolve: {
-                            parentScope: function() {
-                                return scope;
-                            }
                         }
                     });
-                };
-
-                scope.save = function() {
-                    var dic;
-                    // TODO: if we keep this logic we should refactor this function.
-                    if (Session.submitForm) {
-                        Session.submitForm();
-                        return;
-                    }
-
-                    // TODO: move this logic in edit controller
-                    if (!Session.form.filename) {
-                        scope.saveasModal();
-                        return;
-                    }
-                    dic = Utils.getFormDataForSubmit(Session.form.$element);
-                    return $http
-                        .post(dic.url, dic.data)
-                        .then(function() {
-                            if (Session.form) {
-                                // When we save before destroying the form
-                                // Session.form can be already deleted
-                                Session.form.status = null;
-                            }
-                            MessageService.set('success', 'Saved!');
-                        });
-                };
-
-                scope.saveasModal = function() {
-                    var modalInstance = $modal.open({
-                        templateUrl: 'navbar-saveas.html',
-                        controller: function($scope, $modalInstance, parentScope) {
-
-                            $scope.folder = '';
-                            $scope.filename = '';
-
-                            $scope.createFolder = function() {
-                                var url = UrlFactory.jsonAPIUserUrl('create-folder');
-                                $http
-                                  .post(url, {path: parentScope.currentPath,
-                                                      name: $scope.folder})
-                                  .then(function(res) {
-                                    $scope.open(res.data.link);
-                                    $scope.folder = '';
-                                });
-                            };
-
-                            $scope.saveAs = function(filename) {
-                                filename = filename || $scope.filename;
-                                if (! filename) {
-                                    return;
-                                }
-                                $scope.cancel();
-                                var path = [];
-                                if (parentScope.currentPath) {
-                                    path.push(parentScope.currentPath);
-                                }
-                                path.push(filename);
-                                var relpath = path.join('/');
-                                Session.form.setFilename(relpath);
-                                $scope.save().then(function() {
-                                    Session.setBreadcrumbFiles(relpath);
-                                });
-                            };
-
-                            $scope.open = function(path) {
-                                parentScope.currentPath = path;
-
-                                $scope.breadcrumbFiles = Utils.getBreadcrumbFiles(path);
-
-                                var url = UrlFactory.jsonAPIUserUrl('explore');
-                                $http
-                                  .get(url, {params: {path: path}})
-                                  .then(function(res) {
-                                    $scope.files = res.data;
-                                });
-                            };
-
-                            $scope.open(parentScope.currentPath);
-
-                            $scope.cancel = function () {
-                                $modalInstance.dismiss('cancel');
-                            };
-                        },
-                        resolve: {
-                            parentScope: function() {
-                                return scope;
-                            }
-                        }
-                    });
-
-                    modalInstance.result.then(function(data) {
-                        var url = UrlFactory.userUrl('xml/new');
-                        $location.path(url).search(data);
-                    });
-
                 };
 
                 scope.sourceToggle = function() {
