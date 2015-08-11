@@ -7,7 +7,7 @@
  * # editor
  */
 angular.module('waxeApp')
-    .directive('editor', ['Session', '$interval', function (Session, $interval) {
+    .directive('editor', ['$interval', 'Session', 'FileUtils', function ($interval, Session, FileUtils) {
         return {
             template: '<div></div>',
             restrict: 'E',
@@ -30,17 +30,16 @@ angular.module('waxeApp')
 
                 var inter = $interval(function() {
                     if (Session.form && Session.form.filename && Session.form.status === 'updated'){
-                        // TODO: is it really working
-                        scope.save();
+                        FileUtils.save();
                     }
-                }, 1000 * 60);
+                }, 1000 * 30);
 
                 scope.$on('$destroy', function() {
                     if (Session.form && Session.form.status) {
                         // TODO: use a modal
                         var res = window.confirm('Do you want to save the file before moving?');
                         if (res) {
-                            scope.save();
+                            FileUtils.save();
                         }
                     }
 
