@@ -141,12 +141,15 @@ angular
 
         });
 
-        $rootScope.$on('$routeChangeSuccess', function() {
+        $rootScope.$on('$routeChangeError', function() {
             MessageService.close('loading');
         });
 
-        $rootScope.$on('$routeChangeError', function() {
-            MessageService.close('loading');
+        $rootScope.$on('pageLoaded', function(e) {
+            // Set parameter used in the templates to display custom message if
+            // needed. (when we don't have anything to display)
+            e.targetScope.pageLoaded = true;
+            MessageService.setIfEmptyOrSameType('loading', 'Loaded', 'info', 1000);
         });
 
         // Be sure the user save before closing window

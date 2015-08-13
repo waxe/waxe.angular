@@ -18,6 +18,7 @@ angular.module('waxeApp')
                 $scope.html = res.data.content;
                 $scope.treeData = res.data.jstree_data;
                 Session.hasForm = true;
+                $scope.$emit('pageLoaded');
             }, function() {
                 // Seems like there is a problem to display the XML file, we
                 // try to display it as txt.

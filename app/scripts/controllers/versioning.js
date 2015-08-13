@@ -15,12 +15,25 @@ angular.module('waxeApp')
             // NOTE: the api should failed but make sure it's nicely handled.
         }
 
+
+
+        var checkEmpty = function() {
+            for (var k in $scope.versioning) {
+                if($scope.versioning[k].length) {
+                    return;
+                }
+            }
+            $scope.emptyPage = true;
+        };
+
         $scope.versioning = {};
         var url = UrlFactory.jsonAPIUserUrl('versioning/status');
         $http
           .get(url, {params: $routeParams})
           .then(function(res) {
             $scope.versioning = res.data;
+            $scope.$emit('pageLoaded');
+            checkEmpty();
         });
 
         $scope.selectAll = function(filenames) {
@@ -68,6 +81,7 @@ angular.module('waxeApp')
                         var index = filenames.indexOf(filename);
                         filenames.splice(index, 1);
                     });
+                    checkEmpty();
                 });
         };
 
@@ -110,6 +124,7 @@ angular.module('waxeApp')
                             filenames.splice(index, 1);
                         });
                         MessageService.set('success', res.data);
+                        checkEmpty();
                     });
             });
         };

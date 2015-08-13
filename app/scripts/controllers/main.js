@@ -25,6 +25,7 @@ angular.module('waxeApp')
             return;
         }
 
+        $scope.$emit('pageLoaded');
         $scope.Session = Session;
         $scope.UrlFactory = UrlFactory;
         $scope.UserProfile= UserProfile;

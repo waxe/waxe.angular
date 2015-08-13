@@ -38,5 +38,6 @@ angular.module('waxeApp')
             .get(url, {params: $routeParams})
             .then(function(res) {
                 $scope.txt = res.data;
+                $scope.$emit('pageLoaded');
             });
     }]);

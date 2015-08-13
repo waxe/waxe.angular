@@ -10,7 +10,8 @@
 angular.module('waxeApp')
     .controller('LoginCtrl', ['$scope', '$location', 'AuthService', 'UserProfile', function ($scope, $location, AuthService, UserProfile) {
 
-        $scope.UserProfile = UserProfile;
+       $scope.$emit('pageLoaded');
+       $scope.UserProfile = UserProfile;
 
         $scope.credentials = {
             login: '',

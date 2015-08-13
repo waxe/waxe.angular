@@ -15,6 +15,7 @@ angular.module('waxeApp')
           .get(url, {params: $routeParams})
           .then(function(res) {
             $scope.files = res.data;
+            $scope.$emit('pageLoaded');
         });
         $scope.UrlFactory = UrlFactory;
 

@@ -28,6 +28,7 @@ angular.module('waxeApp')
                 $scope.can_commit = res.data.can_commit;
                 Session.submitForm = $scope.submitForm;
                 Session.hasForm = true;
+                $scope.$emit('pageLoaded');
             });
 
         $scope.submitForm = function(commit) {
