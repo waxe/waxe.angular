@@ -114,7 +114,10 @@ angular
                 resolve: resolve,
                 noAutoBreadcrumb: true,
                 type: 'xml',
-                action: 'new'
+                action: 'new',
+                // We need 'reloadOnSearch' since we want the 'new' works when
+                // we are editing a file. (it's the same controller)
+                reloadOnSearch: false
             })
           .otherwise({
                 redirectTo: '/'
