@@ -14,7 +14,21 @@
 // If the user is not logged he will be redirect to the login page since in
 // this case the profile page returns a 401.
 var resolve = {
-    loadProfile: ['$route', 'ProfileManager', function($route, ProfileManager) {
+    loadProfile: ['$route', '$interval', 'ProfileManager', 'Session', 'FileUtils', function($route, $interval, ProfileManager, Session, FileUtils) {
+        // Make sure we save the file we are editing before changing route.
+        if (Session.autosave_interval !== null) {
+            $interval.cancel(Session.autosave_interval);
+            Session.autosave_interval = null;
+        }
+
+        if (Session.form && Session.form.status) {
+            // TODO: use a modal
+            var res = window.confirm('Do you want to save the file before moving?');
+            if (res) {
+                FileUtils.save();
+            }
+        }
+        Session.form = null;
         return ProfileManager.load($route.current.params.user);
     }]
 };
@@ -100,7 +114,10 @@ angular
                 resolve: resolve,
                 noAutoBreadcrumb: true,
                 type: 'xml',
-                action: 'new'
+                action: 'new',
+                // We need 'reloadOnSearch' since we want the 'new' works when
+                // we are editing a file. (it's the same controller)
+                reloadOnSearch: false
             })
           .otherwise({
                 redirectTo: '/'

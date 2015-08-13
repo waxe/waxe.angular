@@ -28,26 +28,11 @@ angular.module('waxeApp')
                     }
                 });
 
-                var inter = $interval(function() {
+                Session.autosave_interval = $interval(function() {
                     if (Session.form && Session.form.filename && Session.form.status === 'updated'){
                         FileUtils.save();
                     }
-                }, 1000 * 30);
-
-                scope.$on('$destroy', function() {
-                    if (Session.form && Session.form.status) {
-                        // TODO: use a modal
-                        var res = window.confirm('Do you want to save the file before moving?');
-                        if (res) {
-                            FileUtils.save();
-                        }
-                    }
-
-                    Session.form = null;
-                    if (angular.isDefined(inter)) {
-                        $interval.cancel(inter);
-                    }
-                });
+                }, 1000 * 3);
             }
         };
     }]);

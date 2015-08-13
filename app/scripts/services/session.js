@@ -16,6 +16,10 @@ angular.module('waxeApp')
         // The current path we open/save file. It's used in the modal
         this.currentPath = null;
 
+        // The interval object when editing a file. We need it to cancel it
+        // when we quit the editor.
+        this.autosave_interval = null;
+
 
         this.init = function(login, accountUsable) {
             this.login = login;

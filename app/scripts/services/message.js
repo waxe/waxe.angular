@@ -22,12 +22,12 @@ angular.module('waxeApp')
             this.message = message;
             this.classname = angular.isDefined(classname)? classname: this.type;
 
-            timeout = angular.isDefined(timeout)? timeout: 500;
-            if (this.type === 'success' || timeout) {
+            var realtimeout = angular.isDefined(timeout)? timeout: 3000;
+            if (this.type === 'success' || angular.isDefined(timeout)) {
                 var that = this;
                 this.timer = $timeout(function () {
                     that.close();
-                }, timeout);
+                }, realtimeout);
             }
         };
 

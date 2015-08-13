@@ -8,7 +8,7 @@
  * Controller of the waxeApp
  */
 angular.module('waxeApp')
-    .controller('FileManagerCtrl',['$scope', '$http', '$routeParams', 'UrlFactory', 'UserProfile', 'Session', function ($scope, $http, $routeParams, UrlFactory, UserProfile, Session) {
+    .controller('FileManagerCtrl',['$scope', '$http', '$routeParams', 'UrlFactory', 'AccountProfile', 'Session', function ($scope, $http, $routeParams, UrlFactory, AccountProfile, Session) {
 
         var url = UrlFactory.jsonAPIUserUrl('explore');
         $http
@@ -21,7 +21,7 @@ angular.module('waxeApp')
         Session.showFileFilter = true;
 
         $scope.versioning = {};
-        if (UserProfile.versioning) {
+        if (AccountProfile.has_versioning) {
             url = UrlFactory.jsonAPIUserUrl('versioning/short-status');
             $http
               .get(url, {params: $routeParams})
