@@ -8,7 +8,7 @@
  * Controller of the waxeApp
  */
 angular.module('waxeApp')
-    .controller('VersioningDiffCtrl', ['$scope', '$http', '$routeParams', '$modal', '$compile', 'UrlFactory', 'Session', 'Utils', 'MessageService', function ($scope, $http, $routeParams, $modal, $compile, UrlFactory, Session, Utils, MessageService) {
+    .controller('VersioningDiffCtrl', ['$scope', '$http', '$routeParams', '$modal', '$compile', '$location', 'UrlFactory', 'Session', 'Utils', 'MessageService', function ($scope, $http, $routeParams, $modal, $compile, $location, UrlFactory, Session, Utils, MessageService) {
 
         var url = UrlFactory.jsonAPIUserUrl('versioning/full-diff');
         $http
@@ -78,10 +78,12 @@ angular.module('waxeApp')
 
                 modalInstance.result.then(function(data) {
                     var url = UrlFactory.jsonAPIUserUrl('versioning/commit');
+                    MessageService.set('commit', 'Commit in progress...');
                     $http
                         .post(url, {paths: filenames, msg: data.message})
                         .then(function(res) {
                             MessageService.set('success', res.data);
+                            $location.url(UrlFactory.userUrl('versioning/'));
                         });
                 });
             }
