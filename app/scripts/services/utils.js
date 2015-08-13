@@ -45,20 +45,17 @@ angular.module('waxeApp')
             return dic;
         };
         this.getBreadcrumbFiles = function(file, rootpath) {
-
             rootpath = typeof rootpath !== 'undefined'? rootpath: '';
-            if (typeof file === 'undefined' || file === '' || file === null) {
-                return [{name: 'root'}];
-            }
-
             if (rootpath !== '' && file.indexOf(rootpath) === 0) {
                 file = file.slice(rootpath.length);
                 if (file.indexOf('/') === 0) {
                     file = file.slice(1);
                 }
             }
-            if (file === '') {
-                return [{name: 'root'}];
+            if (typeof file === 'undefined' || file === '' || file === null) {
+                // We always add link on the root path to make the easier when
+                // we are not on filemanager page
+                return [{name: 'root', 'path': rootpath}];
             }
 
             var breadcrumbFiles = [{
