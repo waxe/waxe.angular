@@ -31,11 +31,19 @@ angular.module('waxeApp')
             }
         };
 
-        this.setIfEmpty = function(type, message, classname) {
+        this.setIfEmpty = function(type, message, classname, timeout) {
             if (this.message) {
                 return false;
             }
-            this.set(type, message, classname);
+            this.set(type, message, classname, timeout);
+        };
+
+        // TODO: perhaps setIfEmpty is enough and we can add this logic in.
+        this.setIfEmptyOrSameType = function(type, message, classname, timeout) {
+            if (this.message && type !== this.type) {
+                return false;
+            }
+            this.set(type, message, classname, timeout);
         };
 
         this.close = function(type) {

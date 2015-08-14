@@ -24,6 +24,8 @@
 <br />
 
 
+<div ng-if="pageLoaded && !results.length">No result!</div>
+
 <div ng-repeat="result in results">
   <i class="fa fa-file-excel-o"></i>
   <a href="#{{UrlFactory.userUrl('xml/edit', {path: result[0] }) }}">{{result[0]}}</a>

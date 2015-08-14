@@ -16,6 +16,7 @@ angular.module('waxeApp')
                 $scope.ok = (angular.isDefined(res.data.diff)? true: false);
                 $scope.diff = res.data.diff;
                 $scope.can_commit = res.data.can_commit;
+                $scope.$emit('pageLoaded');
             });
 
         // TODO: refactor this with versioning.js, it's a copy/paste of

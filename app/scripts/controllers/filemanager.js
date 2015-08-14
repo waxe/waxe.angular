@@ -8,15 +8,17 @@
  * Controller of the waxeApp
  */
 angular.module('waxeApp')
-    .controller('FileManagerCtrl',['$scope', '$http', '$routeParams', 'UrlFactory', 'AccountProfile', 'Session', function ($scope, $http, $routeParams, UrlFactory, AccountProfile, Session) {
+    .controller('FileManagerCtrl',['$scope', '$http', '$routeParams', 'UrlFactory', 'AccountProfile', 'UserProfile', 'Session', function ($scope, $http, $routeParams, UrlFactory, AccountProfile, UserProfile, Session) {
 
         var url = UrlFactory.jsonAPIUserUrl('explore');
         $http
           .get(url, {params: $routeParams})
           .then(function(res) {
             $scope.files = res.data;
+            $scope.$emit('pageLoaded');
         });
         $scope.UrlFactory = UrlFactory;
+        $scope.UserProfile = UserProfile;
 
         Session.showFileFilter = true;
 

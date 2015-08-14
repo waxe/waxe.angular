@@ -16,7 +16,7 @@
           <a href="#{{ UrlFactory.url(f.user, 'xml/edit', {path: f.path}) }}"><i class="fa fa-file-excel-o"></i> {{f.path}} ({{f.user}})</a>
          </span>
           <span ng-if="!f.user">
-          <a href="#{{ UrlFactory.userUrl('xml/edit', {path: f.path}) }}"><i class="fa fa-file-excel-o"></i> {{f.path}}</a>
+          <a href="#{{ UrlFactory.url(UserProfile.login, 'xml/edit', {path: f.path}) }}"><i class="fa fa-file-excel-o"></i> {{f.path}}</a>
          </span>
         </div>
       </div>

@@ -31,6 +31,7 @@ angular.module('waxeApp')
                 $scope.results = res.data.results;
                 $scope.totalItems = res.data.nb_items;
                 $scope.itemsPerPage = res.data.items_per_page;
+                $scope.$emit('pageLoaded');
             });
         };
 

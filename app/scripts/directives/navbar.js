@@ -45,6 +45,7 @@ angular.module('waxeApp')
                 scope.dtd_url = null;
                 scope.dtd_tag =  null;
                 scope.newXmlModal = function() {
+                    console.log('new modal');
                     var modalInstance = $modal.open({
                         templateUrl: 'navbar-new.html',
                         controller: function($scope, $modalInstance, parentScope) {
