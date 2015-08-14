@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <link rel="stylesheet" href="styles/vendor.4bccc65f.css">
-    <link rel="stylesheet" href="styles/main.788db787.css">
+    <link rel="stylesheet" href="styles/main.182c50d4.css">
 
     <script type="text/javascript">
       var API_BASE_PATH = "${api_base_path}";
@@ -32,6 +32,7 @@
     <message></message>
     <navbar></navbar>
     <breadcrumb></breadcrumb>
+    <useraccount></useraccount>
     <div class="container container-autoscroll">
       <div ng-view=""></div>
     </div>
@@ -49,7 +50,7 @@
 
     <script src="scripts/vendor.199ff4ac.js"></script>
 
-    <script src="scripts/scripts.590fac78.js"></script>
+    <script src="scripts/scripts.531489b9.js"></script>
 
     % for resource in request.js_resources:
       <script type="text/javascript" src="${request.static_url(resource)}"></script>
