@@ -8,18 +8,28 @@
  * Controller of the waxeApp
  */
 angular.module('waxeApp')
-    .controller('SearchCtrl', ['$scope', '$http', '$routeParams', '$location', '$anchorScroll', '$modal', 'UrlFactory', 'Utils', function ($scope, $http, $routeParams, $location, $anchorScroll, $modal, UrlFactory, Utils) {
+    .controller('SearchCtrl', ['$scope', '$http', '$routeParams', '$location', '$anchorScroll', '$modal', 'UrlFactory', 'Utils', 'XmlUtils', 'AccountProfile', function ($scope, $http, $routeParams, $location, $anchorScroll, $modal, UrlFactory, Utils, XmlUtils, AccountProfile) {
 
         $scope.UrlFactory = UrlFactory;
+        // TODO: we should have a list somewhere with the supported extension
+        $scope.filetypes = [
+            {text: 'Select a filetype (optional)',
+             value: ''},
+            {text: 'xml',
+            value: '.xml'}
+        ];
         $scope.search = {
             search: $routeParams.search,
             page: $routeParams.page,
-            path: ''
+            path: '',
+            // Since only XML is support for now, put it as default
+            filetype: '.xml' // $scope.filetypes[0].value
         };
         $scope.totalItems = 0;
         $scope.itemsPerPage = 0;
         $scope.maxSize = 10;
         $scope.results = [];
+
 
         $scope.doSearch = function() {
             $location.search($scope.search);
@@ -82,6 +92,47 @@ angular.module('waxeApp')
                         return $scope;
                     }
                 }
+            });
+
+        };
+
+        // TODO: refactor this logic we have the same in directive/navbar.js
+        // Also refactor the templates
+        $scope.dtd_tag = null;
+        $scope.tagModal = function() {
+            var modalInstance = $modal.open({
+                templateUrl: 'tag-modal.html',
+                controller: function($scope, $modalInstance, parentScope) {
+
+                    $scope.dtd_url = parentScope.dtd_url || AccountProfile.dtd_urls[0];
+                    $scope.updateDtdTags = function(defaultTag) {
+                        $scope.dtdTags = [];
+                        XmlUtils.getDtdTags($scope.dtd_url, true).then(function(tags) {
+                            $scope.dtdTags = tags;
+                            $scope.dtd_tag = defaultTag || $scope.dtdTags[0];
+                        });
+                    };
+                    $scope.updateDtdTags(parentScope.dtd_tag);
+
+                    $scope.ok = function () {
+                        $modalInstance.close({'dtd_url': $scope.dtd_url, 'dtd_tag': $scope.dtd_tag});
+                        parentScope.dtd_url = $scope.dtd_url;
+                        parentScope.dtd_tag = $scope.dtd_tag;
+                    };
+
+                    $scope.cancel = function () {
+                        $modalInstance.dismiss('cancel');
+                    };
+                },
+                resolve: {
+                    parentScope: function() {
+                        return $scope;
+                    }
+                }
+            });
+
+            modalInstance.result.then(function(data) {
+                $scope.search.tag = data.dtd_tag;
             });
 
         };
