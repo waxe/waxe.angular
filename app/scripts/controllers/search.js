@@ -21,7 +21,8 @@ angular.module('waxeApp')
         $scope.search = {
             search: $routeParams.search,
             page: $routeParams.page,
-            path: '',
+            path: $routeParams.path,
+            tag: $routeParams.tag,
             // Since only XML is support for now, put it as default
             filetype: '.xml' // $scope.filetypes[0].value
         };
