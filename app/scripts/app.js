@@ -68,7 +68,6 @@ angular
                 templateUrl: 'views/search.html',
                 controller: 'SearchCtrl',
                 resolve: resolve,
-                reloadOnSearch: false
             })
           .when('/account/:user/versioning', {
                 templateUrl: 'views/versioning.html',
@@ -114,10 +113,7 @@ angular
                 resolve: resolve,
                 noAutoBreadcrumb: true,
                 type: 'xml',
-                action: 'new',
-                // We need 'reloadOnSearch' since we want the 'new' works when
-                // we are editing a file. (it's the same controller)
-                reloadOnSearch: false
+                action: 'new'
             })
           .otherwise({
                 redirectTo: '/'
