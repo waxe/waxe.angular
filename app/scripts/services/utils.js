@@ -10,19 +10,28 @@
 angular.module('waxeApp')
     .service('XmlUtils', ['$http', '$q', 'UrlFactory', function ($http, $q, UrlFactory) {
         this._dtdTags = {};
-        this.getDtdTags = function(url) {
-            if (url in this._dtdTags) {
+        this.getDtdTags = function(url, text) {
+            text = (typeof text === 'undefined')?false:text;
+
+            if (!(text in this._dtdTags)) {
+                this._dtdTags[text] = {};
+            }
+            if (url in this._dtdTags[text]) {
                 // We need a promise to do like $http.get
                 var deferred = $q.defer();
-                deferred.resolve(this._dtdTags[url]);
+                deferred.resolve(this._dtdTags[text][url]);
                 return deferred.promise;
             }
-            this._dtdTags[url] = [];
+            this._dtdTags[text][url] = [];
             var that = this;
+            var params = {dtd_url: url};
+            if(text) {
+                params.text = text;
+            }
             return $http
-                .get(UrlFactory.jsonAPIUserUrl('xml/get-tags'), {params: {dtd_url: url}})
+                .get(UrlFactory.jsonAPIUserUrl('xml/get-tags'), {params: params})
                 .then(function (res) {
-                    that._dtdTags[url] = res.data;
+                    that._dtdTags[text][url] = res.data;
                     return res.data;
                 });
         };

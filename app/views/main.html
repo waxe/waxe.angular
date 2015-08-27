@@ -5,7 +5,7 @@
 </div>
 
 
-<div ng-if="UserProfile.logins">
+<div ng-if="UserProfile.logins.length">
   You don't have any personal account but you can edit other one:
 
   <div ng-repeat="login in UserProfile.logins">
@@ -15,6 +15,6 @@
 
 </div>
 
-<div ng-if="!UserProfile.logins">
+<div ng-if="!UserProfile.logins.length">
   You don't have any permission, if you think it's an error, please contact your administrator.
 </div>
