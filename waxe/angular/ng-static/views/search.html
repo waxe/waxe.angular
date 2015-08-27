@@ -1,4 +1,4 @@
-<form ng-submit="newSearch()"> <div class="row"> <div class="col-md-4"> <div class="form-group"> <input type="text" class="form-control" id="search" name="search" placeholder="Search" ng-model="search.search"> </div> <div class="form-group"> <div class="input-group"> <input type="text" class="form-control" id="path" name="path" placeholder="Path (search in all the files by default)" ng-model="search.path"> <span class="input-group-btn"> <button class="btn btn-default" type="button" ng-click="folderModal()">Select a folder</button> </span> </div> </div> </div> </div> <button type="submit" class="btn btn-primary">Search</button> </form> <br> <br> <br> <div ng-if="pageLoaded && !results.length">No result!</div> <div ng-repeat="result in results"> <i class="fa fa-file-excel-o"></i> <a href="#{{UrlFactory.userUrl('xml/edit', {path: result[0] }) }}">{{result[0]}}</a> <p ng-bind-html="result[1]"></p> </div> <pagination ng-if="totalItems > itemsPerPage" boundary-links="true" total-items="totalItems" ng-model="search.page" max-size="maxSize" items-per-page="itemsPerPage" rotate="false" ng-change="pageChanged()" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination> <script type="text/ng-template" id="search-folder.html"><div class="modal-header">
+<form ng-submit="newSearch()"> <div class="row"> <div class="col-md-4"> <div class="form-group"> <input type="text" class="form-control" id="search" name="search" placeholder="Search" ng-model="search.search"> </div> <div class="form-group"> <div class="input-group"> <input type="text" class="form-control" id="path" name="path" placeholder="Path (search in all the files by default)" ng-model="search.path"> <span class="input-group-btn"> <button class="btn btn-default" type="button" ng-click="folderModal()">Select a folder</button> </span> </div> </div> <div class="form-group"> <select class="form-control" name="filetype" ng-model="search.filetype"> <option ng-repeat="filetype in filetypes" value="{{filetype.value}}" ng-selected="filetype.value == search.filetype">{{filetype.text}} </select> </div> <div class="form-group" ng-if="search.filetype == '.xml'"> <div class="input-group"> <input type="text" class="form-control" id="path" name="path" placeholder="Search in specific tag name (Optional)" ng-model="search.tag"> <span class="input-group-btn"> <button class="btn btn-default" type="button" ng-click="tagModal()">Select a tag name</button> </span> </div> </div> </div> </div> <button type="submit" class="btn btn-primary">Search</button> </form> <br> <br> <br> <div ng-if="pageLoaded && !results.length">No result!</div> <div ng-repeat="result in results"> <i class="fa fa-file-excel-o"></i> <a href="#{{UrlFactory.userUrl('xml/edit', {path: result.path }) }}">{{result.path}}</a> <p ng-bind-html="result.excerpt"></p> </div> <pagination ng-if="totalItems > itemsPerPage" boundary-links="true" total-items="totalItems" ng-model="search.page" max-size="maxSize" items-per-page="itemsPerPage" rotate="false" ng-change="pageChanged()" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination> <script type="text/ng-template" id="search-folder.html"><div class="modal-header">
       <h3 class="modal-title">Select a folder</h3>
   </div>
   <div class="modal-body">
@@ -17,4 +17,20 @@
   <div class="modal-footer">
       <button class="btn btn-default" ng-click="cancel()">Cancel</button>
       <button class="btn btn-primary" ng-click="select()">Select</button>
+  </div></script> <script type="text/ng-template" id="tag-modal.html"><div class="modal-header">
+      <h3 class="modal-title">Select a XML tag</h3>
+  </div>
+  <div class="modal-body">
+      <select ng-change="updateDtdTags()" ng-model="dtd_url">
+        <option ng-repeat="dtd in AccountProfile.dtd_urls">{{dtd}}</option>
+      </select>
+
+      <select ng-model="dtd_tag">
+        <option ng-repeat="tag in dtdTags">{{tag}}</option>
+      </select>
+
+  </div>
+  <div class="modal-footer">
+      <button class="btn btn-default" ng-click="cancel()">Cancel</button>
+      <button class="btn btn-primary" ng-click="ok()">OK</button>
   </div></script>
