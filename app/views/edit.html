@@ -21,6 +21,7 @@
       <textarea ng-if="!externalIsContenteditable" ng-model="external_values[external_current]"></textarea>
     </div>
     <div class="modal-footer">
+        <button class="btn btn-default fa fa-anchor" ng-click="scrollToElement()"></button>
         <button class="btn btn-default" ng-click="closeExternalEditor()">close</button>
     </div>
   </div>

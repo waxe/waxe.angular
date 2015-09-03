@@ -79,12 +79,18 @@ angular.module('waxeApp')
                 $textElt = $textElt.next();
                 $scope.externalIsContenteditable = true;
                 $scope.external_values.push($textElt.html());
+                $scope.externalElt = $textElt;
             }
             else {
                 $scope.external_values.push($textElt.val());
+                $scope.externalElt = $textElt;
             }
             $scope.external_current++;
             $textElt.attr('ng-model', 'external_values['+$scope.external_current+']');
             $compile($textElt)($scope);
+        };
+
+        $scope.scrollToElement = function() {
+            $scope.externalElt.focus();
         };
     }]);
