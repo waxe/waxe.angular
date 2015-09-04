@@ -72,7 +72,7 @@ angular.module('waxeApp')
             // We have the logic in xmltool.jstree select_node.jstree to get
             // the focus on the textarea or the contenteditable. We should make
             // a function of this
-            var $textElt = angular.element(xmltool.utils.escapeAttr('#' + element)).find('textarea:first');
+            var $textElt = angular.element(xmltool.utils.escapeAttr('#' + element)).find('textarea:not(._comment):first');
             $scope.externalIsContenteditable = false;
             if (!$textElt.is(':visible')) {
                 // Element is a contenteditable
@@ -91,6 +91,8 @@ angular.module('waxeApp')
         };
 
         $scope.scrollToElement = function() {
+            // #xml-editor-form-container is already defined in waxe.core we shouldn't redefined it
+            xmltool.utils.scrollToElement($scope.externalElt, angular.element('#xml-editor-form-container'));
             $scope.externalElt.focus();
         };
     }]);
