@@ -6,7 +6,7 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-    <link rel="stylesheet" href="styles/vendor.bf31c833.css">
+    <link rel="stylesheet" href="styles/vendor.4bccc65f.css">
     <link rel="stylesheet" href="styles/main.182c50d4.css">
 
     <script type="text/javascript">
@@ -48,9 +48,9 @@
        ga('send', 'pageview');
     </script>
 
-    <script src="scripts/vendor.a2398e88.js"></script>
+    <script src="scripts/vendor.199ff4ac.js"></script>
 
-    <script src="scripts/scripts.7f6b4576.js"></script>
+    <script src="scripts/scripts.3ae273fb.js"></script>
 
     % for resource in request.js_resources:
       <script type="text/javascript" src="${request.static_url(resource)}"></script>
