@@ -77,8 +77,14 @@ angular.module('waxeApp')
                     });
 
                     modalInstance.result.then(function(data) {
+                        var previousUrl = $location.$$absUrl;
                         var url = UrlFactory.userUrl('xml/new');
                         $location.path(url).search(data);
+                        if (previousUrl === $location.$$absUrl) {
+                            // The location didn't change but we want to force
+                            // the reload
+                            $route.reload();
+                        }
                     });
 
                 };
