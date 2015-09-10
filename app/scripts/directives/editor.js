@@ -32,7 +32,7 @@ angular.module('waxeApp')
                     if (Session.form && Session.form.filename && Session.form.status === 'updated'){
                         FileUtils.save();
                     }
-                }, 1000 * 3);
+                }, 1000 * 10);
             }
         };
     }]);
