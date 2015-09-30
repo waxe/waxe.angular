@@ -137,6 +137,15 @@ body {
   z-index: 1;
 }
 
+.breadcrumb > li:first-child {
+  margin-right: 20px;
+}
+
+.breadcrumb > li:first-child + li:before {
+  content: "";
+  padding: 0;
+}
+
 .breadcrumb input {
   display: inline-block;
   width: 160px;

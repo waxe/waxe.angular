@@ -34,7 +34,7 @@ angular.module('waxeApp')
 
         $scope.doSearch = function() {
             $location.search($scope.search);
-            var url = UrlFactory.jsonAPIUserUrl('search');
+            var url = UrlFactory.jsonAPIUserUrl('search/search');
             $http
               .get(url, {params: $scope.search})
               .then(function(res) {
