@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <link rel="stylesheet" href="styles/vendor.4bccc65f.css">
-    <link rel="stylesheet" href="styles/main.182c50d4.css">
+    <link rel="stylesheet" href="styles/main.bfe7c3bc.css">
 
     <script type="text/javascript">
       var API_BASE_PATH = "${api_base_path}";
@@ -50,7 +50,7 @@
 
     <script src="scripts/vendor.199ff4ac.js"></script>
 
-    <script src="scripts/scripts.3ae273fb.js"></script>
+    <script src="scripts/scripts.3b77dcf2.js"></script>
 
     % for resource in request.js_resources:
       <script type="text/javascript" src="${request.static_url(resource)}"></script>
