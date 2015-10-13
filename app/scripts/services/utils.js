@@ -149,7 +149,7 @@ angular.module('waxeApp')
                         var relpath = path.join('/');
                         Session.form.setFilename(relpath);
                         that.save().then(function() {
-                            Session.setBreadcrumbFiles(relpath);
+                            Session.setFilename(relpath);
                         });
                     };
 

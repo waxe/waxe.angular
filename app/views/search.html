@@ -42,7 +42,10 @@
 <div ng-repeat="result in results">
   <i class="fa fa-file-excel-o"></i>
   <a href="#{{UrlFactory.userUrl('xml/edit', {path: result.path }) }}">{{result.path}}</a>
-  <p ng-bind-html="result.excerpt"></p>
+
+  <div ng-repeat="excerpt in result.excerpts">
+    <p ng-bind-html="excerpt"></p>
+  </div>
 </div>
 
 

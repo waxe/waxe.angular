@@ -38,6 +38,7 @@ angular.module('waxeApp')
             .get(url, {params: $routeParams})
             .then(function(res) {
                 $scope.txt = res.data;
+                Session.filename = $routeParams.path;
                 $scope.$emit('pageLoaded');
             });
     }]);

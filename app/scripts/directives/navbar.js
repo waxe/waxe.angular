@@ -37,7 +37,7 @@ angular.module('waxeApp')
 
                 scope.doRender = function() {
                     // TODO: the url should not be in JSON.
-                    var url = UrlFactory.jsonAPIUserUrl('xml/view') + '?path=' + $routeParams.path;
+                    var url = UrlFactory.jsonAPIUserUrl('xml/view') + '?path=' + Session.filename;
                     window.open(url, '_viewer');
                 };
 

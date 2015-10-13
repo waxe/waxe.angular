@@ -38,6 +38,8 @@ angular.module('waxeApp')
             this.submitForm = null;
             // We have a form, we should enable the save button
             this.hasForm = null;
+            // The filename we are editing
+            this.filename = null;
             // XML form
             // NOTE: it enables the 'save as' button
             this.form = null;
@@ -88,4 +90,10 @@ angular.module('waxeApp')
             // It's the case when making a diff of many files.
             this.breadcrumbFiles = Utils.getBreadcrumbFiles(this.currentFile);
         };
+
+        this.setFilename = function(filename) {
+            this.filename = filename;
+            this.setBreadcrumbFiles(filename);
+        };
+
     }]);
