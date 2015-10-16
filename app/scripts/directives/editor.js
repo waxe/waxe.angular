@@ -7,7 +7,7 @@
  * # editor
  */
 angular.module('waxeApp')
-    .directive('editor', ['$interval', 'Session', 'FileUtils', function ($interval, Session, FileUtils) {
+    .directive('editor', ['$interval', '$anchorScroll', '$location',  'Session', 'FileUtils', function ($interval, $anchorScroll, $location, Session, FileUtils) {
         return {
             template: '<div></div>',
             restrict: 'E',
@@ -18,6 +18,7 @@ angular.module('waxeApp')
                 element.append(scope.html);
                 var listener = scope.$watch(function(){
                     if(element.text()) {
+                        $anchorScroll($location.hash());
                         // Remove the watch since the form is fully loaded
                         listener();
                         waxe.form = new waxe.Form(scope.$parent.treeData);
