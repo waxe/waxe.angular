@@ -10,8 +10,8 @@
 
   <div ng-repeat="login in UserProfile.logins">
 
-    <a ng-if="path" href="#{{UrlFactory.url(login, 'xml/edit', {path: path})}}">{{login}}</a>
-    <a ng-if="search" href="#{{UrlFactory.url(login, 'search', {search: search})}}">{{login}}</a>
+    <a ng-if="path" href="#{{UrlFactory.url(login, 'xml/edit', qs)}}">{{login}}</a>
+    <a ng-if="search" href="#{{UrlFactory.url(login, 'search', qs)}}">{{login}}</a>
     <a ng-if="!path && !search" href="#{{UrlFactory.url(login)}}">{{login}}</a>
   </div>
 

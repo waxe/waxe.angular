@@ -21,7 +21,7 @@ angular.module('waxeApp')
                 url = UrlFactory.userUrl('xml/edit', {path: path});
             }
             else if (angular.isDefined(search)){
-                url = UrlFactory.userUrl('search', {search: search});
+                url = UrlFactory.userUrl('search', $location.search());
             }
             else {
                 url = UrlFactory.userUrl();
@@ -36,4 +36,5 @@ angular.module('waxeApp')
         $scope.UserProfile= UserProfile;
         $scope.path = path;
         $scope.search = search;
+        $scope.qs = $location.search();
     }]);

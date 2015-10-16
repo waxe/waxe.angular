@@ -24,7 +24,8 @@ angular.module('waxeApp')
             path: $routeParams.path,
             tag: $routeParams.tag,
             // Since only XML is support for now, put it as default
-            filetype: '.xml' // $scope.filetypes[0].value
+            filetype: '.xml', // $scope.filetypes[0].value
+            open: $routeParams.open
         };
         $scope.totalItems = 0;
         $scope.itemsPerPage = 0;
@@ -39,6 +40,13 @@ angular.module('waxeApp')
               .get(url, {params: $scope.search})
               .then(function(res) {
                 $anchorScroll();
+                if($scope.search.open) {
+                    if (res.data.nb_items === 1) {
+                        url = UrlFactory.userUrl('xml/edit', {path: res.data.results[0].path});
+                        $location.url(url);
+                        return;
+                    }
+                }
                 $scope.results = res.data.results;
                 $scope.totalItems = res.data.nb_items;
                 $scope.itemsPerPage = res.data.items_per_page;
