@@ -13,6 +13,7 @@ angular.module('waxeApp')
         // Support path and search shortcut
         var path = $location.search().path;
         var search = $location.search().search;
+        var hash = $location.hash();
 
         if (UserProfile.has_file === true) {
             var url;
@@ -26,7 +27,7 @@ angular.module('waxeApp')
             else {
                 url = UrlFactory.userUrl();
             }
-            $location.url(url);
+            $location.url(url).hash(hash);
             return;
         }
 
@@ -37,4 +38,5 @@ angular.module('waxeApp')
         $scope.path = path;
         $scope.search = search;
         $scope.qs = $location.search();
+        $scope.hash = hash;
     }]);
