@@ -8,7 +8,7 @@
  * Factory in the waxeangularApp.
  */
 angular.module('waxeApp')
-    .service('Session', ['$http', '$q', '$route', 'Utils', 'UserProfile', 'AccountProfile', function ($http, $q, $route, Utils, UserProfile, AccountProfile) {
+    .service('Session', ['$http', '$q', '$route', 'Utils', 'UserProfile', 'AccountProfile', 'NavbarService', function ($http, $q, $route, Utils, UserProfile, AccountProfile, NavbarService) {
 
         // The variables defined here should not be reset during the navigation.
         // It's like a cache
@@ -36,8 +36,6 @@ angular.module('waxeApp')
 
             // Special handler when we click on the save button
             this.submitForm = null;
-            // We have a form, we should enable the save button
-            this.hasForm = null;
             // The filename we are editing
             this.filename = null;
             // XML form
@@ -60,6 +58,11 @@ angular.module('waxeApp')
             if(this.diff && typeof this.from !== 'undefined') {
                 this.diffEnabled = true;
             }
+
+            NavbarService.enable(this.accountUsable);
+            NavbarService.setVisible(this.accountUsable);
+            // Will be set when editing a file
+            NavbarService.setEditFile(false);
 
             if (this.accountUsable) {
                 var path = '(new file)';

@@ -8,8 +8,7 @@
  * Controller of the waxeApp
  */
 angular.module('waxeApp')
-    .controller('EditCtrl', ['$scope', '$http', '$sce', '$routeParams', '$route', '$location', '$compile', 'UrlFactory', 'Session' , function ($scope, $http, $sce, $routeParams, $route, $location, $compile, UrlFactory, Session) {
-
+    .controller('EditCtrl', ['$scope', '$http', '$sce', '$routeParams', '$route', '$location', '$compile', 'UrlFactory', 'Session', 'NavbarService', function ($scope, $http, $sce, $routeParams, $route, $location, $compile, UrlFactory, Session, NavbarService) {
         var action = $route.current.$$route.action;
         var url = UrlFactory.jsonAPIUserUrl($routeParams.type+'/'+action);
         $http
@@ -17,8 +16,8 @@ angular.module('waxeApp')
             .then(function(res) {
                 $scope.html = res.data.content;
                 $scope.treeData = res.data.jstree_data;
-                Session.hasForm = true;
                 Session.filename = $routeParams.path;
+                NavbarService.setEditFile(true, true);
                 $scope.$emit('pageLoaded');
             }, function() {
                 // Seems like there is a problem to display the XML file, we

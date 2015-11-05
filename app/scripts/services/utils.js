@@ -100,7 +100,7 @@ angular.module('waxeApp')
             }
 
             if (!Session.form.filename) {
-                this.saveasModal();
+                that.saveasModal();
                 return;
             }
             dic = Utils.getFormDataForSubmit(Session.form.$element);

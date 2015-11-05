@@ -8,7 +8,7 @@
  * Controller of the waxeApp
  */
 angular.module('waxeApp')
-    .controller('VersioningUnifiedDiffCtrl', ['$scope', '$http', '$routeParams', '$modal', 'UrlFactory', 'MessageService', function ($scope, $http, $routeParams, $modal, UrlFactory, MessageService) {
+    .controller('VersioningUnifiedDiffCtrl', ['$scope', '$http', '$routeParams', '$modal', 'UrlFactory', 'MessageService', 'NavbarService', function ($scope, $http, $routeParams, $modal, UrlFactory, MessageService, NavbarService) {
         var url = UrlFactory.jsonAPIUserUrl('versioning/diff');
         $http
           .get(url, {params: $routeParams})
@@ -16,6 +16,8 @@ angular.module('waxeApp')
                 $scope.ok = (angular.isDefined(res.data.diff)? true: false);
                 $scope.diff = res.data.diff;
                 $scope.can_commit = res.data.can_commit;
+                NavbarService.Diff.enable = true;
+                NavbarService.Diff.selected = true;
                 $scope.$emit('pageLoaded');
             });
 

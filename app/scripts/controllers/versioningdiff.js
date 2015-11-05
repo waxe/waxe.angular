@@ -8,7 +8,7 @@
  * Controller of the waxeApp
  */
 angular.module('waxeApp')
-    .controller('VersioningDiffCtrl', ['$scope', '$http', '$routeParams', '$modal', '$compile', '$location', 'UrlFactory', 'Session', 'Utils', 'MessageService', function ($scope, $http, $routeParams, $modal, $compile, $location, UrlFactory, Session, Utils, MessageService) {
+    .controller('VersioningDiffCtrl', ['$scope', '$http', '$routeParams', '$modal', '$compile', '$location', 'UrlFactory', 'Session', 'Utils', 'MessageService', 'NavbarService', function ($scope, $http, $routeParams, $modal, $compile, $location, UrlFactory, Session, Utils, MessageService, NavbarService) {
 
         var url = UrlFactory.jsonAPIUserUrl('versioning/full-diff');
         $http
@@ -27,7 +27,7 @@ angular.module('waxeApp')
                 };
                 $scope.can_commit = res.data.can_commit;
                 Session.submitForm = $scope.submitForm;
-                Session.hasForm = true;
+                NavbarService.Save.enable = true;
                 $scope.$emit('pageLoaded');
             });
 

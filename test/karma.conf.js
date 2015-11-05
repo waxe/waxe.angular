@@ -42,8 +42,14 @@ module.exports = function(config) {
       'app/scripts/**/*.js',
       'test/mock/**/*.js',
       // 'test/spec/**/*.js'
-      'test/spec/services/urlfactory.js'
+      'test/spec/services/urlfactory.js',
+      'test/spec/directives/navbar.js',
+      'app/views/navbar.html'
     ],
+
+    preprocessors: {
+      'app/views/navbar.html': 'ng-html2js',
+    },
 
     // list of files / patterns to exclude
     exclude: [
@@ -67,7 +73,8 @@ module.exports = function(config) {
     // Which plugins to enable
     plugins: [
       'karma-phantomjs-launcher',
-      'karma-jasmine'
+      'karma-jasmine',
+      'karma-ng-html2js-preprocessor',
     ],
 
     // Continuous Integration mode

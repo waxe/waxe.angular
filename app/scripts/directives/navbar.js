@@ -194,4 +194,94 @@ angular.module('waxeApp')
                 };
             }
         };
-    }]);
+    }])
+.directive('menuItem', ['$compile', '$templateRequest', '$sce', '$animate', '$parse', '$location', 'NavbarService', 'FileUtils', 'UrlFactory', 'UserProfile', 'AccountProfile', 'Session', function ($compile, $templateRequest, $sce, $animate, $parse, $location, NavbarService, FileUtils, UrlFactory, UserProfile, AccountProfile, Session) {
+    return {
+        restrict: 'E',
+        scope: {
+            obj: '=',
+            sub: '@',
+            icon: '='
+        },
+        link: function link(scope, $element) {
+            scope.NavbarService = NavbarService;
+            //
+            // NOTE: We need to attach some services to the scope to be able to
+            // parse the action.
+            scope.FileUtils = FileUtils;
+            scope.UrlFactory = UrlFactory;
+            scope.AccountProfile = AccountProfile;
+            scope.Session = Session;
+            scope.UserProfile = UserProfile;
+
+            var key, children;
+            if (typeof scope.obj === 'string') {
+                key = scope.obj;
+                children = [];
+            }
+            else {
+                key = Object.keys(scope.obj)[0];
+                children = scope.obj[key];
+            }
+
+            scope.clickItem = function() {
+                var item = NavbarService[key];
+                if (item.enable === false) {
+                    return false;
+                }
+                if (item.href) {
+                    var url = $parse(item.href)(scope);
+                    return $location.path(url);
+                }
+                $parse(item.action)(scope)();
+            };
+
+            if (key === '-') {
+                $element.replaceWith('<li class="divider"></li>');
+                return;
+            }
+
+            var item = NavbarService[key];
+
+            if (item.template) {
+                scope.item = item;
+                $compile(item.template)(scope, function(newElement) {
+                    $element.replaceWith(newElement);
+                });
+            }
+            else if (item.templateUrl) {
+                $templateRequest(item.templateUrl).then(function(tplContent) {
+                    scope.item = item;
+                    $compile(tplContent.trim())(scope, function(newElement) {
+                        $element.replaceWith(newElement);
+                    });
+                });
+            }
+            else if (children.length) {
+                // Create a dropdown
+                var template;
+                if(scope.sub) {
+                    template = 'navbar-item-group.html';
+                }
+                else {
+                    template = 'navbar-item-dropdown.html';
+                }
+                $templateRequest(template).then(function(tplContent) {
+                    scope.item = item;
+                    scope.children = children;
+                    $compile(tplContent.trim())(scope, function(newElement) {
+                        $element.replaceWith(newElement);
+                    });
+                });
+            }
+            else {
+                $templateRequest('navbar-item.html').then(function(tplContent) {
+                    scope.item = item;
+                    $compile(tplContent.trim())(scope, function(newElement) {
+                        $element.replaceWith(newElement);
+                    });
+                });
+            }
+        }
+    };
+}]);

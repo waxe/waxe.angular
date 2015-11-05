@@ -8,15 +8,13 @@
  * Controller of the waxeApp
  */
 angular.module('waxeApp')
-    .controller('EditTxtCtrl',['$scope', '$http', '$sce', '$routeParams', '$route', '$location', 'UrlFactory', 'Session', 'MessageService' , function ($scope, $http, $sce, $routeParams, $route, $location, UrlFactory, Session, MessageService) {
+    .controller('EditTxtCtrl',['$scope', '$http', '$sce', '$routeParams', '$route', '$location', 'UrlFactory', 'Session', 'MessageService', 'NavbarService', function ($scope, $http, $sce, $routeParams, $route, $location, UrlFactory, Session, MessageService, NavbarService) {
         $scope.editorOptions = {
                 lineWrapping : true,
                 lineNumbers: true,
                 // TODO: choose the mode according to the file
                 mode: 'xml',
             };
-
-        Session.hasForm = true;
 
         Session.submitForm = function() {
             var url = UrlFactory.jsonAPIUserUrl('txt/update');
@@ -39,6 +37,11 @@ angular.module('waxeApp')
             .then(function(res) {
                 $scope.txt = res.data;
                 Session.filename = $routeParams.path;
+                var hasFrom = angular.isDefined($routeParams.from);
+                NavbarService.setEditFile(true, hasFrom);
+                if (hasFrom) {
+                    NavbarService.Source.selected = true;
+                }
                 $scope.$emit('pageLoaded');
             });
     }]);
