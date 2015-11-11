@@ -20,8 +20,6 @@ angular.module('waxeApp')
         $scope.UrlFactory = UrlFactory;
         $scope.UserProfile = UserProfile;
 
-        Session.showFileFilter = true;
-
         $scope.versioning = {};
         if (AccountProfile.has_versioning) {
             url = UrlFactory.jsonAPIUserUrl('versioning/short-status');
