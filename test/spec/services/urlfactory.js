@@ -25,6 +25,11 @@ describe('Service: UrlFactory', function () {
             'username', 'mypath',
             {'param1': 'value1', 'param2': 'value2'});
     expect(res).toBe('/account/username/mypath?param1=value1&param2=value2');
+
+    res = UrlFactory._generateUrl(
+            'username', 'mypath',
+            {'param1': ['value1', 'value2']});
+    expect(res).toBe('/account/username/mypath?param1=value1&param1=value2');
   });
 
   it('UrlFactory._generateUserUrl', function () {
@@ -58,16 +63,13 @@ describe('Service: UrlFactory', function () {
     expect(res).toBe('/api/1/mypath');
   });
 
-  it('UrlFactory._generateJsonAPIUrl', function () {
-    var res;
-    res = UrlFactory._generateJsonAPIUrl('mypath');
-    expect(res).toBe('/api/1/mypath.json');
-  });
-
   it('UrlFactory.APIUrl', function () {
     var res;
     res = UrlFactory.APIUrl('username', 'mypath');
     expect(res).toBe('/api/1/account/username/mypath');
+
+    res = UrlFactory.APIUrl('username', 'mypath', {'param1': 'value1'});
+    expect(res).toBe('/api/1/account/username/mypath?param1=value1');
   });
 
   it('UrlFactory.APIUserUrl', function () {
@@ -81,6 +83,9 @@ describe('Service: UrlFactory', function () {
     var res;
     res = UrlFactory.jsonAPIUrl('username', 'mypath');
     expect(res).toBe('/api/1/account/username/mypath.json');
+
+    res = UrlFactory.jsonAPIUrl('username', 'mypath', {'param1': 'value1'});
+    expect(res).toBe('/api/1/account/username/mypath.json?param1=value1');
   });
 
   it('UrlFactory.jsonAPIUserUrl', function () {
@@ -88,5 +93,8 @@ describe('Service: UrlFactory', function () {
     var res;
     res = UrlFactory.jsonAPIUserUrl('mypath');
     expect(res).toBe('/api/1/account/mylogin/mypath.json');
+
+    res = UrlFactory.jsonAPIUserUrl('mypath', {'param1': 'value1'});
+    expect(res).toBe('/api/1/account/mylogin/mypath.json?param1=value1');
   });
 });
