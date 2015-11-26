@@ -101,6 +101,29 @@ describe('Directive: menuItem', function () {
         expect(li.find('span').text()).toBe('Fake item');
     }));
 
+    it('Test menuItem: navbar enable as expression', inject(function () {
+        NavbarService.FakeItem = {
+            name: 'Fake item',
+            iconClass: 'fa fa-fake',
+            action: 'NavbarService.fakeAction',
+            enable: 'NavbarService.enableFakeItem === true'
+        };
+        scope.itemObj = 'FakeItem';
+        NavbarService.enableFakeItem = false;
+
+        element = angular.element('<div><menu-item obj="itemObj"></menu-item></div>');
+        element = $compile(element)(scope);
+        scope.$digest();
+
+        var li = element.find('li');
+        expect(li.length).toBe(1);
+        expect(li.hasClass('disabled')).toBe(true);
+
+        NavbarService.enableFakeItem = true;
+        scope.$digest();
+        expect(li.hasClass('disabled')).toBe(false);
+    }));
+
     it('Test menuItem: navbar-item-dropdown.html', inject(function () {
         NavbarService.FakeItem = {
             name: 'Fake item',

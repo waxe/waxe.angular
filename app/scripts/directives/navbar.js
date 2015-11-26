@@ -224,8 +224,24 @@ angular.module('waxeApp')
                 children = scope.obj[key];
             }
 
+            if (key === '-') {
+                $element.replaceWith('<li class="divider"></li>');
+                return;
+            }
+
+            var item = NavbarService[key];
+            if (angular.isDefined(item.enable) && typeof item.enable === 'string') {
+                var exp = item.enable;
+                item.enable = $parse(exp)(scope);
+
+                scope.$watch(exp, function(newValue, oldValue) {
+                    if (newValue !== oldValue) {
+                        item.enable = newValue;
+                    }
+                });
+            }
+
             scope.clickItem = function() {
-                var item = NavbarService[key];
                 if (item.enable === false) {
                     return false;
                 }
@@ -236,12 +252,6 @@ angular.module('waxeApp')
                 $parse(item.action)(scope)();
             };
 
-            if (key === '-') {
-                $element.replaceWith('<li class="divider"></li>');
-                return;
-            }
-
-            var item = NavbarService[key];
 
             if (item.template) {
                 scope.item = item;
