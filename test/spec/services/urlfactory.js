@@ -30,6 +30,17 @@ describe('Service: UrlFactory', function () {
             'username', 'mypath',
             {'param1': ['value1', 'value2']});
     expect(res).toBe('/account/username/mypath?param1=value1&param1=value2');
+
+    res = UrlFactory._generateUrl(
+            'username', 'mypath',
+            undefined, 'myhash');
+    expect(res).toBe('/account/username/mypath#myhash');
+
+    res = UrlFactory._generateUrl(
+            'username', 'mypath',
+            {'param1': ['value1', 'value2']},
+            'myhash');
+    expect(res).toBe('/account/username/mypath?param1=value1&param1=value2#myhash');
   });
 
   it('UrlFactory._generateUserUrl', function () {

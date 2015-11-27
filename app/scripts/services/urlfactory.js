@@ -39,7 +39,7 @@ angular.module('waxeApp')
              *
              * This is an internal function, do not use it directly.
              */
-            _generateUrl: function (username, routename, params) {
+            _generateUrl: function (username, routename, params, hash) {
                 var u = '';
                 if (username) {
                     u = '/account/' + username;
@@ -58,6 +58,9 @@ angular.module('waxeApp')
                         });
                     });
                     u += '?' + lis.join('&');
+                }
+                if (angular.isDefined(hash) && hash) {
+                    u += '#' + hash;
                 }
                 return u;
             },
