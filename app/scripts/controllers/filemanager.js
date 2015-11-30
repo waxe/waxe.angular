@@ -14,7 +14,7 @@ angular.module('waxeApp')
         $http
           .get(url, {params: $routeParams})
           .then(function(res) {
-            $scope.files = res.data;
+            $scope.files = Session.files = res.data;
             $scope.$emit('pageLoaded');
         });
         $scope.UrlFactory = UrlFactory;
@@ -27,6 +27,11 @@ angular.module('waxeApp')
               .get(url, {params: $routeParams})
               .then(function(res) {
                 $scope.versioning = res.data;
+                // TODO: we should be sure explore request is finished before
+                // calling this
+                angular.forEach($scope.files, function(file) {
+                    file.status = $scope.versioning[file.path];
+                });
             });
         }
 

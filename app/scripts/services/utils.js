@@ -89,7 +89,7 @@ angular.module('waxeApp')
             return breadcrumbFiles;
         };
 
-    }).service('FileUtils', ['$http', '$location', '$modal', 'Session', 'MessageService', 'UrlFactory', 'Utils', function ($http, $location, $modal, Session, MessageService, UrlFactory, Utils) {
+    }).service('FileUtils', ['$http', '$location', '$modal', 'Session', 'MessageService', 'UrlFactory', 'Utils', 'Files', function ($http, $location, $modal, Session, MessageService, UrlFactory, Utils, Files) {
         var that = this;
         this.save = function() {
             var dic;
@@ -130,7 +130,7 @@ angular.module('waxeApp')
                           .post(url, {path: Session.currentPath,
                                               name: $scope.folder})
                           .then(function(res) {
-                            $scope.open(res.data.link);
+                            $scope.open(res.data.path);
                             $scope.folder = '';
                         });
                     };
@@ -180,4 +180,60 @@ angular.module('waxeApp')
             });
 
         };
+
+        this.moveFile = function() {
+            var modalInstance = $modal.open({
+                templateUrl: 'file-move.html',
+                controller: function($scope, $modalInstance) {
+
+                    $scope.folder = '';
+                    $scope.filename = '';
+
+                    $scope.open = function(path) {
+                        Session.currentPath = path;
+
+                        $scope.breadcrumbFiles = Utils.getBreadcrumbFiles(path);
+
+                        Files.query(path).then(function(files) {
+                            $scope.files = files;
+                        });
+                    };
+
+                    $scope.open(Session.currentPath);
+
+                    $scope.cancel = function () {
+                        $modalInstance.dismiss('cancel');
+                    };
+
+                    $scope.ok = function () {
+                        $modalInstance.close({'directory': Session.currentPath});
+                    };
+                }
+            });
+
+            modalInstance.result.then(function(data) {
+                var files = Session.filesSelected;
+                Files.move(files, data.directory);
+            });
+        };
+
+        this.openNewWindow = function() {
+            var files = Session.filesSelected, url;
+            var id = +new Date();
+            for(var i=0,len=files.length; i < len; i++) {
+                if (files[i].type === 'file') {
+                    url = UrlFactory.userUrl('xml/edit', {path: files[i].path});
+                }
+                else {
+                    url = UrlFactory.userUrl('', {path: files[i].path});
+                }
+                window.open('#' + url, id + '-' + i);
+            }
+        };
+
+        this.deleteFiles = function() {
+            var files = Session.filesSelected;
+            Files.delete(files);
+        };
+
     }]);

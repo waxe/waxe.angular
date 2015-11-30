@@ -103,6 +103,27 @@ angular.module('waxeApp')
             action: '$root.diffToggle'
         };
 
+        this.Delete = {
+            name: 'Delete',
+            enable: 'Session.filesSelected.length != 0',
+            iconClass: 'fa fa-remove',
+            action: 'FileUtils.deleteFiles'
+        };
+
+        this.Move = {
+            name: 'Move',
+            enable: 'Session.filesSelected.length != 0',
+            iconClass: 'fa fa-exchange',
+            action: 'FileUtils.moveFile'
+        };
+
+        this.OpenSelected = {
+            name: 'Open selected files',
+            enable: 'Session.filesSelected.length != 0',
+            iconClass: 'fa fa-arrow-circle-o-up',
+            action: 'FileUtils.openNewWindow'
+        };
+
         this.enable = function(value) {
             this.File.enable = value;
             this.Versioning.enable = value;
@@ -152,7 +173,7 @@ angular.module('waxeApp')
                 'Search'
             ],
             ['Login'],
-            ['NewXML', 'Open', 'Save'],
+            ['NewXML', 'Open', 'Save', '-', 'Delete', 'Move', 'OpenSelected'],
             ['Source', 'Diff']
         ];
     }]

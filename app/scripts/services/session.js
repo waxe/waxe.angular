@@ -16,10 +16,13 @@ angular.module('waxeApp')
         // The current path we open/save file. It's used in the modal
         this.currentPath = null;
 
+        // Need to be defined since the init is not always called before displaying the navbar
+        this.files = [];
+        this.filesSelected = [];
+
         // The interval object when editing a file. We need it to cancel it
         // when we quit the editor.
         this.autosave_interval = null;
-
 
         this.init = function(login, accountUsable) {
             this.login = login;
@@ -28,6 +31,10 @@ angular.module('waxeApp')
             this.currentFile = null;
             this.user = null;
             this.breadcrumbFiles = [];
+
+            // Use to apply action on multiple files in the menu
+            this.files = [];
+            this.filesSelected = [];
 
             // Special handler when we click on the save button
             this.submitForm = null;
