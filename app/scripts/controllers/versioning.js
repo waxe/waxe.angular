@@ -31,6 +31,7 @@ angular.module('waxeApp')
         $http
           .get(url, {params: $routeParams})
           .then(function(res) {
+            // TODO: we should have files as list of dicts like in filemanager.js
             $scope.versioning = res.data;
             $scope.$emit('pageLoaded');
             checkEmpty();
@@ -76,10 +77,11 @@ angular.module('waxeApp')
             var url = UrlFactory.jsonAPIUserUrl('versioning/revert');
             $http
                 .post(url, {paths: files})
-                .then(function() {
+                .then(function(res) {
                     angular.forEach(reals, function(filename) {
                         var index = filenames.indexOf(filename);
                         filenames.splice(index, 1);
+                        MessageService.set('success', res.data);
                     });
                     checkEmpty();
                 });
@@ -119,6 +121,8 @@ angular.module('waxeApp')
                 $http
                     .post(url, {paths: files, msg: data.message})
                     .then(function(res) {
+                        // TODO: we should also remove the folder commited
+                        // implicitly when commiting file in.
                         angular.forEach(reals, function(filename) {
                             var index = filenames.indexOf(filename);
                             filenames.splice(index, 1);
