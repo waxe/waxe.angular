@@ -9,7 +9,7 @@
 angular.module('waxeApp')
     .directive('file', ['UrlFactory', 'Session', function (UrlFactory, Session) {
         return {
-            template: '<div ng-class="containerClass"><input type="checkbox" ng-click="toggleCheck($event)" class="file-checkbox" /><a ng-href="#{{href}}"><i ng-class="iClass"></i>{{file.name}}</a></div>',
+            template: '<div ng-class="containerClass"><input type="checkbox" ng-model="file.selected" class="file-checkbox" /><a ng-href="#{{href}}"><i ng-class="iClass"></i>{{file.name}}</a></div>',
             restrict: 'E',
             scope: {
                 'file': '=data',
@@ -18,6 +18,8 @@ angular.module('waxeApp')
                 // TODO: Directive files should have a openFile and openFolder
                 // function: in this way we can reuse the element in the modal.
                 // Also toggleCheck should be an option
+                scope.file.selected = false;
+
                 if (scope.file.type === 'folder') {
                     scope.iClass = 'fa fa-folder-o';
                     scope.href = UrlFactory.userUrl('', {path: scope.file.path});
@@ -27,17 +29,18 @@ angular.module('waxeApp')
                     scope.href = UrlFactory.userUrl('xml/edit', {path: scope.file.path});
                 }
 
-                scope.toggleCheck = function($event) {
-                    var checkbox = $event.target;
-                    if (checkbox.checked) {
-                        Session.filesSelected.push(scope.file);
-                        scope.containerClass = 'file-selected';
+                scope.$watch('file.selected', function(newValue, oldValue) {
+                    if (newValue !== oldValue) {
+                        if (newValue === true) {
+                            Session.filesSelected.push(scope.file);
+                            scope.containerClass = 'file-selected';
+                        }
+                        else {
+                            Session.filesSelected.splice(Session.filesSelected.indexOf(scope.file), 1);
+                            scope.containerClass = '';
+                        }
                     }
-                    else {
-                        Session.filesSelected.splice(Session.filesSelected.indexOf(scope.file), 1);
-                        scope.containerClass = '';
-                    }
-                };
+                });
             }
         };
     }]);
