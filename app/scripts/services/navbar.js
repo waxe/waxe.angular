@@ -107,7 +107,8 @@ angular.module('waxeApp')
             name: 'Delete',
             enable: 'Session.filesSelected.length != 0',
             iconClass: 'fa fa-remove',
-            action: 'FileUtils.deleteFiles'
+            action: 'FileUtils.deleteFiles',
+            confirmMsg: 'Are you sure you want to delete the selected files'
         };
 
         this.Move = {

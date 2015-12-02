@@ -245,6 +245,11 @@ angular.module('waxeApp')
                 if (item.enable === false) {
                     return false;
                 }
+                if (angular.isDefined(item.confirmMsg)) {
+                    if (!window.confirm(item.confirmMsg)) {
+                        return false;
+                    }
+                }
                 if (item.href) {
                     var url = $parse(item.href)(scope);
                     return $location.path(url);
