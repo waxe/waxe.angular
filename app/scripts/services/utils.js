@@ -229,6 +229,7 @@ angular.module('waxeApp')
                 }
                 window.open('#' + url, id + '-' + i);
             }
+            Session.filesSelected = [];
         };
 
         this.deleteFiles = function() {
