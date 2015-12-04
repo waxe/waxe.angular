@@ -8,21 +8,20 @@
  * Controller of the waxeApp
  */
 angular.module('waxeApp')
-    .controller('FileManagerCtrl',['$scope', '$http', '$routeParams', 'UrlFactory', 'AccountProfile', 'UserProfile', 'Session', function ($scope, $http, $routeParams, UrlFactory, AccountProfile, UserProfile, Session) {
+    .controller('FileManagerCtrl',['$scope', '$http', '$routeParams', 'UrlFactory', 'AccountProfile', 'UserProfile', 'Session', 'Files', function ($scope, $http, $routeParams, UrlFactory, AccountProfile, UserProfile, Session, Files) {
 
-        var url = UrlFactory.jsonAPIUserUrl('explore');
-        $http
-          .get(url, {params: $routeParams})
-          .then(function(res) {
-            $scope.files = Session.files = res.data;
+
+        Files.query($routeParams.path).then(function(files) {
+            $scope.files = Session.files = files;
             $scope.$emit('pageLoaded');
         });
+
         $scope.UrlFactory = UrlFactory;
         $scope.UserProfile = UserProfile;
 
         $scope.versioning = {};
         if (AccountProfile.has_versioning) {
-            url = UrlFactory.jsonAPIUserUrl('versioning/short-status');
+            var url = UrlFactory.jsonAPIUserUrl('versioning/short-status');
             $http
               .get(url, {params: $routeParams})
               .then(function(res) {

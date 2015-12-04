@@ -10,6 +10,38 @@
 angular.module('waxeApp')
     .service('Files', ['$http', 'UrlFactory', 'MessageService', 'Session', function ($http, UrlFactory, MessageService, Session) {
 
+        var File = function (data) {
+            this.status = false;  // Versioning status
+            this.selected = false;  // If it is selected by checkbox
+
+            for (var key in data) {
+                if (data.hasOwnProperty(key)) {
+                    this[key] = data[key];
+                }
+            }
+        };
+
+        Object.defineProperty(File.prototype, 'editUrl', {
+            get: function editUrlProperty() {
+                var url = '';
+                if (angular.isDefined(this.editor) && this.editor !== null) {
+                    url = this.editor + '/edit';
+                }
+                return UrlFactory.userUrl(url, {path: this.path});
+            }
+        });
+
+        Object.defineProperty(File.prototype, 'iClass', {
+            get: function iClassProperty() {
+                if (this.type === 'folder') {
+                    return 'fa fa-folder-o';
+                }
+                else {
+                    return 'fa fa-file-excel-o';
+                }
+            }
+        });
+
         var getPaths = function(files) {
             var filenames = [];
             for(var i=0,len=files.length; i < len; i++) {
@@ -21,7 +53,9 @@ angular.module('waxeApp')
         var httpRequest = function(method, url, path) {
             return $http[method](url, {params: {path: path}})
                 .then(function(res) {
-                    return res.data;
+                    return res.data.map(function(value) {
+                        return new File(value);
+                    });
                 });
         };
 
