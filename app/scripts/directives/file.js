@@ -9,12 +9,14 @@
 angular.module('waxeApp')
     .directive('file', ['UrlFactory', 'Session', function (UrlFactory, Session) {
         return {
-            template: '<div ng-class="containerClass"><input type="checkbox" ng-model="file.selected" class="file-checkbox" /><a ng-href="#{{file.editUrl}}"><i ng-class="file.iClass"></i>{{file.name}}</a></div>',
+            template: '<div ng-class="containerClass"><input ng-if="checkbox" type="checkbox" ng-model="file.selected" class="file-checkbox" /><a ng-href="#{{file.editUrl}}"><i ng-class="file.iClass"></i>{{file.name}}</a></div>',
             restrict: 'E',
             scope: {
                 'file': '=data',
             },
-            link: function postLink(scope, element, attrs) {
+            require: '^files',
+            link: function postLink(scope, element, attrs, filesCtrl) {
+                scope.checkbox = filesCtrl.checkbox;
                 scope.$watch('file.selected', function(newValue, oldValue) {
                     if (newValue !== oldValue) {
                         if (newValue === true) {

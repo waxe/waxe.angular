@@ -9,22 +9,24 @@
 angular.module('waxeApp')
     .directive('files', function () {
         return {
-            template: '<div> Select: <a href="" ng-click="selectAll()">All</a> / <a href="" ng-click="deselectAll()">None</a></div><br /><div class="col-md-6" ng-repeat="file in files" ng-class="\'versioning-\' + file.status"><file data="file" selected="selected"></file></div>',
+            template: '<div ng-if="checkbox"> Select: <a href="" ng-click="selectAll()">All</a> / <a href="" ng-click="deselectAll()">None</a><br /></div><div class="col-md-6" ng-repeat="file in files" ng-class="\'versioning-\' + file.status"><file data="file" selected="selected"></file></div>',
             restrict: 'E',
             scope: {
                 'files': '=data',
+                'checkbox': '@'
             },
-            link: function link(scope) {
-                scope.selectAll = function() {
-                    angular.forEach(scope.files, function(file) {
+            controller: ['$scope', function($scope) {
+                this.checkbox = $scope.checkbox || false;
+                $scope.selectAll = function() {
+                    angular.forEach($scope.files, function(file) {
                         file.selected = true;
                     });
                 };
-                scope.deselectAll = function() {
-                    angular.forEach(scope.files, function(file) {
+                $scope.deselectAll = function() {
+                    angular.forEach($scope.files, function(file) {
                         file.selected = false;
                     });
                 };
-            }
+            }]
         };
     });
