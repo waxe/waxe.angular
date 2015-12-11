@@ -192,6 +192,25 @@ angular.module('waxeApp')
                     };
                     $location.path(redirect).search(params);
                 };
+
+                scope.completion = {
+                    path: ''
+                };
+                scope.getPaths = function(val) {
+                    var url = UrlFactory.jsonAPIUserUrl('search/path-complete');
+                    return $http.get(url, {
+                        params: {
+                            search: val,
+                        }
+                    }).then(function(response){
+                        return response.data;
+                    });
+                };
+                scope.openFile = function($item) {
+                    scope.completion.path = '';
+                    var url = UrlFactory.userUrl('xml/edit');
+                    $location.path(url).search({path: $item});
+                };
             }
         };
     }])

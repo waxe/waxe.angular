@@ -36,7 +36,10 @@ angular.module('waxeApp')
                 });
         };
 
-    }]).service('Utils', function () {
+    }]).service('Utils', ['$injector', function ($injector) {
+        var Folder;
+
+
         this.getFormDataForSubmit = function($form) {
             var dic = {
                 url: $form.data('action')
@@ -53,7 +56,12 @@ angular.module('waxeApp')
             dic.data = data;
             return dic;
         };
+
         this.getBreadcrumbFiles = function(file, rootpath) {
+            // HACK: to avoid circular dependency we need to inject Folder here.
+            // TODO: Update the code to avoid circular dependency
+            if (!Folder) { Folder = $injector.get('Folder');}
+
             rootpath = typeof rootpath !== 'undefined'? rootpath: '';
             if (rootpath !== '' && file.indexOf(rootpath) === 0) {
                 file = file.slice(rootpath.length);
@@ -64,13 +72,13 @@ angular.module('waxeApp')
             if (typeof file === 'undefined' || file === '' || file === null) {
                 // We always add link on the root path to make the easier when
                 // we are not on filemanager page
-                return [{name: 'root', 'path': rootpath}];
+                return [new Folder({name: 'root', 'path': rootpath})];
             }
 
-            var breadcrumbFiles = [{
+            var breadcrumbFiles = [new Folder({
                 'name': 'root',
                 'path': rootpath
-            }];
+            })];
             var lis = file.split('/');
             var path = '';
             for (var i=0, len=lis.length; i < len; i++) {
@@ -78,18 +86,16 @@ angular.module('waxeApp')
                     path += '/';
                 }
                 path += lis[i];
-                var o = {
-                    'name': lis[i]
-                };
-                if (i < len -1) {
-                    o.path = path;
-                }
+                var o = new Folder({
+                    'name': lis[i],
+                    'path': path
+                });
                 breadcrumbFiles.push(o);
             }
             return breadcrumbFiles;
         };
 
-    }).service('FileUtils', ['$http', '$location', '$modal', 'Session', 'MessageService', 'UrlFactory', 'Utils', 'Files', function ($http, $location, $modal, Session, MessageService, UrlFactory, Utils, Files) {
+    }]).service('FileUtils', ['$http', '$location', '$modal', 'Session', 'MessageService', 'UrlFactory', 'Utils', 'Files', function ($http, $location, $modal, Session, MessageService, UrlFactory, Utils, Files) {
         var that = this;
         this.save = function() {
             var dic;

@@ -129,27 +129,8 @@ body {
 }
 
 .breadcrumb {
-  top: 65px;
-  border-bottom: 1px solid #e7e7e7;
   margin-bottom: 0;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  z-index: 1;
-}
-
-.breadcrumb > li:first-child {
-  margin-right: 20px;
-}
-
-.breadcrumb > li:first-child + li:before {
-  content: "";
-  padding: 0;
-}
-
-.breadcrumb input {
-  display: inline-block;
-  width: 160px;
-  height: 25px;
+  background-color: none;
 }
 
 .match, .textdiff span {

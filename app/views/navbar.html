@@ -1,3 +1,4 @@
+<div>
 <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
@@ -28,6 +29,9 @@
       <menu-item ng-repeat="obj in NavbarService.menuData[3]" obj="obj"></menu-item>
     </ul>
   </div>
+<input type="text" ng-model="completion.path" typeahead-on-select="openFile($item)" placeholder="Search file" typeahead="path for path in getPaths($viewValue)" class="form-control" style="float: left; width: auto; margin-right: 20px;" />
+<breadcrumb files="Session.breadcrumbFiles"></breadcrumb>
+</div>
 
 
 <script type="text/ng-template" id="navbar-item.html">
