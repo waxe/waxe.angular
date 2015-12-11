@@ -13,9 +13,13 @@ angular.module('waxeApp')
             restrict: 'E',
             scope: {
                 'files': '=data',
-                'checkbox': '@'
+                'checkbox': '@',
+                'action': '&'
             },
-            controller: ['$scope', function($scope) {
+            controller: ['$scope', '$element', '$attrs', function($scope, $element, $attrs) {
+                if (angular.isDefined($attrs.action)) {
+                    this.action = $scope.action;
+                }
                 this.checkbox = $scope.checkbox || false;
                 $scope.selectAll = function() {
                     angular.forEach($scope.files, function(file) {
