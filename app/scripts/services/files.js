@@ -59,6 +59,12 @@ angular.module('waxeApp')
             var url = this.editor + '/edit';
             return UrlFactory.userUrl(url, {path: this.path});
         };
+        Object.defineProperty(File.prototype, 'newUrl', {
+            get: function editUrlProperty() {
+                var url = this.editor + '/new';
+                return UrlFactory.userUrl(url, {path: this.path});
+            }
+        });
         return File;
     }])
     .service('Files', ['$http', 'UrlFactory', 'MessageService', 'Session', 'Folder', 'File', function ($http, UrlFactory, MessageService, Session, Folder, File) {

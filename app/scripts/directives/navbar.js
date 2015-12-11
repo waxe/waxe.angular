@@ -7,7 +7,7 @@
  * # navbar
  */
 angular.module('waxeApp')
-    .directive('navbar', ['$location', '$modal', '$http', 'NavbarService', 'UserProfile', 'AccountProfile', 'AuthService', 'MessageService', 'XmlUtils', 'Utils', 'FileUtils', 'UrlFactory', 'Session', '$routeParams', '$route', function ($location, $modal, $http, NavbarService, UserProfile, AccountProfile, AuthService, MessageService, XmlUtils, Utils, FileUtils, UrlFactory, Session, $routeParams, $route) {
+    .directive('navbar', ['$location', '$modal', '$http', 'NavbarService', 'UserProfile', 'AccountProfile', 'AuthService', 'MessageService', 'XmlUtils', 'Utils', 'FileUtils', 'UrlFactory', 'Session', '$routeParams', '$route', 'Files', 'Folder', function ($location, $modal, $http, NavbarService, UserProfile, AccountProfile, AuthService, MessageService, XmlUtils, Utils, FileUtils, UrlFactory, Session, $routeParams, $route, Files, Folder) {
         return {
             templateUrl: 'views/navbar.html',
             restrict: 'E',
@@ -40,6 +40,7 @@ angular.module('waxeApp')
                     var url = UrlFactory.jsonAPIUserUrl('xml/view') + '?path=' + Session.filename;
                     window.open(url, '_viewer');
                 };
+
 
                 // We need this variable to keep the last selected choice
                 scope.dtd_url = null;
@@ -89,66 +90,63 @@ angular.module('waxeApp')
 
                 };
 
-                scope.currentXmlTemplatePath = null;
-                scope.newXmlTemplateModal = function() {
-                    $modal.open({
-                        templateUrl: 'navbar-open.html',
-                        controller: function($scope, $modalInstance, parentScope) {
 
-                            $scope.url = 'xml/new';
+                var createModal = function(templateUrl, title, callback, sessionAttr, defaultPath) {
+                    return function() {
+                        var modal = $modal.open({
+                            templateUrl: templateUrl,
+                            controller: function($scope, $modalInstance) {
+                                $scope.title = title;
+                                $scope.open = function(file) {
+                                    if (file instanceof Folder) {
+                                        $scope.openFolder(file.path);
+                                    }
+                                    else {
+                                        $modalInstance.close(file);
+                                    }
+                                };
 
-                            $scope.open = function(path) {
-                                parentScope.currentXmlTemplatePath = path;
-                                $scope.breadcrumbFiles = Utils.getBreadcrumbFiles(path, AccountProfile.templates_path);
-                                var url = UrlFactory.jsonAPIUserUrl('explore');
-                                $http
-                                  .get(url, {params: {path: path}})
-                                  .then(function(res) {
-                                    $scope.files = res.data;
-                                });
-                            };
+                                $scope.openFolder = function(path) {
+                                    Session[sessionAttr] = path;
+                                    $scope.breadcrumbFiles = Utils.getBreadcrumbFiles(path);
+                                    Files.query(path).then(function(files) {
+                                        $scope.files = files;
+                                    });
+                                };
 
-                            $scope.open(parentScope.currentXmlTemplatePath || AccountProfile.templates_path);
+                                $scope.openFolder(Session[sessionAttr] || defaultPath);
 
-                            $scope.cancel = function () {
-                                $modalInstance.dismiss('cancel');
-                            };
-                        },
-                        resolve: {
-                            parentScope: function() {
-                                return scope;
+                                $scope.cancel = function () {
+                                    $modalInstance.dismiss('cancel');
+                                };
+                            },
+                            resolve: {
+                                parentScope: function() {
+                                    return scope;
+                                }
                             }
-                        }
-                    });
+                        });
+                        modal.result.then(callback);
+                        return modal;
+                    };
                 };
 
-                Session.currentPath = null;
-                scope.openModal = function() {
-                    $modal.open({
-                        templateUrl: 'navbar-open.html',
-                        controller: function($scope, $modalInstance) {
+                scope.newXmlTemplateModal = createModal(
+                        'navbar-open-modal.html',
+                        'New from template',
+                        function(file) {
+                            $location.url(file.newUrl);
+                        },
+                        'currentXmlTemplatePath',
+                        AccountProfile.templates_path);
 
-                            $scope.url = 'xml/edit';
-
-                            $scope.open = function(path) {
-                                Session.currentPath = path;
-                                $scope.breadcrumbFiles = Utils.getBreadcrumbFiles(path);
-                                var url = UrlFactory.jsonAPIUserUrl('explore');
-                                $http
-                                  .get(url, {params: {path: path}})
-                                  .then(function(res) {
-                                    $scope.files = res.data;
-                                });
-                            };
-
-                            $scope.open(Session.currentPath);
-
-                            $scope.cancel = function () {
-                                $modalInstance.dismiss('cancel');
-                            };
-                        }
-                    });
-                };
+                scope.openModal = createModal(
+                        'navbar-open-modal.html',
+                        'Open file',
+                        function(file) {
+                            $location.url(file.editUrl);
+                        },
+                        'currentPath');
 
                 scope.sourceToggle = function() {
                     var from = $routeParams.from;
