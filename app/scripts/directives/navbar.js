@@ -7,6 +7,36 @@
  * # navbar
  */
 angular.module('waxeApp')
+    .controller('BaseModalCtrl', ['$scope', '$modalInstance', 'Session', 'Folder', 'Files', 'Utils', function($scope, $modalInstance, Session, Folder, Files, Utils) {
+
+        $scope.sessionAttr = $scope.sessionAttr || 'currentPath';
+        $scope.openFolder = function(path) {
+            Session[$scope.sessionAttr] = path;
+            $scope.breadcrumbFiles = Utils.getBreadcrumbFiles(path);
+            Files.query(path).then(function(files) {
+                $scope.files = files;
+            });
+        };
+        $scope.openFile = function(file) {
+            $modalInstance.close(file);
+        };
+
+        $scope.open = function(file) {
+            if (file instanceof Folder) {
+                $scope.openFolder(file.path);
+            }
+            else {
+                $scope.openFile(file);
+            }
+        };
+
+        $scope.cancel = function () {
+            $modalInstance.dismiss('cancel');
+        };
+
+        // Init
+        $scope.openFolder(Session[$scope.sessionAttr] || $scope.defaultPath);
+    }])
     .directive('navbar', ['$location', '$modal', '$http', 'NavbarService', 'UserProfile', 'AccountProfile', 'AuthService', 'MessageService', 'XmlUtils', 'Utils', 'FileUtils', 'UrlFactory', 'Session', '$routeParams', '$route', 'Files', 'Folder', function ($location, $modal, $http, NavbarService, UserProfile, AccountProfile, AuthService, MessageService, XmlUtils, Utils, FileUtils, UrlFactory, Session, $routeParams, $route, Files, Folder) {
         return {
             templateUrl: 'views/navbar.html',
@@ -95,35 +125,14 @@ angular.module('waxeApp')
                     return function() {
                         var modal = $modal.open({
                             templateUrl: templateUrl,
-                            controller: function($scope, $modalInstance) {
+                            controller: function($scope, $modalInstance, $controller) {
                                 $scope.title = title;
-                                $scope.open = function(file) {
-                                    if (file instanceof Folder) {
-                                        $scope.openFolder(file.path);
-                                    }
-                                    else {
-                                        $modalInstance.close(file);
-                                    }
-                                };
-
-                                $scope.openFolder = function(path) {
-                                    Session[sessionAttr] = path;
-                                    $scope.breadcrumbFiles = Utils.getBreadcrumbFiles(path);
-                                    Files.query(path).then(function(files) {
-                                        $scope.files = files;
-                                    });
-                                };
-
-                                $scope.openFolder(Session[sessionAttr] || defaultPath);
-
-                                $scope.cancel = function () {
-                                    $modalInstance.dismiss('cancel');
-                                };
-                            },
-                            resolve: {
-                                parentScope: function() {
-                                    return scope;
-                                }
+                                $scope.sessionAttr = sessionAttr;
+                                $scope.defaultPath = defaultPath;
+                                $controller('BaseModalCtrl', {
+                                    $scope: $scope,
+                                    $modalInstance: $modalInstance
+                                });
                             }
                         });
                         modal.result.then(callback);

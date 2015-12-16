@@ -98,7 +98,6 @@ angular.module('waxeApp')
     }]).service('FileUtils', ['$http', '$location', '$modal', 'Session', 'MessageService', 'UrlFactory', 'Utils', 'Files', function ($http, $location, $modal, Session, MessageService, UrlFactory, Utils, Files) {
         var that = this;
         this.save = function() {
-            var dic;
             // TODO: if we keep this logic we should refactor this function.
             if (Session.submitForm) {
                 Session.submitForm();
@@ -109,7 +108,7 @@ angular.module('waxeApp')
                 that.saveasModal();
                 return;
             }
-            dic = Utils.getFormDataForSubmit(Session.form.$element);
+            var dic = Utils.getFormDataForSubmit(Session.form.$element);
             return $http
                 .post(dic.url, dic.data)
                 .then(function() {
@@ -125,10 +124,15 @@ angular.module('waxeApp')
         this.saveasModal = function() {
             var modalInstance = $modal.open({
                 templateUrl: 'navbar-saveas.html',
-                controller: function($scope, $modalInstance) {
+                controller: ['$scope', '$modalInstance', '$controller', 'Folder', function($scope, $modalInstance, $controller, Folder) {
+                    $controller('BaseModalCtrl', {
+                        $scope: $scope,
+                        $modalInstance: $modalInstance
+                    });
 
                     $scope.folder = '';
                     $scope.filename = '';
+                    $scope.showCreateFolder = false;
 
                     $scope.createFolder = function() {
                         var url = UrlFactory.jsonAPIUserUrl('create-folder');
@@ -136,15 +140,35 @@ angular.module('waxeApp')
                           .post(url, {path: Session.currentPath,
                                               name: $scope.folder})
                           .then(function(res) {
-                            $scope.open(res.data.path);
+                            $scope.open(new Folder(res.data));
                             $scope.folder = '';
+                            $scope.showCreateFolder = false;
                         });
                     };
 
-                    $scope.saveAs = function(filename) {
-                        filename = filename || $scope.filename;
+                    // Overwrite openFile method since we don't want to edit
+                    // the file here
+                    $scope.openFile = function(file) {
+                        $scope.filename = file.name;
+                        angular.element('.modal-filename').focus();
+                    };
+
+                    $scope.saveAs = function() {
+                        var filename = $scope.filename;
                         if (! filename) {
                             return;
+                        }
+                        var ok = true;
+                        angular.forEach($scope.files, function(file) {
+                            if (file.name === filename) {
+                                if (! window.confirm('Are you sure you want to replace the existing file?')) {
+                                    ok = false;
+                                    return false;
+                                }
+                            }
+                        });
+                        if (!ok) {
+                            return false;
                         }
                         $scope.cancel();
                         var path = [];
@@ -158,26 +182,7 @@ angular.module('waxeApp')
                             Session.setFilename(relpath);
                         });
                     };
-
-                    $scope.open = function(path) {
-                        Session.currentPath = path;
-
-                        $scope.breadcrumbFiles = Utils.getBreadcrumbFiles(path);
-
-                        var url = UrlFactory.jsonAPIUserUrl('explore');
-                        $http
-                          .get(url, {params: {path: path}})
-                          .then(function(res) {
-                            $scope.files = res.data;
-                        });
-                    };
-
-                    $scope.open(Session.currentPath);
-
-                    $scope.cancel = function () {
-                        $modalInstance.dismiss('cancel');
-                    };
-                }
+                }]
             });
 
             modalInstance.result.then(function(data) {
