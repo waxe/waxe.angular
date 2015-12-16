@@ -49,7 +49,7 @@ angular.module('waxeApp')
         };
         return Folder;
     }])
-    .factory('File', ['FS', 'UrlFactory', function(FS, UrlFactory) {
+    .factory('File', ['FS', 'UrlFactory', 'AccountProfile', function(FS, UrlFactory, AccountProfile) {
         var File = function(data){
             this.init(data);
             this.iClass = 'fa fa-file-excel-o';
@@ -58,6 +58,11 @@ angular.module('waxeApp')
         File.prototype._editUrl = function() {
             var url = this.editor + '/edit';
             return UrlFactory.userUrl(url, {path: this.path});
+        };
+        File.prototype.init = function(data) {
+            FS.prototype.init.call(this, data);
+            this.extension = this.name.substring(this.name.lastIndexOf('.'), this.name.length).toLowerCase();
+            this.editor = AccountProfile.editors[this.extension];
         };
         Object.defineProperty(File.prototype, 'newUrl', {
             get: function editUrlProperty() {
