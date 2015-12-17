@@ -84,6 +84,7 @@ angular.module('waxeApp')
     }])
     .service('Files', ['$http', 'UrlFactory', 'MessageService', 'Session', 'Folder', 'File', function ($http, UrlFactory, MessageService, Session, Folder, File) {
 
+        var that = this;
         var getPaths = function(files) {
             var filenames = [];
             for(var i=0,len=files.length; i < len; i++) {
@@ -95,15 +96,19 @@ angular.module('waxeApp')
         var httpRequest = function(method, url, path) {
             return $http[method](url, {params: {path: path}})
                 .then(function(res) {
-                    return res.data.map(function(value) {
-                        if(value.type === 'folder') {
-                            return new Folder(value);
-                        }
-                        else {
-                            return new File(value);
-                        }
-                    });
+                    return that.dataToObjs(res.data);
                 });
+        };
+
+        this.dataToObjs = function(data) {
+            return data.map(function(value) {
+                if(value.type === 'folder') {
+                    return new Folder(value);
+                }
+                else {
+                    return new File(value);
+                }
+            });
         };
 
         this.query = function(path) {

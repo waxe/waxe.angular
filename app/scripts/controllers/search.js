@@ -8,7 +8,7 @@
  * Controller of the waxeApp
  */
 angular.module('waxeApp')
-    .controller('SearchCtrl', ['$scope', '$http', '$routeParams', '$location', '$anchorScroll', '$modal', 'UrlFactory', 'Utils', 'XmlUtils', 'AccountProfile', function ($scope, $http, $routeParams, $location, $anchorScroll, $modal, UrlFactory, Utils, XmlUtils, AccountProfile) {
+    .controller('SearchCtrl', ['$scope', '$http', '$routeParams', '$location', '$anchorScroll', '$modal', 'UrlFactory', 'Utils', 'XmlUtils', 'AccountProfile', 'Files', 'File', function ($scope, $http, $routeParams, $location, $anchorScroll, $modal, UrlFactory, Utils, XmlUtils, AccountProfile, Files, File) {
 
         $scope.UrlFactory = UrlFactory;
         // TODO: we should have a list somewhere with the supported extension
@@ -40,14 +40,14 @@ angular.module('waxeApp')
               .get(url, {params: $scope.search})
               .then(function(res) {
                 $anchorScroll();
+                var files = Files.dataToObjs(res.data.results);
                 if($scope.search.open) {
                     if (res.data.nb_items === 1) {
-                        url = UrlFactory.userUrl('xml/edit', {path: res.data.results[0].path});
-                        $location.url(url);
+                        $location.url(files[0].editUrl);
                         return;
                     }
                 }
-                $scope.results = res.data.results;
+                $scope.results = files;
                 $scope.totalItems = res.data.nb_items;
                 $scope.itemsPerPage = res.data.items_per_page;
                 $scope.$emit('pageLoaded');
