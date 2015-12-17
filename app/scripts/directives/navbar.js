@@ -37,7 +37,7 @@ angular.module('waxeApp')
         // Init
         $scope.openFolder(Session[$scope.sessionAttr] || $scope.defaultPath);
     }])
-    .directive('navbar', ['$location', '$modal', '$http', 'NavbarService', 'UserProfile', 'AccountProfile', 'AuthService', 'MessageService', 'XmlUtils', 'Utils', 'FileUtils', 'UrlFactory', 'Session', '$routeParams', '$route', 'Files', 'Folder', function ($location, $modal, $http, NavbarService, UserProfile, AccountProfile, AuthService, MessageService, XmlUtils, Utils, FileUtils, UrlFactory, Session, $routeParams, $route, Files, Folder) {
+    .directive('navbar', ['$location', '$modal', '$http', 'NavbarService', 'UserProfile', 'AccountProfile', 'AuthService', 'MessageService', 'XmlUtils', 'Utils', 'FileUtils', 'UrlFactory', 'Session', '$routeParams', '$route', 'Files', 'Folder', 'File', function ($location, $modal, $http, NavbarService, UserProfile, AccountProfile, AuthService, MessageService, XmlUtils, Utils, FileUtils, UrlFactory, Session, $routeParams, $route, Files, Folder, File) {
         return {
             templateUrl: 'views/navbar.html',
             restrict: 'E',
@@ -67,8 +67,8 @@ angular.module('waxeApp')
 
                 scope.doRender = function() {
                     // TODO: the url should not be in JSON.
-                    var url = UrlFactory.jsonAPIUserUrl('xml/view') + '?path=' + Session.filename;
-                    window.open(url, '_viewer');
+                    var file = File.loadFromPath(Session.filename);
+                    window.open(file.viewUrl, '_viewer');
                 };
 
 

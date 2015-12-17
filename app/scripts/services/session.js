@@ -39,6 +39,7 @@ angular.module('waxeApp')
             // Special handler when we click on the save button
             this.submitForm = null;
             // The filename we are editing
+            // TODO: we should store a File object
             this.filename = null;
             // XML form
             // NOTE: it enables the 'save as' button

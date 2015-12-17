@@ -67,9 +67,16 @@ angular.module('waxeApp')
             this.editor = AccountProfile.editors[this.extension];
         };
         Object.defineProperty(File.prototype, 'newUrl', {
-            get: function editUrlProperty() {
+            get: function newUrlProperty() {
                 var url = this.editor + '/new';
                 return UrlFactory.userUrl(url, {path: this.path});
+            }
+        });
+
+        Object.defineProperty(File.prototype, 'viewUrl', {
+            get: function viewUrlProperty() {
+                var url = this.editor + '/view';
+                return UrlFactory.jsonAPIUserUrl(url, {path: this.path});
             }
         });
 
