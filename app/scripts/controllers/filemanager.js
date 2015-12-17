@@ -8,7 +8,27 @@
  * Controller of the waxeApp
  */
 angular.module('waxeApp')
-    .controller('FileManagerCtrl',['$scope', '$http', '$routeParams', 'UrlFactory', 'AccountProfile', 'UserProfile', 'Session', 'Files', function ($scope, $http, $routeParams, UrlFactory, AccountProfile, UserProfile, Session, Files) {
+    .controller('FileManagerCtrl',['$scope', '$http', '$routeParams', '$location', 'UrlFactory', 'AccountProfile', 'UserProfile', 'Session', 'Files', 'File', function ($scope, $http, $routeParams, $location, UrlFactory, AccountProfile, UserProfile, Session, Files, File) {
+
+        var path = $location.search().file,
+            search = $location.search().search,
+            hash = $location.hash();
+
+        var url = null;
+        // Support path and search shortcut
+        if (angular.isDefined(path)) {
+            var file = File.loadFromPath(path);
+            var data = $location.search();
+            delete data.file;
+            url = file._editUrl(data);
+        }
+        else if (angular.isDefined(search)){
+            url = UrlFactory.userUrl('search', $location.search());
+        }
+        if (url !== null) {
+            $location.url(url).hash(hash);
+            return;
+        }
 
 
         Files.query($routeParams.path).then(function(files) {

@@ -55,9 +55,11 @@ angular.module('waxeApp')
             this.iClass = 'fa fa-file-excel-o';
         };
         File.prototype = new FS();
-        File.prototype._editUrl = function() {
+        File.prototype._editUrl = function(data) {
             var url = this.editor + '/edit';
-            return UrlFactory.userUrl(url, {path: this.path});
+            data = data || {};
+            data.path = this.path;
+            return UrlFactory.userUrl(url,data);
         };
         File.prototype.init = function(data) {
             FS.prototype.init.call(this, data);
@@ -70,6 +72,14 @@ angular.module('waxeApp')
                 return UrlFactory.userUrl(url, {path: this.path});
             }
         });
+
+        File.loadFromPath = function(path) {
+            var data = {
+                'name': path.substring(path.lastIndexOf('/'), path.length),
+                'path': path,
+            };
+            return new File(data);
+        };
         return File;
     }])
     .service('Files', ['$http', 'UrlFactory', 'MessageService', 'Session', 'Folder', 'File', function ($http, UrlFactory, MessageService, Session, Folder, File) {
