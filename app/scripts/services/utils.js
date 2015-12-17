@@ -170,24 +170,22 @@ angular.module('waxeApp')
                         if (!ok) {
                             return false;
                         }
-                        $scope.cancel();
-                        var path = [];
-                        if (Session.currentPath) {
-                            path.push(Session.currentPath);
-                        }
-                        path.push(filename);
-                        var relpath = path.join('/');
-                        Session.form.setFilename(relpath);
-                        that.save().then(function() {
-                            Session.setFilename(relpath);
-                        });
+                        $modalInstance.close(filename);
                     };
                 }]
             });
 
-            modalInstance.result.then(function(data) {
-                var url = UrlFactory.userUrl('xml/new');
-                $location.path(url).search(data);
+            modalInstance.result.then(function(filename) {
+                var path = [];
+                if (Session.currentPath) {
+                    path.push(Session.currentPath);
+                }
+                path.push(filename);
+                var relpath = path.join('/');
+                Session.form.setFilename(relpath);
+                that.save().then(function() {
+                    Session.setFilename(relpath);
+                });
             });
 
         };
