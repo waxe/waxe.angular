@@ -230,15 +230,10 @@ angular.module('waxeApp')
             var files = Session.filesSelected, url;
             var id = +new Date();
             for(var i=0,len=files.length; i < len; i++) {
-                if (files[i].type === 'file') {
-                    url = UrlFactory.userUrl('xml/edit', {path: files[i].path});
-                }
-                else {
-                    url = UrlFactory.userUrl('', {path: files[i].path});
-                }
+                url = files[i].editUrl;
                 window.open('#' + url, id + '-' + i);
             }
-            Session.filesSelected = [];
+            Session.unSelectFiles();
         };
 
         this.deleteFiles = function() {

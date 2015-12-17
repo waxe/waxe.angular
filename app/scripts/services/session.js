@@ -84,6 +84,13 @@ angular.module('waxeApp')
             }
         };
 
+        this.unSelectFiles = function() {
+            for (var i=0,len=this.filesSelected.length; i < len; i++) {
+                this.filesSelected[i].selected = false;
+            }
+            this.filesSelected = [];
+        };
+
         this.setBreadcrumbFiles = function(file) {
             if (file && this.currentFile === file) {
                 // Nothing to do the breadcrumb is already generated

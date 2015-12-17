@@ -124,8 +124,8 @@ angular.module('waxeApp')
                 angular.forEach(files, function(file) {
                     var index = Session.files.indexOf(file);
                     Session.files.splice(index, 1);
-                    Session.filesSelected = [];
                 });
+                Session.unSelectFiles();
                 MessageService.set('success', 'Files moved!');
             });
         };
@@ -142,8 +142,8 @@ angular.module('waxeApp')
                     angular.forEach(files, function(file) {
                         var index = Session.files.indexOf(file);
                         Session.files.splice(index, 1);
-                        Session.filesSelected = [];
                     });
+                    Session.unSelectFiles();
                     MessageService.set('success', 'Files deleted!');
                 });
         };
