@@ -6,14 +6,7 @@
     <div class="panel panel-default" ng-if="opened_files.length">
       <div class="panel-heading">Last opened files</div>
       <div class="panel-body">
-        <div ng-repeat="f in opened_files">
-          <span ng-if="f.user">
-          <a href="#{{ UrlFactory.url(f.user, 'xml/edit', {path: f.path}) }}"><i class="fa fa-file-excel-o"></i> {{f.path}} ({{f.user}})</a>
-         </span>
-          <span ng-if="!f.user">
-          <a href="#{{ UrlFactory.url(UserProfile.login, 'xml/edit', {path: f.path}) }}"><i class="fa fa-file-excel-o"></i> {{f.path}}</a>
-         </span>
-        </div>
+        <files data="opened_files" display="file.user?file.path +'(' + file.user + ')':file.path" col="1"></files>
       </div>
     </div>
 
@@ -23,9 +16,7 @@
     <div class="panel panel-default" ng-if="commited_files.length">
       <div class="panel-heading">Last commited files</div>
       <div class="panel-body">
-        <div ng-repeat="f in commited_files">
-          <a href="#{{ UrlFactory.userUrl('xml/edit', {path: f.path}) }}"><i class="fa fa-file-excel-o"></i> {{f.path}}</a>
-        </div>
+        <files data="commited_files" display="file.user?file.path +'(' + file.user + ')':file.path" col="1"></files>
       </div>
     </div>
   </div>

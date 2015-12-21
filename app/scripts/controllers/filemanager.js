@@ -60,8 +60,7 @@ angular.module('waxeApp')
         $http
           .get(url)
           .then(function(res) {
-            $scope.opened_files = res.data.opened_files;
-            $scope.commited_files = res.data.commited_files;
+            $scope.opened_files = Files.dataToObjs(res.data.opened_files);
+            $scope.commited_files = Files.dataToObjs(res.data.commited_files);
         });
-
     }]);

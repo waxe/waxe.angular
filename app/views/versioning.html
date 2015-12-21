@@ -37,7 +37,7 @@
           <li ng-repeat="uncommitable in versioning.uncommitables">
             <input type="checkbox" ng-model="uncommitable.selected" value="{{uncommitable.relpath}}" />
             <span class="label label-{{uncommitable.status}}">{{uncommitable.status}}</span>
-            <a href="#{{UrlFactory.userUrl('xml/edit', {path: uncommitable.relpath})}}">{{uncommitable.relpath}}</a>
+            <a href="#{{uncommitable.editUrl}}">{{uncommitable.relpath}}</a>
           </li>
         </ul>
         <button class="btn btn-danger" type="submit" ng-click="doRevert(versioning.uncommitables)" ng-confirm-click="Are you sure you want to revert the selected files? All your modifications will be deleted!">Revert</button>
@@ -61,7 +61,7 @@
         <li ng-repeat="other in versioning.others">
           <input type="checkbox" ng-model="other.selected" value="{{other.relpath}}" />
           <span class="label label-{{other.status}}">{{other.status}}</span>
-          <a href="#{{UrlFactory.userUrl('xml/edit', {path: other.relpath})}}">{{other.relpath}}</a>
+          <a href="#{{other.editUrl}}">{{other.relpath}}</a>
         </li>
       </ul>
       <button class="btn btn-danger" type="submit" ng-click="doRevert(versioning.others)" ng-confirm-click="Are you sure you want to revert the selected files? All your modifications will be deleted!">Revert</button>

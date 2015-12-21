@@ -215,8 +215,8 @@ angular.module('waxeApp')
                 };
                 scope.openFile = function($item) {
                     scope.completion.path = '';
-                    var url = UrlFactory.userUrl('xml/edit');
-                    $location.path(url).search({path: $item});
+                    var file = File.loadFromPath($item);
+                    $location.url(file.editUrl);
                 };
             }
         };

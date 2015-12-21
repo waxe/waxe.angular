@@ -59,10 +59,17 @@ angular.module('waxeApp')
             var url = this.editor + '/edit';
             data = data || {};
             data.path = this.path;
+            if (angular.isDefined(this.user)) {
+                // On opened and commited file it can be a link to another account.
+                return UrlFactory.url(this.user, url, data);
+            }
             return UrlFactory.userUrl(url,data);
         };
         File.prototype.init = function(data) {
             FS.prototype.init.call(this, data);
+            if (! angular.isDefined(this.name)) {
+                this.name = this.path.substring(this.path.lastIndexOf('/')+1, this.path.length);
+            }
             this.extension = this.name.substring(this.name.lastIndexOf('.'), this.name.length).toLowerCase();
             this.editor = AccountProfile.editors[this.extension];
         };
@@ -82,7 +89,7 @@ angular.module('waxeApp')
 
         File.loadFromPath = function(path) {
             var data = {
-                'name': path.substring(path.lastIndexOf('/'), path.length),
+                'name': path.substring(path.lastIndexOf('/')+1, path.length),
                 'path': path,
             };
             return new File(data);

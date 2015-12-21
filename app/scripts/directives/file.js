@@ -7,15 +7,22 @@
  * # file
  */
 angular.module('waxeApp')
-    .directive('file', ['$location', 'UrlFactory', 'Session', function ($location, UrlFactory, Session) {
+    .directive('file', ['$location', '$parse', 'UrlFactory', 'Session', function ($location, $parse, UrlFactory, Session) {
         return {
-            template: '<div ng-class="containerClass"><input ng-if="checkbox" type="checkbox" ng-model="file.selected" class="file-checkbox" /><a href="" ng-click="click()"><i ng-class="file.iClass"></i>{{file.name}}</a></div>',
+            template: '<div ng-class="containerClass"><input ng-if="checkbox" type="checkbox" ng-model="file.selected" class="file-checkbox" /><a href="" ng-click="click()"><i ng-class="file.iClass"></i>{{name}}</a></div>',
             restrict: 'E',
             scope: {
                 'file': '=data',
             },
             require: '^files',
             link: function postLink(scope, element, attrs, filesCtrl) {
+                if (angular.isDefined(filesCtrl.display)) {
+                    scope.name = $parse(filesCtrl.display)(scope);
+                }
+                else {
+                    scope.name = scope.file.name;
+                }
+
                 scope.checkbox = filesCtrl.checkbox;
                 scope.click = function() {
                     if (angular.isDefined(filesCtrl.action)) {
