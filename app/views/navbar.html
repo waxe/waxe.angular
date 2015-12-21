@@ -94,28 +94,27 @@
 
 <script type="text/ng-template" id="navbar-new.html">
   <div class="modal-header">
-      <h3 class="modal-title">Select a XML type</h3>
+      <h3 class="modal-title">New XML file</h3>
   </div>
   <div class="modal-body">
-      <ul>
-          <li ng-repeat="item in items">
-              <a ng-click="selected.item = item">{{ item }}</a>
-          </li>
-      </ul>
-      Selected: <b>{{ selected.item }}</b>
-      <select ng-change="updateDtdTags()" ng-model="dtd_url">
+    <div class="form-group">
+      <label>Dtd file</label>
+      <select ng-change="updateDtdTags()" ng-model="dtd_url" class="form-control">
         <option ng-repeat="dtd in AccountProfile.dtd_urls">{{dtd}}</option>
       </select>
+    </div>
 
-
-      <select ng-model="dtd_tag">
+    <div class="form-group">
+      <label>Root tag</label>
+      <select ng-model="dtd_tag" class="form-control">
         <option ng-repeat="tag in dtdTags">{{tag}}</option>
       </select>
+    </div>
 
   </div>
   <div class="modal-footer">
       <button class="btn btn-default" ng-click="cancel()">Cancel</button>
-      <button class="btn btn-primary" ng-click="ok()">OK</button>
+      <button class="btn btn-primary" ng-click="ok()">Create</button>
   </div>
 </script>
 
