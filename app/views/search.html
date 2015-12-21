@@ -41,7 +41,7 @@
 
 <div ng-repeat="result in results">
   <i class="fa fa-file-excel-o"></i>
-  <a href="#{{UrlFactory.userUrl('xml/edit', {path: result.path }) }}">{{result.path}}</a>
+  <a href="#{{result.editUrl}}">{{result.path}}</a>
 
   <div ng-repeat="excerpt in result.excerpts">
     <p ng-bind-html="excerpt"></p>
@@ -66,7 +66,7 @@
     </div>
     <div class="row">
       <div class="col-md-6" ng-repeat="file in files">
-        <a ng-if="file.type === 'folder'" href="" ng-click="selectFolder(file.link)"><i class="fa fa-folder-o"></i> {{file.name}}</a>
+        <a ng-if="file.type === 'folder'" href="" ng-click="selectFolder(file.path)"><i class="fa fa-folder-o"></i> {{file.name}}</a>
       </div>
     </div>
   </div>

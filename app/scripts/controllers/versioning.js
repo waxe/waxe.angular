@@ -8,7 +8,7 @@
  * Controller of the waxeApp
  */
 angular.module('waxeApp')
-    .controller('VersioningCtrl', ['$scope', '$http', '$routeParams', '$location','$modal', 'AccountProfile', 'UrlFactory', 'MessageService', function ($scope, $http, $routeParams, $location,  $modal, AccountProfile, UrlFactory, MessageService) {
+    .controller('VersioningCtrl', ['$scope', '$http', '$routeParams', '$location','$modal', 'AccountProfile', 'UrlFactory', 'MessageService', 'Files', function ($scope, $http, $routeParams, $location,  $modal, AccountProfile, UrlFactory, MessageService, Files) {
 
         if (!AccountProfile.has_versioning) {
             // TODO: error message
@@ -31,7 +31,10 @@ angular.module('waxeApp')
         $http
           .get(url, {params: $routeParams})
           .then(function(res) {
-            $scope.versioning = res.data;
+            $scope.versioning = {};
+            $scope.versioning.conflicteds = Files.dataToObjs(res.data.conflicteds);
+            $scope.versioning.uncommitables = Files.dataToObjs(res.data.uncommitables);
+            $scope.versioning.others = Files.dataToObjs(res.data.others);
             $scope.$emit('pageLoaded');
             checkEmpty();
         });
@@ -76,10 +79,11 @@ angular.module('waxeApp')
             var url = UrlFactory.jsonAPIUserUrl('versioning/revert');
             $http
                 .post(url, {paths: files})
-                .then(function() {
+                .then(function(res) {
                     angular.forEach(reals, function(filename) {
                         var index = filenames.indexOf(filename);
                         filenames.splice(index, 1);
+                        MessageService.set('success', res.data);
                     });
                     checkEmpty();
                 });
@@ -119,6 +123,8 @@ angular.module('waxeApp')
                 $http
                     .post(url, {paths: files, msg: data.message})
                     .then(function(res) {
+                        // TODO: we should also remove the folder commited
+                        // implicitly when commiting file in.
                         angular.forEach(reals, function(filename) {
                             var index = filenames.indexOf(filename);
                             filenames.splice(index, 1);

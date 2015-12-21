@@ -36,7 +36,10 @@ angular.module('waxeApp')
                 });
         };
 
-    }]).service('Utils', function () {
+    }]).service('Utils', ['$injector', function ($injector) {
+        var Folder;
+
+
         this.getFormDataForSubmit = function($form) {
             var dic = {
                 url: $form.data('action')
@@ -53,7 +56,12 @@ angular.module('waxeApp')
             dic.data = data;
             return dic;
         };
+
         this.getBreadcrumbFiles = function(file, rootpath) {
+            // HACK: to avoid circular dependency we need to inject Folder here.
+            // TODO: Update the code to avoid circular dependency
+            if (!Folder) { Folder = $injector.get('Folder');}
+
             rootpath = typeof rootpath !== 'undefined'? rootpath: '';
             if (rootpath !== '' && file.indexOf(rootpath) === 0) {
                 file = file.slice(rootpath.length);
@@ -64,13 +72,13 @@ angular.module('waxeApp')
             if (typeof file === 'undefined' || file === '' || file === null) {
                 // We always add link on the root path to make the easier when
                 // we are not on filemanager page
-                return [{name: 'root', 'path': rootpath}];
+                return [new Folder({name: 'root', 'path': rootpath})];
             }
 
-            var breadcrumbFiles = [{
+            var breadcrumbFiles = [new Folder({
                 'name': 'root',
                 'path': rootpath
-            }];
+            })];
             var lis = file.split('/');
             var path = '';
             for (var i=0, len=lis.length; i < len; i++) {
@@ -78,21 +86,18 @@ angular.module('waxeApp')
                     path += '/';
                 }
                 path += lis[i];
-                var o = {
-                    'name': lis[i]
-                };
-                if (i < len -1) {
-                    o.path = path;
-                }
+                var o = new Folder({
+                    'name': lis[i],
+                    'path': path
+                });
                 breadcrumbFiles.push(o);
             }
             return breadcrumbFiles;
         };
 
-    }).service('FileUtils', ['$http', '$location', '$modal', 'Session', 'MessageService', 'UrlFactory', 'Utils', function ($http, $location, $modal, Session, MessageService, UrlFactory, Utils) {
+    }]).service('FileUtils', ['$http', '$location', '$modal', 'Session', 'MessageService', 'UrlFactory', 'Utils', 'Files', function ($http, $location, $modal, Session, MessageService, UrlFactory, Utils, Files) {
         var that = this;
         this.save = function() {
-            var dic;
             // TODO: if we keep this logic we should refactor this function.
             if (Session.submitForm) {
                 Session.submitForm();
@@ -100,10 +105,10 @@ angular.module('waxeApp')
             }
 
             if (!Session.form.filename) {
-                this.saveasModal();
+                that.saveasModal();
                 return;
             }
-            dic = Utils.getFormDataForSubmit(Session.form.$element);
+            var dic = Utils.getFormDataForSubmit(Session.form.$element);
             return $http
                 .post(dic.url, dic.data)
                 .then(function() {
@@ -119,10 +124,15 @@ angular.module('waxeApp')
         this.saveasModal = function() {
             var modalInstance = $modal.open({
                 templateUrl: 'navbar-saveas.html',
-                controller: function($scope, $modalInstance) {
+                controller: ['$scope', '$modalInstance', '$controller', 'Folder', function($scope, $modalInstance, $controller, Folder) {
+                    $controller('BaseModalCtrl', {
+                        $scope: $scope,
+                        $modalInstance: $modalInstance
+                    });
 
                     $scope.folder = '';
                     $scope.filename = '';
+                    $scope.showCreateFolder = false;
 
                     $scope.createFolder = function() {
                         var url = UrlFactory.jsonAPIUserUrl('create-folder');
@@ -130,39 +140,71 @@ angular.module('waxeApp')
                           .post(url, {path: Session.currentPath,
                                               name: $scope.folder})
                           .then(function(res) {
-                            $scope.open(res.data.link);
+                            $scope.open(new Folder(res.data));
                             $scope.folder = '';
+                            $scope.showCreateFolder = false;
                         });
                     };
 
-                    $scope.saveAs = function(filename) {
-                        filename = filename || $scope.filename;
+                    // Overwrite openFile method since we don't want to edit
+                    // the file here
+                    $scope.openFile = function(file) {
+                        $scope.filename = file.name;
+                        angular.element('.modal-filename').focus();
+                    };
+
+                    $scope.saveAs = function() {
+                        var filename = $scope.filename;
                         if (! filename) {
                             return;
                         }
-                        $scope.cancel();
-                        var path = [];
-                        if (Session.currentPath) {
-                            path.push(Session.currentPath);
-                        }
-                        path.push(filename);
-                        var relpath = path.join('/');
-                        Session.form.setFilename(relpath);
-                        that.save().then(function() {
-                            Session.setFilename(relpath);
+                        var ok = true;
+                        angular.forEach($scope.files, function(file) {
+                            if (file.name === filename) {
+                                if (! window.confirm('Are you sure you want to replace the existing file?')) {
+                                    ok = false;
+                                    return false;
+                                }
+                            }
                         });
+                        if (!ok) {
+                            return false;
+                        }
+                        $modalInstance.close(filename);
                     };
+                }]
+            });
+
+            modalInstance.result.then(function(filename) {
+                var path = [];
+                if (Session.currentPath) {
+                    path.push(Session.currentPath);
+                }
+                path.push(filename);
+                var relpath = path.join('/');
+                Session.form.setFilename(relpath);
+                that.save().then(function() {
+                    Session.setFilename(relpath);
+                });
+            });
+
+        };
+
+        this.moveFile = function() {
+            var modalInstance = $modal.open({
+                templateUrl: 'file-move.html',
+                controller: function($scope, $modalInstance) {
+
+                    $scope.folder = '';
+                    $scope.filename = '';
 
                     $scope.open = function(path) {
                         Session.currentPath = path;
 
                         $scope.breadcrumbFiles = Utils.getBreadcrumbFiles(path);
 
-                        var url = UrlFactory.jsonAPIUserUrl('explore');
-                        $http
-                          .get(url, {params: {path: path}})
-                          .then(function(res) {
-                            $scope.files = res.data;
+                        Files.query(path).then(function(files) {
+                            $scope.files = files;
                         });
                     };
 
@@ -171,13 +213,32 @@ angular.module('waxeApp')
                     $scope.cancel = function () {
                         $modalInstance.dismiss('cancel');
                     };
+
+                    $scope.ok = function () {
+                        $modalInstance.close({'directory': Session.currentPath});
+                    };
                 }
             });
 
             modalInstance.result.then(function(data) {
-                var url = UrlFactory.userUrl('xml/new');
-                $location.path(url).search(data);
+                var files = Session.filesSelected;
+                Files.move(files, data.directory);
             });
-
         };
+
+        this.openNewWindow = function() {
+            var files = Session.filesSelected, url;
+            var id = +new Date();
+            for(var i=0,len=files.length; i < len; i++) {
+                url = files[i].editUrl;
+                window.open('#' + url, id + '-' + i);
+            }
+            Session.unSelectFiles();
+        };
+
+        this.deleteFiles = function() {
+            var files = Session.filesSelected;
+            Files.delete(files);
+        };
+
     }]);

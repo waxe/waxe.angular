@@ -8,13 +8,13 @@
  * Controller of the waxeApp
  */
 angular.module('waxeApp')
-    .controller('VersioningUpdateCtrl', ['$scope', '$http', 'UrlFactory', 'MessageService', function ($scope, $http, UrlFactory, MessageService) {
+    .controller('VersioningUpdateCtrl', ['$scope', '$http', 'UrlFactory', 'MessageService', 'Files', function ($scope, $http, UrlFactory, MessageService, Files) {
 
         var url = UrlFactory.jsonAPIUserUrl('versioning/update');
         $http
           .get(url)
           .then(function(res) {
-            $scope.files = res.data;
+            $scope.files = Files.dataToObjs(res.data);
             $scope.length = $scope.files.length;
             $scope.$emit('pageLoaded');
         });

@@ -39,7 +39,7 @@ angular.module('waxeApp')
              *
              * This is an internal function, do not use it directly.
              */
-            _generateUrl: function (username, routename, params) {
+            _generateUrl: function (username, routename, params, hash) {
                 var u = '';
                 if (username) {
                     u = '/account/' + username;
@@ -50,9 +50,17 @@ angular.module('waxeApp')
                 if (angular.isDefined(params)) {
                     var lis = [];
                     angular.forEach(params, function(value, key) {
-                        lis.push(key + '=' + value);
+                        if (typeof value === 'string') {
+                            value = [value];
+                        }
+                        angular.forEach(value, function(v) {
+                            lis.push(key + '=' + v);
+                        });
                     });
                     u += '?' + lis.join('&');
+                }
+                if (angular.isDefined(hash) && hash) {
+                    u += '#' + hash;
                 }
                 return u;
             },
@@ -140,24 +148,6 @@ angular.module('waxeApp')
                 }
                 return u + url;
             },
-            _generateJsonAPIUrl: function(url) {
-            /**
-             * @ngdoc method
-             * @name _generateJsonAPIUrl
-             * @methodOf waxeApp.UrlFactory
-             * @private
-             *
-             * @param {string} url the url to update
-             * @returns {string} A relative url used to call the API
-             *
-             * @description:
-             * Prefix the given url by the API path and add the extension '.json'
-             *
-             * This is an internal function, do not use it directly.
-             */
-                url += '.json';
-                return this._generateAPIUrl(url);
-            },
             /**
              * @ngdoc method
              * @name APIUrl
@@ -208,8 +198,9 @@ angular.module('waxeApp')
              * Generate an url to call the API
              */
             jsonAPIUrl: function() {
+                arguments[1] += '.json';
                 var url = this._generateUrl.apply(this, arguments);
-                return this._generateJsonAPIUrl(url);
+                return this._generateAPIUrl(url);
             },
             /**
              * @ngdoc method
@@ -226,8 +217,9 @@ angular.module('waxeApp')
              * Generate an url to call the API
              */
             jsonAPIUserUrl: function() {
+                arguments[0] += '.json';
                 var url = this._generateUserUrl.apply(this, arguments);
-                return this._generateJsonAPIUrl(url);
+                return this._generateAPIUrl(url);
             },
         };
     }]);

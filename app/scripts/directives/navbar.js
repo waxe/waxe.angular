@@ -7,7 +7,37 @@
  * # navbar
  */
 angular.module('waxeApp')
-    .directive('navbar', ['$location', '$modal', '$http', 'NavbarService', 'UserProfile', 'AccountProfile', 'AuthService', 'MessageService', 'XmlUtils', 'Utils', 'FileUtils', 'UrlFactory', 'Session', '$routeParams', '$route', function ($location, $modal, $http, NavbarService, UserProfile, AccountProfile, AuthService, MessageService, XmlUtils, Utils, FileUtils, UrlFactory, Session, $routeParams, $route) {
+    .controller('BaseModalCtrl', ['$scope', '$modalInstance', 'Session', 'Folder', 'Files', 'Utils', function($scope, $modalInstance, Session, Folder, Files, Utils) {
+
+        $scope.sessionAttr = $scope.sessionAttr || 'currentPath';
+        $scope.openFolder = function(path) {
+            Session[$scope.sessionAttr] = path;
+            $scope.breadcrumbFiles = Utils.getBreadcrumbFiles(path);
+            Files.query(path).then(function(files) {
+                $scope.files = files;
+            });
+        };
+        $scope.openFile = function(file) {
+            $modalInstance.close(file);
+        };
+
+        $scope.open = function(file) {
+            if (file instanceof Folder) {
+                $scope.openFolder(file.path);
+            }
+            else {
+                $scope.openFile(file);
+            }
+        };
+
+        $scope.cancel = function () {
+            $modalInstance.dismiss('cancel');
+        };
+
+        // Init
+        $scope.openFolder(Session[$scope.sessionAttr] || $scope.defaultPath);
+    }])
+    .directive('navbar', ['$location', '$modal', '$http', 'NavbarService', 'UserProfile', 'AccountProfile', 'AuthService', 'MessageService', 'XmlUtils', 'Utils', 'FileUtils', 'UrlFactory', 'Session', '$routeParams', '$route', 'Files', 'Folder', 'File', function ($location, $modal, $http, NavbarService, UserProfile, AccountProfile, AuthService, MessageService, XmlUtils, Utils, FileUtils, UrlFactory, Session, $routeParams, $route, Files, Folder, File) {
         return {
             templateUrl: 'views/navbar.html',
             restrict: 'E',
@@ -37,9 +67,10 @@ angular.module('waxeApp')
 
                 scope.doRender = function() {
                     // TODO: the url should not be in JSON.
-                    var url = UrlFactory.jsonAPIUserUrl('xml/view') + '?path=' + Session.filename;
-                    window.open(url, '_viewer');
+                    var file = File.loadFromPath(Session.filename);
+                    window.open(file.viewUrl, '_viewer');
                 };
+
 
                 // We need this variable to keep the last selected choice
                 scope.dtd_url = null;
@@ -89,66 +120,42 @@ angular.module('waxeApp')
 
                 };
 
-                scope.currentXmlTemplatePath = null;
-                scope.newXmlTemplateModal = function() {
-                    $modal.open({
-                        templateUrl: 'navbar-open.html',
-                        controller: function($scope, $modalInstance, parentScope) {
 
-                            $scope.url = 'xml/new';
-
-                            $scope.open = function(path) {
-                                parentScope.currentXmlTemplatePath = path;
-                                $scope.breadcrumbFiles = Utils.getBreadcrumbFiles(path, AccountProfile.templates_path);
-                                var url = UrlFactory.jsonAPIUserUrl('explore');
-                                $http
-                                  .get(url, {params: {path: path}})
-                                  .then(function(res) {
-                                    $scope.files = res.data;
+                var createModal = function(templateUrl, title, callback, sessionAttr, defaultPath) {
+                    return function() {
+                        var modal = $modal.open({
+                            templateUrl: templateUrl,
+                            controller: function($scope, $modalInstance, $controller) {
+                                $scope.title = title;
+                                $scope.sessionAttr = sessionAttr;
+                                $scope.defaultPath = defaultPath;
+                                $controller('BaseModalCtrl', {
+                                    $scope: $scope,
+                                    $modalInstance: $modalInstance
                                 });
-                            };
-
-                            $scope.open(parentScope.currentXmlTemplatePath || AccountProfile.templates_path);
-
-                            $scope.cancel = function () {
-                                $modalInstance.dismiss('cancel');
-                            };
-                        },
-                        resolve: {
-                            parentScope: function() {
-                                return scope;
                             }
-                        }
-                    });
+                        });
+                        modal.result.then(callback);
+                        return modal;
+                    };
                 };
 
-                Session.currentPath = null;
-                scope.openModal = function() {
-                    $modal.open({
-                        templateUrl: 'navbar-open.html',
-                        controller: function($scope, $modalInstance) {
+                scope.newXmlTemplateModal = createModal(
+                        'navbar-open-modal.html',
+                        'New from template',
+                        function(file) {
+                            $location.url(file.newUrl);
+                        },
+                        'currentXmlTemplatePath',
+                        AccountProfile.templates_path);
 
-                            $scope.url = 'xml/edit';
-
-                            $scope.open = function(path) {
-                                Session.currentPath = path;
-                                $scope.breadcrumbFiles = Utils.getBreadcrumbFiles(path);
-                                var url = UrlFactory.jsonAPIUserUrl('explore');
-                                $http
-                                  .get(url, {params: {path: path}})
-                                  .then(function(res) {
-                                    $scope.files = res.data;
-                                });
-                            };
-
-                            $scope.open(Session.currentPath);
-
-                            $scope.cancel = function () {
-                                $modalInstance.dismiss('cancel');
-                            };
-                        }
-                    });
-                };
+                scope.openModal = createModal(
+                        'navbar-open-modal.html',
+                        'Open file',
+                        function(file) {
+                            $location.url(file.editUrl);
+                        },
+                        'currentPath');
 
                 scope.sourceToggle = function() {
                     var from = $routeParams.from;
@@ -192,6 +199,130 @@ angular.module('waxeApp')
                     };
                     $location.path(redirect).search(params);
                 };
+
+                scope.completion = {
+                    path: ''
+                };
+                scope.getPaths = function(val) {
+                    var url = UrlFactory.jsonAPIUserUrl('search/path-complete');
+                    return $http.get(url, {
+                        params: {
+                            search: val,
+                        }
+                    }).then(function(response){
+                        return response.data;
+                    });
+                };
+                scope.openFile = function($item) {
+                    scope.completion.path = '';
+                    var file = File.loadFromPath($item);
+                    $location.url(file.editUrl);
+                };
             }
         };
-    }]);
+    }])
+.directive('menuItem', ['$compile', '$templateRequest', '$sce', '$animate', '$parse', '$location', 'NavbarService', 'FileUtils', 'UrlFactory', 'UserProfile', 'AccountProfile', 'Session', function ($compile, $templateRequest, $sce, $animate, $parse, $location, NavbarService, FileUtils, UrlFactory, UserProfile, AccountProfile, Session) {
+    return {
+        restrict: 'E',
+        scope: {
+            obj: '=',
+            sub: '@',
+            icon: '='
+        },
+        link: function link(scope, $element) {
+            scope.NavbarService = NavbarService;
+            //
+            // NOTE: We need to attach some services to the scope to be able to
+            // parse the action.
+            scope.FileUtils = FileUtils;
+            scope.UrlFactory = UrlFactory;
+            scope.AccountProfile = AccountProfile;
+            scope.Session = Session;
+            scope.UserProfile = UserProfile;
+
+            var key, children;
+            if (typeof scope.obj === 'string') {
+                key = scope.obj;
+                children = [];
+            }
+            else {
+                key = Object.keys(scope.obj)[0];
+                children = scope.obj[key];
+            }
+
+            if (key === '-') {
+                $element.replaceWith('<li class="divider"></li>');
+                return;
+            }
+
+            var item = NavbarService[key];
+            if (angular.isDefined(item.enable) && typeof item.enable === 'string') {
+                var exp = item.enable;
+                item.enable = $parse(exp)(scope);
+
+                scope.$watch(exp, function(newValue, oldValue) {
+                    if (newValue !== oldValue) {
+                        item.enable = newValue;
+                    }
+                });
+            }
+
+            scope.clickItem = function() {
+                if (item.enable === false) {
+                    return false;
+                }
+                if (angular.isDefined(item.confirmMsg)) {
+                    if (!window.confirm(item.confirmMsg)) {
+                        return false;
+                    }
+                }
+                if (item.href) {
+                    var url = $parse(item.href)(scope);
+                    return $location.path(url);
+                }
+                $parse(item.action)(scope)();
+            };
+
+
+            if (item.template) {
+                scope.item = item;
+                $compile(item.template)(scope, function(newElement) {
+                    $element.replaceWith(newElement);
+                });
+            }
+            else if (item.templateUrl) {
+                $templateRequest(item.templateUrl).then(function(tplContent) {
+                    scope.item = item;
+                    $compile(tplContent.trim())(scope, function(newElement) {
+                        $element.replaceWith(newElement);
+                    });
+                });
+            }
+            else if (children.length) {
+                // Create a dropdown
+                var template;
+                if(scope.sub) {
+                    template = 'navbar-item-group.html';
+                }
+                else {
+                    template = 'navbar-item-dropdown.html';
+                }
+                $templateRequest(template).then(function(tplContent) {
+                    scope.item = item;
+                    scope.children = children;
+                    $compile(tplContent.trim())(scope, function(newElement) {
+                        $element.replaceWith(newElement);
+                    });
+                });
+            }
+            else {
+                $templateRequest('navbar-item.html').then(function(tplContent) {
+                    scope.item = item;
+                    $compile(tplContent.trim())(scope, function(newElement) {
+                        $element.replaceWith(newElement);
+                    });
+                });
+            }
+        }
+    };
+}]);

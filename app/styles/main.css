@@ -129,27 +129,8 @@ body {
 }
 
 .breadcrumb {
-  top: 65px;
-  border-bottom: 1px solid #e7e7e7;
   margin-bottom: 0;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  z-index: 1;
-}
-
-.breadcrumb > li:first-child {
-  margin-right: 20px;
-}
-
-.breadcrumb > li:first-child + li:before {
-  content: "";
-  padding: 0;
-}
-
-.breadcrumb input {
-  display: inline-block;
-  width: 160px;
-  height: 25px;
+  background-color: none;
 }
 
 .match, .textdiff span {
@@ -231,4 +212,26 @@ body {
 .form-login {
   display: inline-block;
   min-width: 400px;
+}
+
+
+/* overwrite */
+/* TODO: find the source */
+.file-navigation a {
+  display: inline !important;
+}
+
+.navbar-icons .divider {
+  height: 30px;
+  margin: 0 9px;
+  border-right: 1px solid #ffffff;
+  border-left: 1px solid #f2f2f2;
+}
+
+.file-checkbox {
+  margin-right: 10px !important;
+}
+
+.file-selected {
+  background: #DDD;
 }

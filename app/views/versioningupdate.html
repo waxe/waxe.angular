@@ -5,7 +5,7 @@
       <ul class="list-unstyled">
         <li ng-repeat="file in files" >
           <span class="label label-{{file.status}}">{{file.status}}</span>
-          <a ng-if="file.addLink" href="#{{UrlFactory.userUrl('xml/edit', {path: file.path})}}">{{file.path}}</a>
+          <a ng-if="file.addLink" href="#{{file.editUrl}}">{{file.path}}</a>
           <span ng-if="!file.addLink">{{file.path}}</span>
         </li>
       </ul>

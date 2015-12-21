@@ -20,7 +20,9 @@ angular.module('waxeApp')
                     }
                 }
 
-                MessageService.set('danger', rejection.data);
+                if ([301, 302].indexOf(rejection.status) === -1) {
+                    MessageService.set('danger', rejection.data);
+                }
                 return $q.reject(rejection);
             }
         };

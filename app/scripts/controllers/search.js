@@ -8,7 +8,7 @@
  * Controller of the waxeApp
  */
 angular.module('waxeApp')
-    .controller('SearchCtrl', ['$scope', '$http', '$routeParams', '$location', '$anchorScroll', '$modal', 'UrlFactory', 'Utils', 'XmlUtils', 'AccountProfile', function ($scope, $http, $routeParams, $location, $anchorScroll, $modal, UrlFactory, Utils, XmlUtils, AccountProfile) {
+    .controller('SearchCtrl', ['$scope', '$http', '$routeParams', '$location', '$anchorScroll', '$modal', 'UrlFactory', 'Utils', 'XmlUtils', 'AccountProfile', 'Files', 'File', function ($scope, $http, $routeParams, $location, $anchorScroll, $modal, UrlFactory, Utils, XmlUtils, AccountProfile, Files, File) {
 
         $scope.UrlFactory = UrlFactory;
         // TODO: we should have a list somewhere with the supported extension
@@ -24,7 +24,8 @@ angular.module('waxeApp')
             path: $routeParams.path,
             tag: $routeParams.tag,
             // Since only XML is support for now, put it as default
-            filetype: '.xml' // $scope.filetypes[0].value
+            filetype: '.xml', // $scope.filetypes[0].value
+            open: $routeParams.open
         };
         $scope.totalItems = 0;
         $scope.itemsPerPage = 0;
@@ -39,7 +40,14 @@ angular.module('waxeApp')
               .get(url, {params: $scope.search})
               .then(function(res) {
                 $anchorScroll();
-                $scope.results = res.data.results;
+                var files = Files.dataToObjs(res.data.results);
+                if($scope.search.open) {
+                    if (res.data.nb_items === 1) {
+                        $location.url(files[0].editUrl);
+                        return;
+                    }
+                }
+                $scope.results = files;
                 $scope.totalItems = res.data.nb_items;
                 $scope.itemsPerPage = res.data.items_per_page;
                 $scope.$emit('pageLoaded');

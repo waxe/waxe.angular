@@ -8,7 +8,7 @@
  * Factory in the waxeangularApp.
  */
 angular.module('waxeApp')
-    .service('Session', ['$http', '$q', '$route', 'Utils', 'UserProfile', 'AccountProfile', function ($http, $q, $route, Utils, UserProfile, AccountProfile) {
+    .service('Session', ['$http', '$q', '$route', 'Utils', 'UserProfile', 'AccountProfile', 'NavbarService', function ($http, $q, $route, Utils, UserProfile, AccountProfile, NavbarService) {
 
         // The variables defined here should not be reset during the navigation.
         // It's like a cache
@@ -16,10 +16,13 @@ angular.module('waxeApp')
         // The current path we open/save file. It's used in the modal
         this.currentPath = null;
 
+        // Need to be defined since the init is not always called before displaying the navbar
+        this.files = [];
+        this.filesSelected = [];
+
         // The interval object when editing a file. We need it to cancel it
         // when we quit the editor.
         this.autosave_interval = null;
-
 
         this.init = function(login, accountUsable) {
             this.login = login;
@@ -29,16 +32,14 @@ angular.module('waxeApp')
             this.user = null;
             this.breadcrumbFiles = [];
 
-            // If true we display the input to filter the files displayed
-            this.showFileFilter = false;
-            // The file filter to use on ng-model
-            // this.fileFilter
+            // Use to apply action on multiple files in the menu
+            this.files = [];
+            this.filesSelected = [];
 
             // Special handler when we click on the save button
             this.submitForm = null;
-            // We have a form, we should enable the save button
-            this.hasForm = null;
             // The filename we are editing
+            // TODO: we should store a File object
             this.filename = null;
             // XML form
             // NOTE: it enables the 'save as' button
@@ -61,6 +62,11 @@ angular.module('waxeApp')
                 this.diffEnabled = true;
             }
 
+            NavbarService.enable(this.accountUsable);
+            NavbarService.setVisible(this.accountUsable);
+            // Will be set when editing a file
+            NavbarService.setEditFile(false);
+
             if (this.accountUsable) {
                 var path = '(new file)';
                 if (typeof $route.current.$$route.noAutoBreadcrumb === 'undefined') {
@@ -77,6 +83,13 @@ angular.module('waxeApp')
             else{
                 this.init(UserProfile.login, false);
             }
+        };
+
+        this.unSelectFiles = function() {
+            for (var i=0,len=this.filesSelected.length; i < len; i++) {
+                this.filesSelected[i].selected = false;
+            }
+            this.filesSelected = [];
         };
 
         this.setBreadcrumbFiles = function(file) {
