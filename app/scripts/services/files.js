@@ -96,7 +96,7 @@ angular.module('waxeApp')
         };
         return File;
     }])
-    .service('Files', ['$http', 'UrlFactory', 'MessageService', 'Session', 'Folder', 'File', function ($http, UrlFactory, MessageService, Session, Folder, File) {
+    .service('Files', ['$http', '$q', 'UrlFactory', 'MessageService', 'Session', 'Folder', 'File', function ($http, $q, UrlFactory, MessageService, Session, Folder, File) {
 
         var that = this;
         var getPaths = function(files) {
@@ -110,6 +110,9 @@ angular.module('waxeApp')
         var httpRequest = function(method, url, path) {
             return $http[method](url, {params: {path: path}})
                 .then(function(res) {
+                    if (!angular.isDefined(res) || ! angular.isDefined(res.data)) {
+                        return $q.reject(res);
+                    }
                     return that.dataToObjs(res.data);
                 });
         };
