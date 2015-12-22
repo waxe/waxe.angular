@@ -278,7 +278,7 @@ angular.module('waxeApp')
                 }
                 if (item.href) {
                     var url = $parse(item.href)(scope);
-                    return $location.path(url);
+                    return $location.url(url);
                 }
                 $parse(item.action)(scope)();
             };
