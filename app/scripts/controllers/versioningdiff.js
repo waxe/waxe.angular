@@ -8,7 +8,7 @@
  * Controller of the waxeApp
  */
 angular.module('waxeApp')
-    .controller('VersioningDiffCtrl', ['$scope', '$http', '$routeParams', '$modal', '$compile', '$location', 'UrlFactory', 'Session', 'Utils', 'MessageService', 'NavbarService', function ($scope, $http, $routeParams, $modal, $compile, $location, UrlFactory, Session, Utils, MessageService, NavbarService) {
+    .controller('VersioningDiffCtrl', ['$scope', '$http', '$routeParams', '$modal', '$compile', '$location', '$interval', 'UrlFactory', 'Session', 'Utils', 'MessageService', 'NavbarService', function ($scope, $http, $routeParams, $modal, $compile, $location, $interval, UrlFactory, Session, Utils, MessageService, NavbarService) {
 
         var url = UrlFactory.jsonAPIUserUrl('versioning/full-diff');
         $http
@@ -30,6 +30,12 @@ angular.module('waxeApp')
                 NavbarService.Save.enable = true;
                 $scope.$emit('pageLoaded');
             });
+
+
+        Session.autosave_interval = $interval(function() {
+            // TODO: check we have some updates before saving
+            $scope.submitForm();
+        }, 1000 * 30);
 
         $scope.submitForm = function(commit) {
             angular.element('.diff').each(function() {
