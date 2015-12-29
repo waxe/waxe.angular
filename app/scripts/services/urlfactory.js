@@ -54,7 +54,7 @@ angular.module('waxeApp')
                             value = [value];
                         }
                         angular.forEach(value, function(v) {
-                            lis.push(key + '=' + v);
+                            lis.push(key + '=' + encodeURIComponent(v));
                         });
                     });
                     u += '?' + lis.join('&');
