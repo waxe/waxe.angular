@@ -49,7 +49,7 @@
 
     <script src="scripts/vendor.199ff4ac.js"></script>
 
-    <script src="scripts/scripts.a05db172.js"></script>
+    <script src="scripts/scripts.c6b2b021.js"></script>
 
     % for resource in request.js_resources:
       <script type="text/javascript" src="${request.static_url(resource)}"></script>
