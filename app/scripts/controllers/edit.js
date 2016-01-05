@@ -9,6 +9,7 @@
  */
 angular.module('waxeApp')
     .controller('EditCtrl', ['$scope', '$http', '$sce', '$routeParams', '$route', '$location', '$compile', 'UrlFactory', 'Session', 'NavbarService', function ($scope, $http, $sce, $routeParams, $route, $location, $compile, UrlFactory, Session, NavbarService) {
+        $scope.xml_filters = (typeof XML_FILTERS !== 'undefined')? XML_FILTERS: null;
         var action = $route.current.$$route.action;
         var url = UrlFactory.jsonAPIUserUrl($routeParams.type+'/'+action);
         $http

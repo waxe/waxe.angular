@@ -235,3 +235,13 @@ body {
 .file-selected {
   background: #DDD;
 }
+
+.has-xml-filters + .stretch.ui-layout-column {
+  margin-top: 30px;
+}
+
+.has-xml-filters .btn:focus:not(.active){
+  // Hack to not keep background when deactivate the button
+  outline: none;
+  background-color: inherit;
+}
