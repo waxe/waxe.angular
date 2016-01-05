@@ -36,4 +36,52 @@ angular.module('waxeApp')
                 }, 1000 * 10);
             }
         };
+    }])
+    .directive('xmlfilters', [function () {
+        return {
+            template: '<div class="btn-group pull-right" ng-class="cssClass"><button class="btn btn-default btn-xs" ng-class="{\'active\': filter.active}" ng-click="toggle(filter)" ng-repeat="filter in filters">{{filter.name}}</button></div>',
+            restrict: 'E',
+            scope: {
+                'filters': '='
+            },
+            link: function postLink(scope, element) {
+                var $container;
+                var cntActive = 0;
+                var activeFilter = function(name, active) {
+                    if (active) {
+                        $container.addClass('xml-filter-' + name);
+                        cntActive += 1;
+                    }
+                    else {
+                        $container.removeClass('xml-filter-' + name);
+                        cntActive -= 1;
+                    }
+                    if (cntActive > 0) {
+                        $container.addClass('xml-filters');
+                    }
+                    else {
+                        $container.removeClass('xml-filters');
+                    }
+                };
+                if (scope.filters !== null) {
+                    var w = scope.$watch(function() {
+                        $container = angular.element('.layout-container');
+                        if($container.length && angular.isDefined(scope.filters)) {
+                            w();
+                            element.addClass('has-xml-filters');
+                            angular.forEach(scope.filters, function(filter) {
+                                if (filter.active) {
+                                    activeFilter(filter.name, true);
+                                }
+                            });
+                        }
+                    });
+                }
+
+                scope.toggle = function(filter) {
+                    filter.active = !filter.active;
+                    activeFilter(filter.name, filter.active);
+                };
+            }
+        };
     }]);
