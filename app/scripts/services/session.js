@@ -65,7 +65,7 @@ angular.module('waxeApp')
             NavbarService.enable(this.accountUsable);
             NavbarService.setVisible(this.accountUsable);
             // Will be set when editing a file
-            NavbarService.setEditFile(false);
+            NavbarService.setEditFile(false, false);
 
             if (this.accountUsable) {
                 var path = '(new file)';
