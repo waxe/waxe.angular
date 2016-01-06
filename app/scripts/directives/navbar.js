@@ -66,11 +66,22 @@ angular.module('waxeApp')
                 };
 
                 scope.doRender = function() {
-                    // TODO: the url should not be in JSON.
-                    var file = File.loadFromPath(Session.filename);
-                    window.open(file.viewUrl, '_viewer');
+                    if (Session.filename !== null) {
+                        // TODO: the url should not be in JSON.
+                        var file = File.loadFromPath(Session.filename);
+                        window.open(file.viewUrl, '_viewer');
+                    }
+                    else {
+                        var url,
+                            files = Session.filesSelected,
+                            id = +new Date();
+                        for(var i=0,len=files.length; i < len; i++) {
+                            url = files[i].viewUrl;
+                            window.open(url, '_viewer_' + id + '-' + i);
+                        }
+                        Session.unSelectFiles();
+                    }
                 };
-
 
                 // We need this variable to keep the last selected choice
                 scope.dtd_url = null;

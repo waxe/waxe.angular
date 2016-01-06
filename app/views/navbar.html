@@ -36,7 +36,7 @@
 
 <script type="text/ng-template" id="navbar-item.html">
   <li ng-if="item.visible !== false" ng-class="{'disabled': item.enable === false}">
-    <a href="" ng-title="aTitle" ng-click="clickItem()" ng-class="{'btn-enabled': item.selected === true}">
+    <a href="" title="{{item.name}}" ng-click="clickItem()" ng-class="{'btn-enabled': item.selected === true}">
       <i ng-class="item.iconClass"></i>
       <span ng-bind-html="item.name" ng-if="icon !== true"></span>
     </a>
