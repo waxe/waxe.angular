@@ -241,7 +241,7 @@ body {
 }
 
 .has-xml-filters .btn:focus:not(.active){
-  // Hack to not keep background when deactivate the button
+  /* Hack to not keep background when deactivate the button */
   outline: none;
   background-color: inherit;
 }
