@@ -39,7 +39,7 @@ angular.module('waxeApp')
     }])
     .directive('xmlfilters', [function () {
         return {
-            template: '<div class="btn-group pull-right" ng-class="cssClass"><button class="btn btn-default btn-xs" ng-class="{\'active\': filter.active}" ng-click="toggle(filter)" ng-repeat="filter in filters">{{filter.name}}</button></div>',
+            template: '<div class="btn-group pull-right" ng-class="cssClass"><button class="btn btn-default btn-xs" ng-class="{\'active\': filter.active}" title="{{filter.title}}" ng-click="toggle(filter)" ng-repeat="filter in filters">{{filter.name}}</button></div>',
             restrict: 'E',
             scope: {
                 'filters': '='
