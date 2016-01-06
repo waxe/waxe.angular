@@ -72,8 +72,9 @@ angular.module('waxeApp')
 
         this.Rendering = {
             name: 'Rendering',
-            enable: false,
+            enable: 'Session.filesSelected.length != 0 || Session.filename !== null',
             visible: false,
+            iconClass: 'fa fa-eye',
             action: '$root.doRender'
         };
 
@@ -161,7 +162,6 @@ angular.module('waxeApp')
         this.setEditFile = function(value, source) {
             this.Save.enable = value;
             this.SaveAs.enable = value;
-            this.Rendering.enable = value;
             this.Diff.enable = value;
             this.Source.enable = source;
         };
@@ -170,11 +170,10 @@ angular.module('waxeApp')
             [
                 {'File': [{'New': ['NewXML', 'NewXMLFromTemplate']}, '-', 'Open', 'Save', 'SaveAs']},
                 {'Versioning': ['Status', 'Update']},
-                'Rendering',
                 'Search'
             ],
             ['Login'],
-            ['NewXML', 'Open', 'Save', '-', 'Delete', 'Move', 'OpenSelected'],
+            ['NewXML', 'Open', 'Save', '-', 'Delete', 'Move', 'OpenSelected', 'Rendering'],
             ['Source', 'Diff']
         ];
     }]
