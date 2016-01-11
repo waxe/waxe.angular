@@ -59,7 +59,7 @@ angular.module('waxeApp')
             var url = this.editor + '/edit';
             data = data || {};
             data.path = this.path;
-            if (angular.isDefined(this.user)) {
+            if (angular.isDefined(this.user) && this.user) {
                 // On opened and commited file it can be a link to another account.
                 return UrlFactory.url(this.user, url, data);
             }
