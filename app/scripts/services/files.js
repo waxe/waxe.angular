@@ -72,6 +72,7 @@ angular.module('waxeApp')
             }
             this.extension = this.name.substring(this.name.lastIndexOf('.'), this.name.length).toLowerCase();
             this.editor = AccountProfile.editors[this.extension];
+            this.renderer = AccountProfile.renderers[this.extension];
         };
         Object.defineProperty(File.prototype, 'newUrl', {
             get: function newUrlProperty() {
@@ -82,7 +83,7 @@ angular.module('waxeApp')
 
         Object.defineProperty(File.prototype, 'viewUrl', {
             get: function viewUrlProperty() {
-                var url = this.editor + '/view';
+                var url = this.renderer + '/view';
                 return UrlFactory.jsonAPIUserUrl(url, {path: this.path});
             }
         });

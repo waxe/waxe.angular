@@ -136,6 +136,7 @@ angular.module('waxeApp')
             if (accountUsable) {
                 this.NewXMLFromTemplate.visible = AccountProfile.has_template_files;
                 this.Versioning.visible = AccountProfile.has_versioning;
+                // It should be defined according to the supported extensions
                 this.Rendering.visible = AccountProfile.has_xml_renderer;
                 this.Search.visible = AccountProfile.has_search;
                 this.Source.visible = true;
