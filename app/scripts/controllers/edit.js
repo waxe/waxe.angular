@@ -67,28 +67,45 @@ angular.module('waxeApp')
             el.removeAttr('style').find('.modal-content').removeAttr('style');
         };
 
-        $scope.externalEditor = function(element) {
-            $scope.showExternalEditor = true;
+        $scope.externalEditor = function(btn) {
 
+            var element = angular.element(btn).parent().attr('id');
             // We have the logic in xmltool.jstree select_node.jstree to get
             // the focus on the textarea or the contenteditable. We should make
             // a function of this
             var $textElt = angular.element(xmltool.utils.escapeAttr('#' + element)).find('textarea:not(._comment):first');
-            $scope.externalIsContenteditable = false;
-            if (!$textElt.is(':visible')) {
-                // Element is a contenteditable
-                $textElt = $textElt.next();
-                $scope.externalIsContenteditable = true;
-                $scope.external_values.push($textElt.html());
+
+            $scope.$apply(function() {
+                $scope.externalIsContenteditable = false;
+                var html_func;
+                if (!$textElt.is(':visible')) {
+                    // Element is a contenteditable
+                    $textElt = $textElt.next();
+                    $scope.externalIsContenteditable = true;
+                    html_func = function() {
+                        return $textElt.html.apply($textElt, arguments);
+                    };
+                }
+                else {
+                    html_func = function() {
+                        return $textElt.val.apply($textElt, arguments);
+                    };
+                }
+
+                var html = html_func();
+                $scope.external_values.push(html);
                 $scope.externalElt = $textElt;
-            }
-            else {
-                $scope.external_values.push($textElt.val());
-                $scope.externalElt = $textElt;
-            }
-            $scope.external_current++;
-            $textElt.attr('ng-model', 'external_values['+$scope.external_current+']');
-            $compile($textElt)($scope);
+                $scope.external_current++;
+
+                $textElt.attr('ng-model', 'external_values['+$scope.external_current+']');
+                // We remove the HTML for compiling in case there is some
+                // '{{}}' in the HTML
+                html_func('');
+                $compile($textElt)($scope);
+                html_func(html);
+                $scope.showExternalEditor = true;
+
+            });
         };
 
         $scope.scrollToElement = function() {
