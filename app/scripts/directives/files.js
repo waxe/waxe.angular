@@ -9,14 +9,15 @@
 angular.module('waxeApp')
     .directive('files', function () {
         return {
-            template: '<div ng-if="checkbox"> Select: <a href="" ng-click="selectAll()">All</a> / <a href="" ng-click="deselectAll()">None</a><br /></div><div class="col-md-{{colMd}}" ng-repeat="file in files" ng-class="\'versioning-\' + file.status"><file data="file" selected="selected"></file></div>',
+            template: '<div ng-if="checkbox"> Select: <a href="" ng-click="selectAll()">All</a> / <a href="" ng-click="deselectAll()">None</a><br /></div><div class="col-md-{{colMd}}" ng-repeat="file in files" ng-if="showFile(file)" ng-class="\'versioning-\' + file.status"><file data="file" selected="selected"></file></div>',
             restrict: 'E',
             scope: {
                 'files': '=data',
                 'checkbox': '@',
                 'action': '&',
                 'display': '@',
-                'col': '@'
+                'col': '@',
+                'folder': '=',
             },
             controller: ['$scope', '$element', '$attrs', function($scope, $element, $attrs) {
                 if (angular.isDefined($attrs.col)) {
@@ -26,6 +27,14 @@ angular.module('waxeApp')
                     // 2 cols  by default
                     $scope.colMd = 6;
                 }
+
+                $scope.showFile = function(file) {
+                    if ($scope.folder === true && file.type !== 'folder') {
+                        return false;
+                    }
+                    return true;
+                };
+
 
                 if (angular.isDefined($attrs.action)) {
                     this.action = $scope.action;
