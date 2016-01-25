@@ -72,27 +72,14 @@ angular.module('waxeApp')
         $scope.folderModal = function() {
             $modal.open({
                 templateUrl: 'search-folder.html',
-                controller: function($scope, $modalInstance, parentScope) {
-
-                    $scope.selectFolder = function(path) {
-                        parentScope.currentPath = path;
-                        $scope.breadcrumbFiles = Utils.getBreadcrumbFiles(path);
-                        var url = UrlFactory.jsonAPIUserUrl('explore');
-                        $http
-                          .get(url, {params: {path: path}})
-                          .then(function(res) {
-                            $scope.files = res.data;
-                        });
-                    };
-
-                    $scope.selectFolder(parentScope.currentPath);
-
-                    $scope.cancel = function () {
-                        $modalInstance.dismiss('cancel');
-                    };
+                controller: function($scope, $modalInstance, $controller, parentScope) {
+                    $controller('BaseModalCtrl', {
+                        $scope: $scope,
+                        $modalInstance: $modalInstance
+                    });
 
                     $scope.select = function () {
-                        parentScope.search.path = parentScope.currentPath;
+                        parentScope.search.path = $scope.getPath();
                         $modalInstance.close();
                     };
                 },

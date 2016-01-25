@@ -58,17 +58,8 @@
       <h3 class="modal-title">Select a folder</h3>
   </div>
   <div class="modal-body">
-    <div class="breadcrumb" ng-if="breadcrumbFiles.length">
-      <li ng-repeat="file in breadcrumbFiles">
-        <a ng-if="isDefined(file.path)" href="" ng-click="selectFolder(file.path)">{{file.name}}</a>
-        <span ng-if="!isDefined(file.path)">{{file.name}}</span>
-      </li>
-    </div>
-    <div class="row">
-      <div class="col-md-6" ng-repeat="file in files">
-        <a ng-if="file.type === 'folder'" href="" ng-click="selectFolder(file.path)"><i class="fa fa-folder-o"></i> {{file.name}}</a>
-      </div>
-    </div>
+    <breadcrumb files="breadcrumbFiles" action="open"></breadcrumb>
+    <files class="row" data="files" folder="true" action="open"></files>
   </div>
   <div class="modal-footer">
       <button class="btn btn-default" ng-click="cancel()">Cancel</button>

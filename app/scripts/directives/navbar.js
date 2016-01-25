@@ -34,6 +34,10 @@ angular.module('waxeApp')
             $modalInstance.dismiss('cancel');
         };
 
+        $scope.getPath = function() {
+            return Session[$scope.sessionAttr];
+        };
+
         // Init
         $scope.openFolder(Session[$scope.sessionAttr] || $scope.defaultPath);
     }])
