@@ -79,6 +79,13 @@ angular.module('waxeApp')
         };
 
         this.Search = {
+            name: 'Advanced search',
+            enable: false,
+            visible: false,
+            href: 'UrlFactory.userUrl("search")'
+        };
+
+        this.SearchForm = {
             enable: false,
             visible: false,
             templateUrl: 'navbar-item-search.html'
@@ -139,6 +146,7 @@ angular.module('waxeApp')
                 // It should be defined according to the supported extensions
                 this.Rendering.visible = AccountProfile.has_xml_renderer;
                 this.Search.visible = AccountProfile.has_search;
+                this.SearchForm.visible = AccountProfile.has_search;
                 this.Source.visible = true;
                 this.Diff.visible = AccountProfile.has_versioning;
                 this.NewXML.visible = true;
@@ -150,6 +158,7 @@ angular.module('waxeApp')
                 this.Versioning.visible = false;
                 this.Rendering.visible = false;
                 this.Search.visible = false;
+                this.SearchForm.visible = false;
                 this.Source.visible = false;
                 this.Diff.visible = false;
                 this.NewXML.visible = false;
@@ -171,7 +180,7 @@ angular.module('waxeApp')
             [
                 {'File': [{'New': ['NewXML', 'NewXMLFromTemplate']}, '-', 'Open', 'Save', 'SaveAs']},
                 {'Versioning': ['Status', 'Update']},
-                'Search'
+                'SearchForm', 'Search'
             ],
             ['Login'],
             ['NewXML', 'Open', 'Save', '-', 'Delete', 'Move', 'OpenSelected', 'Rendering'],
