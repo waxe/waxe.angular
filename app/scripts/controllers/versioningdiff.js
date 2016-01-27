@@ -8,13 +8,17 @@
  * Controller of the waxeApp
  */
 angular.module('waxeApp')
-    .controller('VersioningDiffCtrl', ['$scope', '$http', '$routeParams', '$modal', '$compile', '$location', '$interval', 'UrlFactory', 'Session', 'Utils', 'MessageService', 'NavbarService', function ($scope, $http, $routeParams, $modal, $compile, $location, $interval, UrlFactory, Session, Utils, MessageService, NavbarService) {
+    .controller('VersioningDiffCtrl', ['$scope', '$http', '$routeParams', '$modal', '$compile', '$location', '$interval', 'UrlFactory', 'Session', 'Utils', 'MessageService', 'NavbarService', 'File', function ($scope, $http, $routeParams, $modal, $compile, $location, $interval, UrlFactory, Session, Utils, MessageService, NavbarService, File) {
 
         var url = UrlFactory.jsonAPIUserUrl('versioning/full-diff');
         $http
           .get(url, {params: $routeParams})
           .then(function(res) {
                 $scope.diffs = res.data.diffs;
+                angular.forEach($scope.diffs, function(d) {
+                    var file = File.loadFromPath(d.relpath);
+                    d.url = file.editUrl;
+                });
                 $scope.diffOptions = {
                     attrs: {
                         insert: {

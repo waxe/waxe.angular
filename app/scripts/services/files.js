@@ -59,7 +59,7 @@ angular.module('waxeApp')
             var url = this.editor + '/edit';
             data = data || {};
             data.path = this.path;
-            if (angular.isDefined(this.user)) {
+            if (angular.isDefined(this.user) && this.user) {
                 // On opened and commited file it can be a link to another account.
                 return UrlFactory.url(this.user, url, data);
             }
@@ -72,6 +72,7 @@ angular.module('waxeApp')
             }
             this.extension = this.name.substring(this.name.lastIndexOf('.'), this.name.length).toLowerCase();
             this.editor = AccountProfile.editors[this.extension];
+            this.renderer = AccountProfile.renderers[this.extension];
         };
         Object.defineProperty(File.prototype, 'newUrl', {
             get: function newUrlProperty() {
@@ -82,7 +83,7 @@ angular.module('waxeApp')
 
         Object.defineProperty(File.prototype, 'viewUrl', {
             get: function viewUrlProperty() {
-                var url = this.editor + '/view';
+                var url = this.renderer + '/view';
                 return UrlFactory.jsonAPIUserUrl(url, {path: this.path});
             }
         });
