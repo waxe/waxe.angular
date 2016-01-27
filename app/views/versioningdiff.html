@@ -1,5 +1,6 @@
 <form class="diff-form" ng-submit="submitForm(true)">
   <span ng-repeat="diff in diffs">
+    <a href="#{{diff.url}}">{{diff.relpath}}</a>
     <input type="hidden" name="data:{{$index}}:filename" value="{{diff.relpath}}" />
     <textarea name="data:{{$index}}:filecontent" class="hidden"></textarea>
     <pre processing-diff class="diff" left-obj="diff.left" right-obj="diff.right" options="diffOptions"></pre>
