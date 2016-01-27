@@ -11,8 +11,8 @@
 <form ng-show="showExternalEditor" class="external-editor modal-dialog" draggable="true">
   <div class="modal-content">
     <div class="modal-header">
-       <button type="button" class="close" ng-click="closeExternalEditor()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-       <a href="" title="Reset size and position" ng-click="externalResetSizeAndPosition()">
+       <button type="button" class="close" ng-click="closeExternalEditor()" aria-label="Close" title="Close"><span aria-hidden="true">&times;</span></button>
+       <a href="" title="Reset size and position" ng-click="externalResetSizeAndPosition()" >
          <i class="fa fa-arrows pull-right"></i>
        </a>
         <h3 class="modal-title">External editor</h3>
@@ -22,7 +22,7 @@
       <textarea ng-if="!externalIsContenteditable" ng-model="external_values[external_current]"></textarea>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-default fa fa-anchor" ng-click="scrollToElement()"></button>
+        <button class="btn btn-default fa fa-anchor" title="Go to element" ng-click="scrollToElement()"></button>
         <button class="btn btn-default" ng-click="closeExternalEditor()">close</button>
     </div>
   </div>

@@ -195,18 +195,24 @@ body {
 }
 
 .external-editor .modal-content {
+  display: flex;
+  flex-direction: column;
   resize: both;
   overflow: auto;
 }
 
 .external-editor .modal-body {
-  min-height: 200px;
-  max-height: 300px;
   overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
 
 .external-editor .form-control{
-  height: auto;
+  min-height: 200px;
+  max-height: 70vh;
+  overflow: auto;
+  flex: 1;
 }
 
 .form-login {
