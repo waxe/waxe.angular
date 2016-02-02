@@ -155,22 +155,26 @@ angular.module('waxeApp')
                     };
                 };
 
-                scope.newXmlTemplateModal = createModal(
+                scope.newXmlTemplateModal = function() {
+                    createModal(
                         'navbar-open-modal.html',
                         'New from template',
                         function(file) {
                             $location.url(file.newUrl);
                         },
                         'currentXmlTemplatePath',
-                        AccountProfile.templates_path);
+                        AccountProfile.templates_path)();
+                };
 
-                scope.openModal = createModal(
+                scope.openModal = function() {
+                    createModal(
                         'navbar-open-modal.html',
                         'Open file',
                         function(file) {
                             $location.url(file.editUrl);
                         },
-                        'currentPath');
+                        'currentPath')();
+                };
 
                 scope.sourceToggle = function() {
                     var from = $routeParams.from;

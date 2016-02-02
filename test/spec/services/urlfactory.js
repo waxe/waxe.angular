@@ -23,8 +23,8 @@ describe('Service: UrlFactory', function () {
 
     res = UrlFactory._generateUrl(
             'username', 'mypath',
-            {'param1': 'value1', 'param2': 'value2'});
-    expect(res).toBe('/account/username/mypath?param1=value1&param2=value2');
+            {'param1': 'value1', 'param2': 'value2', 'bool': true});
+    expect(res).toBe('/account/username/mypath?param1=value1&param2=value2&bool=true');
 
     res = UrlFactory._generateUrl(
             'username', 'mypath',

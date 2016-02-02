@@ -189,25 +189,36 @@ body {
   width: 100%;
 }
 
-.external-editor .modal-header i {
-  color: #000;
-  opacity: 0.2;
-}
-
 .external-editor .modal-content {
+  display: flex;
+  flex-direction: column;
   resize: both;
   overflow: auto;
 }
 
 .external-editor .modal-body {
-  min-height: 200px;
-  max-height: 300px;
   overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
 
 .external-editor .form-control{
-  height: auto;
+  min-height: 200px;
+  max-height: 70vh;
+  overflow: auto;
+  flex: 1;
 }
+
+.external-editor .modal-footer {
+  text-align: left;
+}
+
+.external-editor .modal-footer .fa {
+  padding-top: 9px;
+  padding-bottom: 9px;
+}
+
 
 .form-login {
   display: inline-block;
@@ -215,10 +226,9 @@ body {
 }
 
 
-/* overwrite */
-/* TODO: find the source */
 .file-navigation a {
   display: inline !important;
+  color: #333;
 }
 
 .navbar-icons .divider {

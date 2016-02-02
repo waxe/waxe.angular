@@ -50,7 +50,7 @@ angular.module('waxeApp')
                 if (angular.isDefined(params)) {
                     var lis = [];
                     angular.forEach(params, function(value, key) {
-                        if (typeof value === 'string') {
+                        if (typeof value === 'string' || typeof value === 'boolean') {
                             value = [value];
                         }
                         angular.forEach(value, function(v) {
