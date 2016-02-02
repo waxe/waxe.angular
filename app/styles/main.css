@@ -226,10 +226,9 @@ body {
 }
 
 
-/* overwrite */
-/* TODO: find the source */
 .file-navigation a {
   display: inline !important;
+  color: #333;
 }
 
 .navbar-icons .divider {
