@@ -32,6 +32,12 @@ angular.module('waxeApp')
             action: '$root.newXmlTemplateModal'
         };
 
+        this.NewHTML = {
+            name : 'HTML',
+            iconClass: 'fa fa-file-o',
+            href: 'UrlFactory.userUrl("txt/new")'
+        };
+
         this.Open = {
             name: 'Open',
             iconClass: 'fa fa-folder-open-o',
@@ -150,6 +156,7 @@ angular.module('waxeApp')
                 this.Source.visible = true;
                 this.Diff.visible = AccountProfile.has_versioning;
                 this.NewXML.visible = true;
+                this.NewHTML.visible = true;
                 this.Open.visible = true;
                 this.Save.visible = true;
             }
@@ -162,6 +169,7 @@ angular.module('waxeApp')
                 this.Source.visible = false;
                 this.Diff.visible = false;
                 this.NewXML.visible = false;
+                this.NewHTML.visible = false;
                 this.Open.visible = false;
                 this.Save.visible = false;
             }
@@ -178,7 +186,7 @@ angular.module('waxeApp')
 
         this.menuData = [
             [
-                {'File': [{'New': ['NewXML', 'NewXMLFromTemplate']}, '-', 'Open', 'Save', 'SaveAs']},
+                {'File': [{'New': ['NewXML', 'NewXMLFromTemplate', 'NewHTML']}, '-', 'Open', 'Save', 'SaveAs']},
                 {'Versioning': ['Status', 'Update']},
                 'SearchForm', 'Search'
             ],
