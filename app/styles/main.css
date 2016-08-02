@@ -147,6 +147,10 @@ body {
   background: #ffbbbb;
 }
 
+.pre, pre {
+  white-space: pre-wrap;
+}
+
 .noselect {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
