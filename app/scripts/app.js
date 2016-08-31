@@ -99,6 +99,14 @@ angular
                 action: 'edit'
 
             })
+          .when('/account/:user/txt/new', {
+                templateUrl: 'views/edittxt.html',
+                controller: 'NewTxtCtrl',
+                resolve: resolve,
+                editor: true,
+                type: 'txt',
+                action: 'new'
+            })
           .when('/account/:user/:type/edit', {
                 templateUrl: 'views/edit.html',
                 controller: 'EditCtrl',
