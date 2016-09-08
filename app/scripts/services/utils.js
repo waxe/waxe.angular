@@ -95,7 +95,7 @@ angular.module('waxeApp')
             return breadcrumbFiles;
         };
 
-    }]).service('FileUtils', ['$http', '$location', '$modal', 'Session', 'MessageService', 'UrlFactory', 'Utils', 'Files', function ($http, $location, $modal, Session, MessageService, UrlFactory, Utils, Files) {
+    }]).service('FileUtils', ['$http', '$location', '$modal', 'Session', 'MessageService', 'UrlFactory', 'Utils', 'Files', 'File', function ($http, $location, $modal, Session, MessageService, UrlFactory, Utils, Files, File) {
         var that = this;
         this.save = function() {
             // TODO: if we keep this logic we should refactor this function.
@@ -185,6 +185,8 @@ angular.module('waxeApp')
                 Session.form.setFilename(relpath);
                 that.save().then(function() {
                     Session.setFilename(relpath);
+                    var file = File.loadFromPath(relpath)
+                    $location.url(file.editUrl);
                 });
             });
 
